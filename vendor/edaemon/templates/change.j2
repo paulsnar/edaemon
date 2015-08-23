@@ -1,0 +1,18 @@
+{% extends 'layout.j2' %}
+
+{% block title %}Izmaiņas klasei {{ change.className }}{% endblock %}
+
+{% block body %}
+    <h1>Izmaiņas klasei {{ change.className }} ({{ change.date }})</h1>
+    <ol start="0">
+        {% for subject in subjects %}
+            {% if subject is none %}
+                <li>&mdash;</li>
+            {% else %}
+                <li>{{ subject }}</li>
+            {% endif %}
+        {% else %}
+            (Neviena stunda nav ievadīta. Varbūt šodien ir brīvdiena?)
+        {% endfor %}
+    </ol>
+{% endblock %}

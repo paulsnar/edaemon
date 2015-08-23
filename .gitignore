@@ -1,0 +1,5 @@
+app.yaml
+lib/
+_private_*.sh
+*.pyc
+__pycache__

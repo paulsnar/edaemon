@@ -1,0 +1,20 @@
+{% extends 'layout.j2' %}
+
+{% block title %}Izmaiņu skatīšana{% endblock %}
+
+{% block body %}
+    <h1>Izmaiņas:</h1>
+    <ul>
+        {% for change in changes %}
+            <li>
+            <a href="{{ url_for('main.show_change', change_id=change.key.urlsafe()) }}">
+                klase: {{ change.className }} datums: {{ change.date }}
+            </a>
+            <a href="{{ url_for('.delete_change', change_id=change.key.urlsafe()) }}" class="btn btn-danger">
+                Izdzēst šo ierakstu
+            </a></li>
+        {% else %}
+            Neatradu!
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,31 @@
+application: your-app-name
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /.*
+  script: app.app
+  secure: always
+
+env_variables:
+    EDAEMON_APP_SECRET_KEY: 'GenerateAndReplace'
+    # GA_TRACKING_ID: 'UA-OPTIONAL-0'
+
+libraries:
+- name: jinja2
+  version: "2.6"
+- name: markupsafe
+  version: "0.15"
+
+skip_files:
+# defaults
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+# custom
+- ^(.*/)?tests.*$
+- ^(.*/)?.*\.example$
