@@ -17,4 +17,4 @@ app.register_blueprint(AdminBlueprint, url_prefix='/a')
 
 @app.errorhandler(404)
 def four_oh_four(e):
-    return render_template('404.j2'), 404
+    return render_template('404.htm'), 404

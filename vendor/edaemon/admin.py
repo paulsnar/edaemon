@@ -43,7 +43,7 @@ def _parse_changes(form):
 @bp.route('/')
 def index():
     if 'email' in session:
-        return render_template('admin/index.j2')
+        return render_template('admin/index.htm')
     else:
         return redirect(url_for('.login'))
 
@@ -67,16 +67,16 @@ def login():
         try:
             user = User.lookup(request.form['email'])
         except Exception:
-            return render_template('admin/login.j2')
+            return render_template('admin/login.htm')
 
         if check_password_hash(user.passwd, request.form['passwd']):
             session['email'] = request.form['email']
             return redirect(url_for('.index'))
         else:
-            return render_template('admin/login.j2')
+            return render_template('admin/login.htm')
     else:
         session['xsrf'] = uuid().hex
-        return render_template('admin/login.j2')
+        return render_template('admin/login.htm')
 
 @bp.route('/logout')
 def logout():
@@ -87,7 +87,7 @@ def logout():
 @bp.route('/changes/')
 def list_changes():
     if not 'email' in session: return redirect(url_for('.login'))
-    return render_template('admin/list_changes.j2', changes=Change.get_all())
+    return render_template('admin/list_changes.htm', changes=Change.get_all())
 
 @bp.route('/changes/delete/<change_id>', methods=['GET', 'POST'])
 def delete_change(change_id):
@@ -99,8 +99,8 @@ def delete_change(change_id):
         try:
             change = Change.lookup(change_id)
         except Exception:
-            return render_template('admin/delete_change.j2', error=True)
-        return render_template('admin/delete_change.j2',
+            return render_template('admin/delete_change.htm', error=True)
+        return render_template('admin/delete_change.htm',
             change=Change.lookup(change_id))
 
 @bp.route('/changes/new', methods=['GET', 'POST'])
@@ -117,4 +117,4 @@ def enter_change():
     else:
         date = datetime.date.today()
         today = _format_date_ISO8601(date)
-        return render_template('admin/new_change.j2', today=today)
+        return render_template('admin/new_change.htm', today=today)

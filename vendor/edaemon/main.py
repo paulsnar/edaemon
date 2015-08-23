@@ -21,7 +21,7 @@ def _parse_subjects(_s):
 
 @bp.route('/')
 def index():
-    return render_template('index.j2', changes=Change.get_week())
+    return render_template('index.htm', changes=Change.get_week())
 
 @bp.route('/show/<change_id>')
 def show_change(change_id):
@@ -32,7 +32,7 @@ def show_change(change_id):
         return abort(404)
 
     subjects = _parse_subjects(json.loads(change.changes))
-    return render_template('change.j2', change=change, subjects=subjects)
+    return render_template('change.htm', change=change, subjects=subjects)
 
 # @bp.errorhandler(404)
 # def four_oh_four(e):
