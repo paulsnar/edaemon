@@ -13,6 +13,7 @@ if not _environ_GA_TRACKING_ID is None:
 app.secret_key = os.environ['EDAEMON_APP_SECRET_KEY']
 
 app.config['VERSION'] = VERSION
+app.config['silent'] = int(os.environ['EDAEMON_APP_SILENT']) == 1
 
 app.register_blueprint(MainBlueprint)
 app.register_blueprint(AdminBlueprint, url_prefix='/a')

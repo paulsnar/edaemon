@@ -22,6 +22,10 @@ Lai to uzstādītu:
 5. Kopē `app.yaml.example` uz `app.yaml` un aizpildi sekojošos parametrus:
   - `env_variables.EDAEMON_APP_SECRET_KEY`: Šo vajadzētu aizvietot ar apmēram 32
   nejaušiem simboliem.
+  - `env_variables.EDAEMON_APP_SILENT`: Dažās vietās Edaemon žurnālā var ierakstīt
+  kļūdas, piemēram, XSRF žetonu nesakritību pie administrācijas ielogošanās. Šie
+  ieraksti parādās kā kļūdas Google App Engine žurnālos. Ja tas nav vēlams, iestati
+  šo uz 1.
   - `env_variables.GA_TRACKING_ID`: Ja vēlies izmantot Google Analytics savā
   Edaemon instancē, šeit ieliec savu Google Tracking ID (formātā `UA-12345678-1`).
   Tas tiks injicēts katrā lapā (sk. [vendor/edaemon/templates/layout.j2](vendor/edaemon/templates/layout.j2))

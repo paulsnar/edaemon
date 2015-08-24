@@ -21,6 +21,9 @@ To set it up:
 5. Copy `app.yaml.example` to `app.yaml` and change the following fields:
   - `env_variables.EDAEMON_APP_SECRET_KEY`: This should be replaced with a string
   about 32 characters long. Flask uses this to encrypt/decrypt session cookies.
+  - `env_variables.EDAEMON_APP_SILENT`: In some places Edaemon might log failures,
+  like a bad XSRF token on admin authentication. These show up with 'error' in
+  Google App Engine's request logs. If you don't want that, set this to 1.
   - `env_variables.GA_TRACKING_ID`: If you want to use Google Analytics tracking
   for your app, replace this with your Google Tracking ID (something like `UA-12345678-1`).
   It will be injected on each served page (see

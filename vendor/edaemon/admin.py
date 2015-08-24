@@ -1,5 +1,5 @@
 from flask import (Blueprint, request, render_template, abort, session,
-    redirect, url_for)
+    redirect, url_for, current_app)
 from werkzeug.security import generate_password_hash, check_password_hash
 from google.appengine.ext import ndb
 import datetime
@@ -35,10 +35,12 @@ def login():
     elif request.method == 'POST':
         if request.form.get('_xsrf') is None or session.get('xsrf') is None:
             # well please log in properly -.-
-            print '[login:XSRF] Could not find one of form components'
+            if not current_app.config.get('silent'):
+                print '[login:XSRF] Could not find one of form components'
             return redirect(url_for('.login'))
         elif request.form['_xsrf'].decode('utf-8') != session['xsrf']:
-            print '[login:XSRF] components did not match'
+            if not current_app.config.get('silent'):
+                print '[login:XSRF] components did not match'
             return redirect(url_for('.login'))
         else:
             session.pop('xsrf') # apparently valid
