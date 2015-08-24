@@ -35,7 +35,7 @@ manage to get any of this working, pull requests are indeed accepted.
 
 As of now there is no interface for the initial setup (the creation of first
 user). That can be done manually, by going to the [console](https://console.developers.google.com),
-and creating a new Datastore entry of kind `User` with two field:
+and creating a new Datastore entry of kind `User` with two fields:
 - `email` (a string, indexed): the email to log in with
 - `passwd` (a string, not indexed): a hash of the password used to log in,
 created by running `werkzeug.security.generate_password_hash(password)`.
