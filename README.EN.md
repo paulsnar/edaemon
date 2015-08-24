@@ -15,7 +15,7 @@ To set it up:
   (and Python 2.7, if you don't already have it).
 2. Create a new app in [Google Developers Console](https://console.developers.google.com).
   The name doesn't really matter. Also HTTPS is enabled by default with a cert from Google's CA.
-3. Clone this repository.
+3. Clone this repository (or rather, the latest tag, which is production-ready).
 4. cd into this repository and run `pip install -r requirements.txt -t lib/` locally
   to install all the necessary requirements (mainly Flask and Jinja2).
 5. Copy `app.yaml.example` to `app.yaml` and change the following fields:

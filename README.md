@@ -15,7 +15,8 @@ Lai to uzstādītu:
 (un Python 2.7, ja tev tā nav).
 2. Izveido jaunu lietotni [Google Developers Console](https://console.developers.google.com).
   Nosaukums nav no liela svara. HTTPS arī ir iekļauts (izsniedz Google).
-3. Klonē šo repozitoriju uz sava datora.
+3. Klonē šo repozitoriju uz sava datora (specifiski, kādu no tās birkotajiem
+  komitiem).
 4. No repozitorijas mapes izpildi `pip install -r requirements.txt -t lib/`,
   lai iegūtu Edaemon darbināšanai nepieciešamās bibliotēkas.
 5. Kopē `app.yaml.example` uz `app.yaml` un aizpildi sekojošos parametrus:
