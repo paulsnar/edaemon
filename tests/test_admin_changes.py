@@ -58,6 +58,9 @@ class AdminChangesTestcase(unittest.TestCase):
             assert 'Test Subject 6' in rv.data
             assert not 'Test Subject 9' in rv.data
             assert not 'Test Subject None' in rv.data
+            change = Change.lookup(request.view_args['change_id'])
+            subjects = json.loads(change['changes'])
+            assert subjects.length == 9
 
     def test_admin_change_delete(self):
         with self.app as c:
