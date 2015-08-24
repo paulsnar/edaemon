@@ -13,17 +13,12 @@ class Change(ndb.Model):
 
     @classmethod
     def get_week(cls):
+        days = []
         today = date.today()
         day = timedelta(days=1)
-        return cls.query(cls.date.IN([
-            _format_date_ISO8601(today),
-            _format_date_ISO8601(today + (day * 1)),
-            _format_date_ISO8601(today + (day * 2)),
-            _format_date_ISO8601(today + (day * 3)),
-            _format_date_ISO8601(today + (day * 4)),
-            _format_date_ISO8601(today + (day * 5)),
-            _format_date_ISO8601(today + (day * 6))
-        ])).fetch()
+        for i in xrange(0, 7):
+            days.append(_format_date_ISO8601(today + day * i))
+        return cls.query(cls.date.IN(days)).fetch()
 
     @classmethod
     def get_all(cls):

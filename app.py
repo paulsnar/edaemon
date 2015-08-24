@@ -1,3 +1,5 @@
+VERSION = '1.0.0'
+
 from flask import Flask, render_template
 import os
 
@@ -8,9 +10,9 @@ app = Flask(__name__)
 _environ_GA_TRACKING_ID = os.environ.get('GA_TRACKING_ID', None)
 if not _environ_GA_TRACKING_ID is None:
     app.config['_environ_GA_TRACKING_ID'] = _environ_GA_TRACKING_ID
-app.config['VERSION'] = '1.0.0'
 app.secret_key = os.environ['EDAEMON_APP_SECRET_KEY']
-# app.config['DEBUG'] = True
+
+app.config['VERSION'] = VERSION
 
 app.register_blueprint(MainBlueprint)
 app.register_blueprint(AdminBlueprint, url_prefix='/a')

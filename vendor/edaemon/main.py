@@ -11,7 +11,7 @@ def _parse_subjects(_s):
     subjectsobj = _s
     for i in reversed(subjectsobj):
         if i is None:
-            del subjectsobj[-1]
+            subjectsobj.pop(-1)
         else:
             break
     if subjectsobj is None:
@@ -34,6 +34,3 @@ def show_change(change_id):
     subjects = _parse_subjects(json.loads(change.changes))
     return render_template('change.htm', change=change, subjects=subjects)
 
-# @bp.errorhandler(404)
-# def four_oh_four(e):
-#     return 'Sorry, nothing at this URL.', 404
