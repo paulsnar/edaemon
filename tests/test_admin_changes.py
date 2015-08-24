@@ -4,6 +4,7 @@ from google.appengine.ext import ndb, testbed
 from werkzeug.security import generate_password_hash
 from flask import session, request
 from datetime import date
+import json
 
 from edaemon.ndbmodels import User, Change, _format_date_ISO8601
 import app as Edaemon
@@ -59,8 +60,8 @@ class AdminChangesTestcase(unittest.TestCase):
             assert not 'Test Subject 9' in rv.data
             assert not 'Test Subject None' in rv.data
             change = Change.lookup(request.view_args['change_id'])
-            subjects = json.loads(change['changes'])
-            assert subjects.length == 9
+            subjects = json.loads(change.changes)
+            assert len(subjects) == 9
 
     def test_admin_change_delete(self):
         with self.app as c:
