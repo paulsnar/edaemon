@@ -1,5 +1,6 @@
 import os as _os
 _os.environ['EDAEMON_APP_SECRET_KEY'] = 'E92(hl?4ewF)nN{!'
+_os.environ['EDAEMON_APP_SILENT'] = '1'
 
 from unittest import TestSuite
 
