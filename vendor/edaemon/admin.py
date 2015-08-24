@@ -5,6 +5,7 @@ from google.appengine.ext import ndb
 import datetime
 import json
 from uuid import uuid4 as uuid
+import logging
 
 from .ndbmodels import User, Change, _format_date_ISO8601
 
@@ -36,11 +37,12 @@ def login():
         if request.form.get('_xsrf') is None or session.get('xsrf') is None:
             # well please log in properly -.-
             if not current_app.config.get('silent'):
-                print '[login:XSRF] Could not find one of form components'
+                logging.warning(
+                    'XSRF: Could not find one or more form components')
             return redirect(url_for('.login'))
         elif request.form['_xsrf'].decode('utf-8') != session['xsrf']:
             if not current_app.config.get('silent'):
-                print '[login:XSRF] components did not match'
+                logging.warning('XSRF: Components did not match')
             return redirect(url_for('.login'))
         else:
             session.pop('xsrf') # apparently valid
