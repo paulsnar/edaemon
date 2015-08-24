@@ -1,68 +1,66 @@
 # Edaemon
 
-This README is also [available in English](README.EN.md).
+Šis LASIMANI ir pieejams arī [latviešu valodā](README.md).
 
-Edaemon ir samērā vienkārša stundu saraksta izmaiņu attēlošanas programmatūra.
+Edaemon is a quite simple application for managing changes of school timetables.
 
-## Uzstādīšana
+## Setup
 
-Edaemon ir veidots, lai būtu savietojams ar Google App Engine. Ja nav gaidāmi
-pārāk daudzi pieprasījumi, tas pilnvērtīgi iekļaujas bezmaksas kvotās.
+Edaemon is created specifically to be compatible with Google App Engine. If you
+don't expect it to be hit too often, it might just fit in the free plan quotas.
 
-Lai to uzstādītu:
+To set it up:
 
-1. Uz sava datora uzstādi [Google App Engine SDK priekš Python](https://cloud.google.com/appengine/downloads)
-(un Python 2.7, ja tev tā nav).
-2. Izveido jaunu lietotni [Google Developers Console](https://console.developers.google.com).
-  Nosaukums nav no liela svara. HTTPS arī ir iekļauts (izsniedz Google).
-3. Klonē šo repozitoriju uz sava datora (specifiski, kādu no tās birkotajiem
-  komitiem).
-4. No repozitorijas mapes izpildi `pip install -r requirements.txt -t lib/`,
-  lai iegūtu Edaemon darbināšanai nepieciešamās bibliotēkas.
-5. Kopē `app.yaml.example` uz `app.yaml` un aizpildi sekojošos parametrus:
-  - `env_variables.EDAEMON_APP_SECRET_KEY`: Šo vajadzētu aizvietot ar apmēram 32
-  nejaušiem simboliem.
-  - `env_variables.GA_TRACKING_ID`: Ja vēlies izmantot Google Analytics savā
-  Edaemon instancē, šeit ieliec savu Google Tracking ID (formātā `UA-12345678-1`).
-  Tas tiks injicēts katrā lapā (sk. [vendor/edaemon/templates/layout.j2](vendor/edaemon/templates/layout.j2))
-6. Izpildi `appcfg.py -A tavas-lietotnes-id-12345 update ./` no klonētās
-  repozitorijas atrašanās vietas. `appcfg.py` nodrošina Google App Engine SDK priekš Python.
-  Ja tas nedarbojas, konsultējies ar
-  [Google App Engine SDK priekš Python rokasgrāmatu](https://cloud.google.com/appengine/docs/python/).
+1. Install [Google App Engine SDK for Python](https://cloud.google.com/appengine/downloads)
+  (and Python 2.7, if you don't already have it).
+2. Create a new app in [Google Developers Console](https://console.developers.google.com).
+  The name doesn't really matter. Also HTTPS is enabled by default with a cert from Google's CA.
+3. Clone this repository (or rather, the latest tag, which is production-ready).
+4. cd into this repository and run `pip install -r requirements.txt -t lib/` locally
+  to install all the necessary requirements (mainly Flask and Jinja2).
+5. Copy `app.yaml.example` to `app.yaml` and change the following fields:
+  - `env_variables.EDAEMON_APP_SECRET_KEY`: This should be replaced with a string
+  about 32 characters long. Flask uses this to encrypt/decrypt session cookies.
+  - `env_variables.GA_TRACKING_ID`: If you want to use Google Analytics tracking
+  for your app, replace this with your Google Tracking ID (something like `UA-12345678-1`).
+  It will be injected on each served page (see
+  [vendor/edaemon/templates/layout.j2](vendor/edaemon/template/layout.j2))
+6. Execute `appcfg.py -A your-app-id-12345 update ./` from the repo directory.
+  `appcfg.py` is provided by the Google SDK. If this doesn't work, refer to the
+  [Google App Engine SDK for Python documentation](https://cloud.google.com/appengine/docs/python/).
 
-Priekš Windows šīs (un citas) instrukcijas var atšķirties. Diemžēl pašlaik par
-to es vairāk neko nezinu, bet, ja esi izmēģinājis un tev ir/nav izdevies,
-vienmēr laipni lūdzu iesniegt vilkšanas pieprasījumu.
+Note: for Windows many of these steps might differ in slight or big ways, as well
+as the testing steps lower down. I'm not quite sure about anything, but if you
+manage to get any of this working, pull requests are indeed accepted.
 
-Pie tam, pašlaik nepastāv nekāds interfeiss uzstādīšanai (pirmā lietotāja
-izveidei). To var veikt manuāli, pievienojot jaunu Datastore ierakstu caur
-[Google Developers Console](https://console.developers.google.com) ar veidu `User`, kura
-divi lauki ir `email` (teksta tips, indeksēts), kura vērtība ir ielogošanās
-e-pasts, un `passwd` (teksta tips, bez indeksācijas), kura vērtība ir
-ar `werkzeug.security.generate_password_hash` izveidots paroles šifrējums.
+As of now there is no interface for the initial setup (the creation of first
+user). That can be done manually, by going to the [console](https://console.developers.google.com),
+and creating a new Datastore entry of kind `User` with two field:
+- `email` (a string, indexed): the email to log in with
+- `passwd` (a string, not indexed): a hash of the password used to log in,
+created by running `werkzeug.security.generate_password_hash(password)`.
 
-## Testēšana
+## Testing
 
-Edaemon nāk ar testu komplektu, kas atrodams mapē `tests`. Ja pievieno jaunu
-funkcionalitāti, lūdzu pārliecinies, ka esi arī pievienojis testus šajā mapē
-un atzīmējis šos testus izpildīšanai `tests/__init__.py`. Citādā gadījumā tavs
-kods var netikt pieņemts.
+Edaemon has a test suite which can be fond in `tests/`. If you are adding any new
+functionality, please make sure to add relevant tests in that folder and importing
+any created test files in `tests/__init__.py`, or else your code might not be
+pulled into this repo.
 
-Lai izpildītu pašlaik pieejamos testus:
+To run the existing tests:
 
-1. Pārliecinies, ka tev ir Python,
-  [Google App Engine SDK priekš Python](https://cloud.google.com/appengine/downloads),
-  un visas `requirements.txt` pieprasītās bibliotēkas ir atrodamas mapē `lib/`.
-2. Pārliecinies, ka tavā PYTHONPATH ir iekļauts Google App Engine SDK,
-  repozitorijas mape, mape `lib/` un mape `vendor/`.
-  (Google App Engine SDK arī nav pats par sevi konsistents, tāpēc tavs PYTHONPATH
-  var arī saturēt vairākas mapes, kas ir zem Google App Engine SDK atrašanās vietas.
-  Ja mēģinot palaist testus dabū kļūdu, meklē to Google un visticamāk atradīsi
-  atrisinājumu.)
-3. Palaid `python -m unittest tests` (vai, ja `python` pēc noklusējuma nenorāda
-  uz Python versiju 2.7, `python2` vai `python2.7`)
+1. Make sure to have Python,
+  [Google App Engine SDK for Python](https://cloud.google.com/appengine/downloads)
+  and all the necessary dependencies installed in `lib/`.
+2. Set your PYTHONPATH to include the SDK, root folder of this repo, as well as
+  `lib/` and `vendor/`.
+  (Google's SDK is also not of best consistency, so PYTHONPATH might also need to
+  include some of its subfolders. If you get any error running tests, Google it.
+  You almost definitely will find a solution.)
+3. Run `python -m unittest tests` (or alternatively, if `python` doesn't refer
+  to Python 2.7, use `python2` or `python2.7`, if available.)
 
-## Licence
+## License
 
-Edaemon programmatūra tiek izplatīta zem Apache License 2.0 licences. Lai
-uzzinātu vairāk, lūdzu skatīt [LICENSE.txt](LICENSE.txt) failu šajā repozitorijā.
+Edaemon is distributed under Apache License 2.0. To learn more, refer to
+[LICENSE.txt](LICENSE.txt).
