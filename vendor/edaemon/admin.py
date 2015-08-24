@@ -14,10 +14,11 @@ def _parse_changes(form):
     subjects = []
     for i in xrange(0, 9):
         _subject = form.get('subject_{0}'.format(i), None)
-        if type(_subject) == unicode:
-            if _subject == u'-' or _subject == u'':
-                subjects.append(None)
-        subjects.append(_subject)
+        if type(_subject) == unicode and \
+        _subject == u'-' or _subject == u'':
+            subjects.append(None)
+        else:
+            subjects.append(_subject)
     return subjects
 
 @bp.route('/')
