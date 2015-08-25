@@ -25,7 +25,7 @@ def _parse_changes(form):
 @bp.route('/')
 def index():
     if 'email' in session:
-        return render_template('admin/index.htm')
+        return redirect(url_for('.list_changes'))
     else:
         return redirect(url_for('.login'))
 
