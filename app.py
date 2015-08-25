@@ -1,4 +1,4 @@
-VERSION = '1.0.1'
+VERSION = '1.0.2'
 
 from flask import Flask, render_template
 import os
