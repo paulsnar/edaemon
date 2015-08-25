@@ -2,6 +2,10 @@ import os as _os
 _os.environ['EDAEMON_APP_SECRET_KEY'] = 'E92(hl?4ewF)nN{!'
 _os.environ['EDAEMON_APP_SILENT'] = '1'
 
+# set up proper exception throwing
+import app as Edaemon
+Edaemon.app.debug = True
+
 from unittest import TestSuite
 
 import test_admin_auth
