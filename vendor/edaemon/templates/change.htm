@@ -3,7 +3,14 @@
 {% block title %}Izmaiņas klasei {{ change.className }}{% endblock %}
 
 {% block body %}
-    <h1>Izmaiņas klasei {{ change.className }} ({{ change.date }})</h1>
+    <h1>
+        Izmaiņas klasei {{ change.className }} ({{ change.date }})
+        {% if 'email' in session %}
+        <a href="{{ url_for('admin.delete_change', change_id=change.key.urlsafe()) }}" class="btn btn-danger">
+            <span aria-hidden="true" class="glyphicon glyphicon-trash"></span>
+        </a>
+        {% endif %}
+    </h1>
     <ol start="0">
         {% for subject in subjects %}
             {% if subject is none %}
