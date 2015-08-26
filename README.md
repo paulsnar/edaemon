@@ -44,7 +44,7 @@ created by running `werkzeug.security.generate_password_hash(password)`.
 
 ## Testing
 
-Edaemon has a test suite which can be fond in `tests/`. If you are adding any new
+Edaemon has a test suite which can be found in `tests/`. If you are adding any new
 functionality, please make sure to add relevant tests in that folder and importing
 any created test files in `tests/__init__.py`, or else your code might not be
 pulled into this repo.
