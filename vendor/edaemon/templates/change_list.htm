@@ -23,4 +23,19 @@
             Neatradu!
         {% endfor %}
     </ul>
+    {% if classNames is defined and classNames | length > 0 %}
+    <div style="padding: 2rem;">
+        <hr />
+        <p>Rādīt tikai klasi: </p>
+        <ul class="nav nav-pills">
+            {% for filterableClassName in classNames %}
+            <li role="presentation">
+                <a href="{{ url_for('.index', class_name=filterableClassName) }}">
+                    {{ filterableClassName }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 {% endblock %}
