@@ -1,0 +1,26 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Izmaiņu saraksts{% endblock %}
+
+{% block body %}
+    {% if className is undefined %}
+    <h1>Izmaiņas tuvākajā nedēļā</h1>
+    {% else %}
+    <h1>Izmaiņas {{ className }} klasei</h1>
+    {% endif %}
+    <ul>
+        {% for change in changes %}
+            <li>
+                <a href="{{ url_for('.show_change', change_id=change.key.urlsafe()) }}">
+                    {% if className is undefined %}
+                    Klase: {{ change.className }}, datums: {{ change.date }}
+                    {% else %}
+                    Datums: {{ change.date }}
+                    {% endif %}
+                </a>
+            </li>
+        {% else %}
+            Neatradu!
+        {% endfor %}
+    </ul>
+{% endblock %}

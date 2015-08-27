@@ -21,7 +21,7 @@ def _parse_subjects(_s):
 
 @bp.route('/')
 def index():
-    return render_template('index.htm', changes=Change.get_week())
+    return render_template('change_list.htm', changes=Change.get_week())
 
 @bp.route('/show/<change_id>')
 def show_change(change_id):
