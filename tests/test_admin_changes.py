@@ -6,7 +6,8 @@ from flask import session, request
 from datetime import date
 import json
 
-from edaemon.ndbmodels import User, Change, _format_date_ISO8601
+from edaemon.ndbmodels import User, Change
+from edaemon.utility import format_date_ISO8601
 import app as Edaemon
 
 class AdminChangesTestcase(unittest.TestCase):
@@ -34,7 +35,7 @@ class AdminChangesTestcase(unittest.TestCase):
             assert 'test@example.com' in rv.data
 
     def create_change(self, c, data=None):
-        today = _format_date_ISO8601(date.today())
+        today = format_date_ISO8601(date.today())
         _data = dict()
         if data is None:
             _data = dict(className='0.a', date=today)
@@ -44,7 +45,7 @@ class AdminChangesTestcase(unittest.TestCase):
         return (rv, request.view_args['change_id'])
 
     def test_admin_change_create(self):
-        today = _format_date_ISO8601(date.today())
+        today = format_date_ISO8601(date.today())
         with self.app as c:
             self.login(c)
             rv, change_id = self.create_change(c, dict(
@@ -73,7 +74,7 @@ class AdminChangesTestcase(unittest.TestCase):
             assert 'Neatradu!' in rv.data
 
     def test_admin_changes_list(self):
-        today = _format_date_ISO8601(date.today())
+        today = format_date_ISO8601(date.today())
         with self.app as c:
             self.login(c)
             change1 = Change(className='1.a', date='2000-01-01', changes='[]')\
@@ -97,7 +98,7 @@ class AdminChangesTestcase(unittest.TestCase):
             assert 'Neatradu!' in rv.data
 
     def test_admin_changes_edit(self):
-        today = _format_date_ISO8601(date.today())
+        today = format_date_ISO8601(date.today())
         with self.app as c:
             self.login(c)
             rv, change_id = self.create_change(c, dict(
