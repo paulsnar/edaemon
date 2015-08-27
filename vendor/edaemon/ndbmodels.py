@@ -7,7 +7,7 @@ def _format_date_ISO8601(formattableDate):
         formattableDate.year, formattableDate.month, formattableDate.day)
 
 class Change(ndb.Model):
-    className = ndb.StringProperty(indexed=False)
+    className = ndb.StringProperty(indexed=True)
     date = ndb.StringProperty(indexed=True)
     changes = ndb.StringProperty(indexed=False)
 
