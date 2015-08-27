@@ -6,7 +6,8 @@ from flask import session, request
 from datetime import date, timedelta
 import json
 
-from edaemon.ndbmodels import Change, _format_date_ISO8601
+from edaemon.ndbmodels import Change
+from edaemon.utility import format_date_ISO8601
 import app as Edaemon
 
 class MainPageTestcase(unittest.TestCase):
@@ -29,7 +30,7 @@ class MainPageTestcase(unittest.TestCase):
 
     def test_frontpage_with_changes(self):
         """Test whether frontpage displays changes for near future."""
-        today = _format_date_ISO8601(date.today())
+        today = format_date_ISO8601(date.today())
         change = Change(date=today, className='14.a', changes='[]').put()
         rv = self.app.get('/')
         assert '14.a' in rv.data and today in rv.data
@@ -37,7 +38,7 @@ class MainPageTestcase(unittest.TestCase):
 
     def test_frontpage_with_far_future_changes(self):
         """Test whether changes beyond 1 week are hidden on frontpage."""
-        day = _format_date_ISO8601(date.today() + timedelta(days=8))
+        day = format_date_ISO8601(date.today() + timedelta(days=8))
         change = Change(date=day, className='12.r', changes='[]').put()
         rv = self.app.get('/')
         assert 'Neatradu!' in rv.data

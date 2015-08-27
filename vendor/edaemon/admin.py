@@ -7,28 +7,11 @@ import json
 from uuid import uuid4 as uuid
 import logging
 
-from .ndbmodels import User, Change, _format_date_ISO8601
-from .main import _parse_subjects as _main_parse_subjects
+from .ndbmodels import User, Change
+from .utility import (parse_change_subjects_for_form,
+    parse_change_subjects_from_form, format_date_ISO8601)
 
 bp = Blueprint('admin', __name__, template_folder='templates')
-
-def _parse_changes(form):
-    subjects = []
-    for i in xrange(0, 9):
-        _subject = form.get('subject_{0}'.format(i), None)
-        if type(_subject) == unicode and \
-        _subject == u'-' or _subject == u'':
-            subjects.append(None)
-        else:
-            subjects.append(_subject)
-    return subjects
-
-def _parse_subjects(_s):
-    subjectsobj = _main_parse_subjects(_s)
-    for i, val in enumerate(subjectsobj):
-        if val is None:
-            subjectsobj[i] = '-'
-    return subjectsobj
 
 @bp.route('/')
 def index():
@@ -102,7 +85,8 @@ def modify_change(change_id):
             return redirect(url_for('.edit_change'))
         change.className = request.form['className']
         change.date = request.form['date']
-        change.changes = json.dumps(_parse_changes(request.form))
+        change.changes = json.dumps(
+            parse_change_subjects_from_form(request.form))
         change.put()
         return redirect(url_for('main.show_change', change_id=change_id))
     else:
@@ -110,8 +94,8 @@ def modify_change(change_id):
             change = Change.lookup(change_id)
         except Exception:
             return redirect(url_for('.enter_change'))
-        return render_template('admin/edit_change.htm',
-            change=change, subjects=_parse_subjects(json.loads(change.changes)))
+        return render_template('admin/edit_change.htm', change=change,
+            subjects=parse_change_subjects_for_form(json.loads(change.changes)))
 
 @bp.route('/changes/new', methods=['GET', 'POST'])
 def enter_change():
@@ -119,12 +103,12 @@ def enter_change():
     elif request.method == 'POST':
         date = request.form['date']
         className = request.form['className']
-        changes = _parse_changes(request.form)
+        changes = parse_change_subjects_from_form(request.form)
         change = Change(date=date, className=className,
             changes=json.dumps(changes))
         key = change.put()
         return redirect(url_for('main.show_change', change_id=key.urlsafe()))
     else:
         date = datetime.date.today()
-        today = _format_date_ISO8601(date)
+        today = format_date_ISO8601(date)
         return render_template('admin/new_change.htm', today=today)
