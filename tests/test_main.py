@@ -41,7 +41,6 @@ class MainPageTestcase(unittest.TestCase):
         day = format_date_ISO8601(date.today() + timedelta(days=8))
         change = Change(date=day, className='12.r', changes='[]').put()
         rv = self.app.get('/')
-        assert 'Neatradu!' in rv.data
         assert not '12.r' in rv.data and not day in rv.data
         change.delete()
 

@@ -83,7 +83,6 @@ class AdminChangesTestcase(unittest.TestCase):
             change3 = Change(className='3.c', date='2020-12-31', changes='[]')\
                 .put()
             rv = c.get('/a/changes/')
-            assert not 'Neatradu!' in rv.data
             assert '1.a' in rv.data and '2000-01-01' in rv.data
             assert '2.b' in rv.data and today in rv.data
             assert '3.c' in rv.data and '2020-12-31' in rv.data
