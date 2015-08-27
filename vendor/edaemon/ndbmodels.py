@@ -2,7 +2,7 @@ from datetime import date, timedelta
 from google.appengine.ext import ndb
 import json
 
-from .utility import format_date_ISO8601
+from .utility import format_date_ISO8601, create_week_formatted
 
 class Change(ndb.Model):
     className = ndb.StringProperty(indexed=True)
@@ -11,11 +11,7 @@ class Change(ndb.Model):
 
     @classmethod
     def get_week(cls):
-        days = []
-        today = date.today()
-        day = timedelta(days=1)
-        for i in xrange(0, 7):
-            days.append(format_date_ISO8601(today + day * i))
+        days = create_week_formatted()
         return cls.query(cls.date.IN(days)).fetch()
 
     @classmethod

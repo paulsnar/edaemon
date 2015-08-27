@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 def parse_change_subjects(_s):
     subjectsobj = _s
     for i in reversed(subjectsobj):
@@ -37,3 +39,11 @@ def extract_unique_classnames(changes):
     for change in changes:
         classNames.add(change.className)
     return classNames # sets should be regularly iteratable
+
+def create_week_formatted():
+    days = [ ]
+    today = date.today()
+    day = timedelta(days=1)
+    for i in xrange(0, 7):
+        days.append(format_date_ISO8601(today + day * i))
+    return days
