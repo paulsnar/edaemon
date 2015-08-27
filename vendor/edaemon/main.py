@@ -21,17 +21,12 @@ def _parse_subjects(_s):
 
 @bp.route('/')
 def index():
-    return render_template('change_list.htm', changes=Change.get_week())
-
-@bp.route('/for_class')
-def index_for_class():
     className = request.args.get('class')
     if className is None:
-        return abort(404)
+        return render_template('change_list.htm', changes=Change.get_week())
     else:
-        changes = Change.get_all_for_class(className)
-        return render_template('change_list.htm', changes=changes,
-            className=className)
+        return render_template('change_list.htm', className=className,
+            changes=Change.get_all_for_class(className))
 
 @bp.route('/show/<change_id>')
 def show_change(change_id):
