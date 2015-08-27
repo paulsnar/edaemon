@@ -45,6 +45,25 @@ class MainPageTestcase(unittest.TestCase):
         assert not '12.r' in rv.data and not day in rv.data
         change.delete()
 
+    def test_frontpage_class_filtering(self):
+        """Test whether class filtering only shows the class requested."""
+        today = format_date_ISO8601(date.today())
+        change1 = Change(date=today, className='1.n', changes='[]').put()
+        change2 = Change(date=today, className='2.n', changes='[]').put()
+        rv = self.app.get('/?class_name=1.n')
+        assert '1.n' in rv.data
+        assert not '2.n' in rv.data
+        change1.delete()
+        change2.delete()
+
+    def test_frontpage_class_filtering_with_far_future_changes(self):
+        """Test whether class filtering shows only a week ahead."""
+        day = format_date_ISO8601(date.today() + timedelta(days=8))
+        change = Change(date=day, className='1.n', changes='[]').put()
+        rv = self.app.get('/?class_name=1.n')
+        assert not '1.n' in rv.data
+        change.delete()
+
     def test_changes_invalid_id(self):
         """Test whether handling invalid ID on changes page fails with 404 (gracefully)."""
         rv = self.app.get('/show/nul')
