@@ -4,26 +4,17 @@ from datetime import date, timedelta
 from google.appengine.ext import ndb
 
 from .ndbmodels import Change
+from .utility import parse_change_subjects
 
 bp = Blueprint('main', __name__, template_folder='templates')
-
-def _parse_subjects(_s):
-    subjectsobj = _s
-    for i in reversed(subjectsobj):
-        if i is None:
-            subjectsobj.pop(-1)
-        else:
-            break
-    if subjectsobj is None:
-        return []
-    else:
-        return subjectsobj
 
 @bp.route('/')
 def index():
     className = request.args.get('class')
     if className is None:
-        return render_template('change_list.htm', changes=Change.get_week())
+        changes = Change.get_week()
+
+        return render_template('change_list.htm', changes=changes)
     else:
         return render_template('change_list.htm', className=className,
             changes=Change.get_all_for_class(className))
@@ -36,6 +27,6 @@ def show_change(change_id):
     except Exception:
         return abort(404)
 
-    subjects = _parse_subjects(json.loads(change.changes))
+    subjects = parse_change_subjects(json.loads(change.changes))
     return render_template('change.htm', change=change, subjects=subjects)
 

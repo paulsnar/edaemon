@@ -2,9 +2,7 @@ from datetime import date, timedelta
 from google.appengine.ext import ndb
 import json
 
-def _format_date_ISO8601(formattableDate):
-    return '{0:0>#4}-{1:0>#2}-{2:0>#2}'.format(
-        formattableDate.year, formattableDate.month, formattableDate.day)
+from .utility import format_date_ISO8601
 
 class Change(ndb.Model):
     className = ndb.StringProperty(indexed=True)
@@ -17,7 +15,7 @@ class Change(ndb.Model):
         today = date.today()
         day = timedelta(days=1)
         for i in xrange(0, 7):
-            days.append(_format_date_ISO8601(today + day * i))
+            days.append(format_date_ISO8601(today + day * i))
         return cls.query(cls.date.IN(days)).fetch()
 
     @classmethod
