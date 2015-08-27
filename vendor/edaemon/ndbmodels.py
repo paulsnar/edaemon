@@ -11,15 +11,13 @@ class Change(ndb.Model):
 
     @classmethod
     def get_week(cls):
-        days = create_week_formatted()
-        return cls.query(cls.date.IN(days)).fetch()
+        return cls.query(cls.date.IN(create_week_formatted())).fetch()
 
     @classmethod
     def get_week_for_class(cls, className):
-        days = create_week_formatted()
         return cls.query(ndb.AND(
             cls.className == className,
-            cls.date.IN(days)
+            cls.date.IN(create_week_formatted())
         )).fetch()
 
     @classmethod
