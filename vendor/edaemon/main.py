@@ -10,7 +10,7 @@ bp = Blueprint('main', __name__, template_folder='templates')
 
 @bp.route('/')
 def index():
-    className = request.args.get('class')
+    className = request.args.get('class_name')
     if className is None:
         changes = Change.get_week()
         classNames = extract_unique_classnames(changes)
