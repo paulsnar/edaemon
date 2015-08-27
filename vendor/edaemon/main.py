@@ -18,7 +18,7 @@ def index():
             classNames=classNames)
     else:
         return render_template('change_list.htm', className=className,
-            changes=Change.get_all_for_class(className))
+            changes=Change.get_week_for_class(className))
 
 @bp.route('/show/<change_id>')
 def show_change(change_id):
