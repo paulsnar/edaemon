@@ -32,15 +32,13 @@ def _parse_subjects(_s):
 
 @bp.route('/')
 def index():
-    if 'email' in session:
-        return redirect(url_for('.list_changes'))
+    if 'email' in session: return redirect(url_for('.list_changes'))
     else:
         return redirect(url_for('.login'))
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'email' in session:
-        return redirect(url_for('.index'))
+    if 'email' in session: return redirect(url_for('.index'))
     elif request.method == 'POST':
         if request.form.get('_xsrf') is None or session.get('xsrf') is None:
             # well please log in properly -.-
@@ -77,14 +75,12 @@ def logout():
 
 @bp.route('/changes/')
 def list_changes():
-    if not 'email' in session:
-        return redirect(url_for('.login'))
+    if not 'email' in session: return redirect(url_for('.login'))
     return render_template('admin/list_changes.htm', changes=Change.get_all())
 
 @bp.route('/changes/delete/<change_id>', methods=['GET', 'POST'])
 def delete_change(change_id):
-    if not 'email' in session:
-        return redirect(url_for('.login'))
+    if not 'email' in session: return redirect(url_for('.login'))
     elif request.method == 'POST':
         Change.delete(change_id)
         return redirect(url_for('.list_changes'))
