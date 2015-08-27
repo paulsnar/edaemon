@@ -31,3 +31,9 @@ def parse_change_subjects_from_form(form):
 def format_date_ISO8601(formattableDate):
     return '{0:0>#4}-{1:0>#2}-{2:0>#2}'.format(
         formattableDate.year, formattableDate.month, formattableDate.day)
+
+def extract_unique_classnames(changes):
+    classNames = set()
+    for change in changes:
+        classNames.add(change.className)
+    return classNames # sets should be regularly iteratable

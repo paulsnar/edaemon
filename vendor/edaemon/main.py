@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from google.appengine.ext import ndb
 
 from .ndbmodels import Change
-from .utility import parse_change_subjects
+from .utility import parse_change_subjects, extract_unique_classnames
 
 bp = Blueprint('main', __name__, template_folder='templates')
 
@@ -13,8 +13,9 @@ def index():
     className = request.args.get('class')
     if className is None:
         changes = Change.get_week()
-
-        return render_template('change_list.htm', changes=changes)
+        classNames = extract_unique_classnames(changes)
+        return render_template('change_list.htm', changes=changes,
+            classNames=classNames)
     else:
         return render_template('change_list.htm', className=className,
             changes=Change.get_all_for_class(className))
