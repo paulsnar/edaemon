@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, request, render_template, abort
 import json
 from datetime import date, timedelta
 from google.appengine.ext import ndb
@@ -22,6 +22,16 @@ def _parse_subjects(_s):
 @bp.route('/')
 def index():
     return render_template('change_list.htm', changes=Change.get_week())
+
+@bp.route('/for_class')
+def index_for_class():
+    className = request.args.get('class')
+    if className is None:
+        return abort(404)
+    else:
+        changes = Change.get_all_for_class(className)
+        return render_template('change_list.htm', changes=changes,
+            className=className)
 
 @bp.route('/show/<change_id>')
 def show_change(change_id):
