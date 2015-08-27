@@ -62,6 +62,7 @@ class AdminChangesTestcase(unittest.TestCase):
             change = Change.lookup(request.view_args['change_id'])
             subjects = json.loads(change.changes)
             assert len(subjects) == 9
+            change.key.delete()
 
     def test_admin_change_delete(self):
         with self.app as c:
@@ -94,3 +95,25 @@ class AdminChangesTestcase(unittest.TestCase):
             self.login(c)
             rv = c.get('/a/changes/')
             assert 'Neatradu!' in rv.data
+
+    def test_admin_changes_edit(self):
+        today = _format_date_ISO8601(date.today())
+        with self.app as c:
+            self.login(c)
+            rv, change_id = self.create_change(c, dict(
+                className='99.z', date=today,
+                subject_0='-', subject_1='Test Subject 1', subject_2='-',
+                subject_3='Test Subject 3'))
+            rv = c.post('/a/changes/edit/{0}'.format(change_id),
+                follow_redirects=True, data=dict(
+                    className='98.z', date=today,
+                    subject_0='Test Subject 0', subject_1='-', subject_2='-',
+                    subject_3='Test Subject 3'))
+            assert not 'Test Subject 1' in rv.data
+            assert not '99.z' in rv.data
+            assert today in rv.data
+            assert '98.z' in rv.data
+            assert 'Test Subject 0' in rv.data
+            assert 'Test Subject 3' in rv.data
+            change = Change.lookup(change_id)
+            change.key.delete()
