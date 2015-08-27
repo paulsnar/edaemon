@@ -8,6 +8,7 @@ from uuid import uuid4 as uuid
 import logging
 
 from .ndbmodels import User, Change, _format_date_ISO8601
+from .main import _parse_subjects as _main_parse_subjects
 
 bp = Blueprint('admin', __name__, template_folder='templates')
 
@@ -21,6 +22,13 @@ def _parse_changes(form):
         else:
             subjects.append(_subject)
     return subjects
+
+def _parse_subjects(_s):
+    subjectsobj = _main_parse_subjects(_s)
+    for i, val in enumerate(subjectsobj):
+        if val is None:
+            subjectsobj[i] = '-'
+    return subjectsobj
 
 @bp.route('/')
 def index():
@@ -87,6 +95,27 @@ def delete_change(change_id):
             return render_template('admin/delete_change.htm', error=True)
         return render_template('admin/delete_change.htm',
             change=Change.lookup(change_id))
+
+@bp.route('/changes/edit/<change_id>', methods=['GET', 'POST'])
+def modify_change(change_id):
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        try:
+            change = Change.lookup(change_id)
+        except Exception:
+            return redirect(url_for('.edit_change'))
+        change.className = request.form['className']
+        change.date = request.form['date']
+        change.changes = json.dumps(_parse_changes(request.form))
+        change.put()
+        return redirect(url_for('main.show_change', change_id=change_id))
+    else:
+        try:
+            change = Change.lookup(change_id)
+        except Exception:
+            return redirect(url_for('.enter_change'))
+        return render_template('admin/edit_change.htm',
+            change=change, subjects=_parse_subjects(json.loads(change.changes)))
 
 @bp.route('/changes/new', methods=['GET', 'POST'])
 def enter_change():
