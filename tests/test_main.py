@@ -60,7 +60,7 @@ class MainPageTestcase(unittest.TestCase):
         day = format_date_ISO8601(date.today() + timedelta(days=8))
         change = Change(date=day, className='1.n', changes='[]').put()
         rv = self.app.get('/?class_name=1.n')
-        assert not '1.n' in rv.data
+        assert rv.data.count('1.n') == 1 # in heading
         change.delete()
 
     def test_changes_invalid_id(self):
