@@ -11,10 +11,12 @@ from unittest import TestSuite
 import test_admin_auth
 import test_admin_changes
 import test_main
+import test_rss
 
 test_cases = (test_admin_auth.AdminAuthTestcase,
     test_admin_changes.AdminChangesTestcase,
-    test_main.MainPageTestcase)
+    test_main.MainPageTestcase,
+    test_rss.RSSTestcase)
 
 def load_tests(loader, standard_tests, pattern):
     suite = TestSuite()
