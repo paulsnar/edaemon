@@ -5,6 +5,7 @@ import os
 
 from edaemon.main import bp as MainBlueprint
 from edaemon.admin import bp as AdminBlueprint
+from edaemon.rss import bp as RSSBlueprint
 
 app = Flask(__name__)
 _environ_GA_TRACKING_ID = os.environ.get('GA_TRACKING_ID', None)
@@ -17,6 +18,7 @@ app.config['silent'] = int(os.environ['EDAEMON_APP_SILENT']) == 1
 
 app.register_blueprint(MainBlueprint)
 app.register_blueprint(AdminBlueprint, url_prefix='/a')
+app.register_blueprint(RSSBlueprint, url_prefix='/feed')
 
 @app.errorhandler(404)
 def four_oh_four(e):
