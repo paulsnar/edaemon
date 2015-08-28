@@ -1,6 +1,5 @@
 # coding: utf-8
 from flask import Blueprint, request, make_response
-from google.appengine.api.app_identity.app_identity import get_application_id
 import re
 
 from .ndbmodels import Change
