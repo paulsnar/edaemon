@@ -1,16 +1,21 @@
 # coding: utf-8
-from flask import Blueprint, make_response
+from flask import Blueprint, request, make_response
 from google.appengine.api.app_identity.app_identity import get_application_id
+import re
 
 from .ndbmodels import Change
 from .utility.rss import Feed, FeedItem
+
+EXTRACTOR = r'(https?://[0-9a-zA-Z.-]+)(/.*)*/?'
 
 bp = Blueprint('rss', __name__)
 
 @bp.route('/week.xml')
 def feed_week():
-    # TODO: add config option for custom URL to put here
-    base_url = 'https://{0}.appspot.com/'.format(get_application_id())
+    base_url = \
+        request.url_root[0:re.match(EXTRACTOR, request.url_root).regs[1][1]]
+    base_url += '/'
+
     feed = Feed()
     feed.title = u'Izmaiņas tuvākajā nedēļā - Edaemon'
     feed.link = base_url
@@ -31,7 +36,10 @@ def feed_week():
 
 @bp.route('/class/<class_name>/week.xml')
 def feed_class_week(class_name):
-    base_url = 'https://{0}.appspot.com/'.format(get_application_id())
+    base_url = \
+        request.url_root[0:re.match(EXTRACTOR, request.url_root).regs[1][1]]
+    base_url += '/'
+
     feed = Feed()
     feed.title = u'Izmaiņas tuvākajā nedēļā {0} klasei - Edaemon'.format(
         class_name)
