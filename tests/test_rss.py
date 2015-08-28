@@ -26,7 +26,7 @@ class RSSTestcase(unittest.TestCase):
     def test_rss_general_structure(self):
         """Test whether the RSS feed conforms to RSS XML standard."""
         change = Change(date=today, className='1.n', changes='[]').put()
-        rv = self.app.get('/feed/week.xml')
+        rv = self.app.get('/feeds/week.xml')
         xml = ET.fromstring(rv.data)
         assert xml.tag == 'rss'
         assert xml.attrib['version'] == '2.0'
@@ -59,7 +59,7 @@ class RSSTestcase(unittest.TestCase):
 
     def test_rss_without_changes(self):
         """Test whether the RSS feed shows no changes if there are none present."""
-        rv = self.app.get('/feed/week.xml')
+        rv = self.app.get('/feeds/week.xml')
         xml = ET.fromstring(rv.data)
         assert len(xml.find('channel').findall('item')) == 0
 
@@ -67,7 +67,7 @@ class RSSTestcase(unittest.TestCase):
         """Test whether the RSS feed shows changes in the range of a week."""
         change1 = Change(date=today, className='1.n', changes='[]').put()
         change2 = Change(date=today, className='2.n', changes='[]').put()
-        rv = self.app.get('/feed/week.xml')
+        rv = self.app.get('/feeds/week.xml')
         xml = ET.fromstring(rv.data)
         channel = xml.find('channel')
 
@@ -93,7 +93,7 @@ class RSSTestcase(unittest.TestCase):
         day = format_date_ISO8601(date.today() + timedelta(days=8))
         change1 = Change(date=today, className='1.n', changes='[]').put()
         change2 = Change(date=day, className='2.n', changes='[]').put()
-        rv = self.app.get('/feed/week.xml')
+        rv = self.app.get('/feeds/week.xml')
         xml = ET.fromstring(rv.data)
         channel = xml.find('channel')
 
@@ -113,7 +113,7 @@ class RSSTestcase(unittest.TestCase):
 
     def test_class_rss_without_changes(self):
         """Test whether the class RSS feed works without changes."""
-        rv = self.app.get('/feed/class/1.n/week.xml')
+        rv = self.app.get('/feeds/class/1.n/week.xml')
         xml = ET.fromstring(rv.data)
         assert len(xml.find('channel').findall('item')) == 0
 
@@ -121,7 +121,7 @@ class RSSTestcase(unittest.TestCase):
         """Test whether the class RSS feed displays changes, only for the specified class."""
         change1 = Change(date=today, className='1.n', changes='[]').put()
         change2 = Change(date=today, className='2.n', changes='[]').put()
-        rv = self.app.get('/feed/class/1.n/week.xml')
+        rv = self.app.get('/feeds/class/1.n/week.xml')
         xml = ET.fromstring(rv.data)
         channel = xml.find('channel')
 
@@ -141,7 +141,7 @@ class RSSTestcase(unittest.TestCase):
         day = format_date_ISO8601(date.today() + timedelta(days=8))
         change1 = Change(date=today, className='1.n', changes='[]').put()
         change2 = Change(date=day, className='1.n', changes='[]').put()
-        rv = self.app.get('/feed/class/1.n/week.xml')
+        rv = self.app.get('/feeds/class/1.n/week.xml')
         xml = ET.fromstring(rv.data)
         channel = xml.find('channel')
 
