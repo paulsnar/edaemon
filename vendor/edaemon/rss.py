@@ -1,6 +1,5 @@
 # coding: utf-8
-from flask import Blueprint, make_response, abort
-# from feedgen.feed import FeedGenerator
+from flask import Blueprint, make_response
 from google.appengine.api.app_identity.app_identity import get_application_id
 
 from .ndbmodels import Change
@@ -13,7 +12,6 @@ def feed_week():
     # TODO: add config option for custom URL to put here
     base_url = 'https://{0}.appspot.com/'.format(get_application_id())
     feed = Feed()
-    # feed.id = base_url + 'feed/week.xml'
     feed.title = u'Izmaiņas tuvākajā nedēļā - Edaemon'
     feed.link = base_url
 
@@ -22,7 +20,7 @@ def feed_week():
         fe = FeedItem()
         fe.id = base_url + 'show/' + change.key.urlsafe()
         fe.link = fe.id
-        fe.title = u'Izmaiņas {0} klasei {1}'.format(
+        fe.title = u'Izmaiņas {0} klasei ({1})'.format(
             change.className, change.date)
         feed.add_item(fe)
 
