@@ -120,7 +120,12 @@ def create_user():
     elif request.method == 'POST':
         email = request.form['newuser-email']
         if User.email_exists(email):
-            return render_template('admin/create_user.htm', error=True)
+            return render_template('admin/create_user.htm', error=True,
+                email=request.form['newuser-email'])
+        elif request.form['newuser-password1'] != \
+        request.form['newuser-password2']:
+            return render_template('admin/create_user.htm', mismatch=True,
+                email=request.form['newuser-email'])
         else:
             passwd = generate_password_hash(request.form['newuser-password'])
             user = User(email=email, passwd=passwd)

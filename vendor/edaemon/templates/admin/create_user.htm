@@ -8,6 +8,10 @@
     <div class="alert alert-danger" role="alert">
         <strong>Ak vai!</strong> Lietotājs ar šādu e-pastu jau pastāv.
     </div>
+    {% elif mismatch %}
+    <div class="alert alert-danger" role="alert">
+        <strong>Ak vai!</strong> Paroles nesakrita! Mēģiniet vēlreiz.
+    </div>
     {% elif success %}
     <div class="alert alert-success" role="alert">
         Lietotājs tika izveidots veiksmīgi!
@@ -17,11 +21,17 @@
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="newuser-email">E-pasts:</label>
-                <input type="email" name="newuser-email" id="newuser-email" class="form-control" placeholder="epasts@paraugs.lv" autocomplete="off" />
+                <input type="email" name="newuser-email" id="newuser-email" class="form-control" placeholder="epasts@paraugs.lv" autocomplete="off" {% if email %} value="{{ email }}" {% endif %}/>
             </div>
-            <div class="col-md-6 form-group">
-                <label for="newuser-password">Parole:</label>
-                <input type="password" name="newuser-password" id="newuser-password" class="form-control" placeholder="••••••••" />
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="newuser-password1">Parole:</label>
+                    <input type="password" name="newuser-password1" id="newuser-password1" class="form-control" placeholder="••••••••" />
+                </div>
+                <div class="form-group">
+                    <label for="newuser-password2">Parole vēlreiz:</label>
+                    <input type="password" name="newuser-password2" id="newuser-password2" class="form-control" placeholder="••••••••" />
+                </div>
             </div>
         </div>
         <button type="submit" class="btn btn-primary">
