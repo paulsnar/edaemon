@@ -22,6 +22,8 @@ def index():
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if 'email' in session: return redirect(url_for('.index'))
+    elif User.count() == 0:
+        return redirect(url_for('.initial_setup'))
     elif request.method == 'POST':
         if request.form.get('_xsrf') is None or session.get('xsrf') is None:
             # well please log in properly -.-
@@ -142,3 +144,21 @@ def change_passwd():
             return render_template('admin/change_passwd.htm', success=True)
     else:
         return render_template('admin/change_passwd.htm')
+
+@bp.route('/setup', methods=['GET', 'POST'])
+def initial_setup():
+    if 'email' in session or \
+    User.count() != 0: return redirect(url_for('.index'))
+    elif request.method == 'POST':
+        pw_1 = request.form['passwd1']
+        pw_2 = request.form['passwd2']
+        if pw_1 != pw_2:
+            return render_template('admin/initial_setup.htm', mismatch=True,
+                email=request.form['email'])
+        else:
+            User(email=request.form['email'],
+                passwd=generate_password_hash(pw_1)).put()
+            session['email'] = request.form['email']
+            return redirect(url_for('.index'))
+    else:
+        return render_template('admin/initial_setup.htm')
