@@ -4,11 +4,20 @@
 
 {% block body %}
     <h1>Lietotāja pievienošana</h1>
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        <strong>Ak vai!</strong> Lietotājs ar šādu e-pastu jau pastāv.
+    </div>
+    {% elif success %}
+    <div class="alert alert-success" role="alert">
+        Lietotājs tika izveidots veiksmīgi!
+    </div>
+    {% endif %}
     <form action="{{ url_for('.create_user') }}" method="POST">
         <div class="row">
             <div class="col-md-6 form-group">
                 <label for="newuser-email">E-pasts:</label>
-                <input type="email" name="newuser-email" id="newuser-email" class="form-control" placeholder="epasts@paraugs.lv" />
+                <input type="email" name="newuser-email" id="newuser-email" class="form-control" placeholder="epasts@paraugs.lv" autocomplete="off" />
             </div>
             <div class="col-md-6 form-group">
                 <label for="newuser-password">Parole:</label>
