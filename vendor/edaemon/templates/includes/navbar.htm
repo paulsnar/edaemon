@@ -16,6 +16,15 @@
                 <li><a href="{{ url_for('main.index') }}">Izmaiņas nedēļai</a></li>
                 {% if 'email' in session %}
                 <li><a href="{{ url_for('admin.list_changes') }}">Visas izmaiņas</a></li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button" class="dropdown-toggle">
+                        Pārvaldīšana
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('admin.create_user') }}">Pievienot jaunu lietotāju</a></li>
+                    </ul>
+                </li>
                 {% endif %}
             </ul>
             {% if 'email' in session %}
