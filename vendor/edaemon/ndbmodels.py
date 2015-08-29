@@ -54,3 +54,7 @@ class User(ndb.Model):
     def email_exists(cls, email):
         items = cls.query(cls.email == email).fetch(1)
         return len(items) == 1
+
+    @classmethod
+    def count(cls):
+        return cls.query().count()
