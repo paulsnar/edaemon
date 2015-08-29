@@ -126,3 +126,19 @@ def create_user():
             return render_template('admin/create_user.htm', success=True)
     else:
         return render_template('admin/create_user.htm')
+
+@bp.route('/password', methods=['GET', 'POST'])
+def change_passwd():
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        pw_1 = request.form['passwd1']
+        pw_2 = request.form['passwd2']
+        if pw_1 != pw_2:
+            return render_template('admin/change_passwd.htm', mismatch=True)
+        else:
+            user = User.lookup(session['email'])
+            user.passwd = generate_password_hash(pw_1)
+            user.put()
+            return render_template('admin/change_passwd.htm', success=True)
+    else:
+        return render_template('admin/change_passwd.htm')
