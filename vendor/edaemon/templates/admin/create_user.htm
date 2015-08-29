@@ -1,0 +1,23 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Lietotāja pievienošana{% endblock %}
+
+{% block body %}
+    <h1>Lietotāja pievienošana</h1>
+    <form action="{{ url_for('.create_user') }}" method="POST">
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="newuser-email">E-pasts:</label>
+                <input type="email" name="newuser-email" id="newuser-email" class="form-control" placeholder="epasts@paraugs.lv" />
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="newuser-password">Parole:</label>
+                <input type="password" name="newuser-password" id="newuser-password" class="form-control" placeholder="••••••••" />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+            Pievienot
+        </button>
+    </form>
+{% endblock %}
