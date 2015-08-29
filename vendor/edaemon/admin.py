@@ -117,9 +117,12 @@ def create_user():
     if not 'email' in session: return redirect(url_for('.login'))
     elif request.method == 'POST':
         email = request.form['newuser-email']
-        passwd = generate_password_hash(request.form['newuser-password'])
-        user = User(email=email, passwd=passwd)
-        key = user.put()
-        return redirect(url_for('.create_user')) # clear POST data?
+        if User.email_exists(email):
+            return render_template('admin/create_user.htm', error=True)
+        else:
+            passwd = generate_password_hash(request.form['newuser-password'])
+            user = User(email=email, passwd=passwd)
+            key = user.put()
+            return render_template('admin/create_user.htm', success=True)
     else:
         return render_template('admin/create_user.htm')
