@@ -2,7 +2,7 @@ from flask import (Blueprint, request, render_template, abort, session,
     redirect, url_for, current_app)
 from werkzeug.security import generate_password_hash, check_password_hash
 from google.appengine.ext import ndb
-import datetime
+from datetime import date
 import json
 from uuid import uuid4 as uuid
 import logging
@@ -109,6 +109,5 @@ def enter_change():
         key = change.put()
         return redirect(url_for('main.show_change', change_id=key.urlsafe()))
     else:
-        date = datetime.date.today()
-        today = format_date_ISO8601(date)
+        today = format_date_ISO8601(date.today())
         return render_template('admin/new_change.htm', today=today)
