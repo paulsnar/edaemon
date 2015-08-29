@@ -13,15 +13,9 @@ from .utility import (parse_change_subjects_for_form,
 
 bp = Blueprint('admin', __name__, template_folder='templates')
 
-@bp.route('/')
-def index():
-    if 'email' in session: return redirect(url_for('.list_changes'))
-    else:
-        return redirect(url_for('.login'))
-
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'email' in session: return redirect(url_for('.index'))
+    if 'email' in session: return redirect(url_for('.list_changes'))
     elif User.count() == 0:
         return redirect(url_for('.initial_setup'))
     elif request.method == 'POST':
@@ -45,7 +39,7 @@ def login():
 
         if check_password_hash(user.passwd, request.form['passwd']):
             session['email'] = request.form['email']
-            return redirect(url_for('.index'))
+            return redirect(url_for('.list_changes'))
         else:
             return render_template('admin/login.htm')
     else:
@@ -153,7 +147,7 @@ def change_passwd():
 @bp.route('/setup', methods=['GET', 'POST'])
 def initial_setup():
     if 'email' in session or \
-    User.count() != 0: return redirect(url_for('.index'))
+    User.count() != 0: return redirect(url_for('.list_changes'))
     elif request.method == 'POST':
         pw_1 = request.form['passwd1']
         pw_2 = request.form['passwd2']
@@ -164,6 +158,6 @@ def initial_setup():
             User(email=request.form['email'],
                 passwd=generate_password_hash(pw_1)).put()
             session['email'] = request.form['email']
-            return redirect(url_for('.index'))
+            return redirect(url_for('.list_changes'))
     else:
         return render_template('admin/initial_setup.htm')
