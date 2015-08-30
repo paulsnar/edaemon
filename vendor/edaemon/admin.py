@@ -112,16 +112,15 @@ def enter_change():
 def create_user():
     if not 'email' in session: return redirect(url_for('.login'))
     elif request.method == 'POST':
-        email = request.form['newuser-email']
+        email = request.form['email']
         if User.email_exists(email):
             return render_template('admin/create_user.htm', error=True,
-                email=request.form['newuser-email'])
-        elif request.form['newuser-password1'] != \
-        request.form['newuser-password2']:
+                email=request.form['email'])
+        elif request.form['password1'] != request.form['password2']:
             return render_template('admin/create_user.htm', mismatch=True,
-                email=request.form['newuser-email'])
+                email=request.form['email'])
         else:
-            passwd = generate_password_hash(request.form['newuser-password'])
+            passwd = generate_password_hash(request.form['password1'])
             user = User(email=email, passwd=passwd)
             key = user.put()
             return render_template('admin/create_user.htm', success=True)

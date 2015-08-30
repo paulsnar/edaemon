@@ -20,17 +20,17 @@
     <form action="{{ url_for('.create_user') }}" method="POST">
         <div class="row">
             <div class="col-md-6 form-group">
-                <label for="newuser-email">E-pasts:</label>
-                <input type="email" name="newuser-email" id="newuser-email" class="form-control" placeholder="epasts@paraugs.lv" autocomplete="off" {% if email %} value="{{ email }}" {% endif %}/>
+                <label for="email">E-pasts:</label>
+                <input type="email" name="email" id="email" class="form-control" placeholder="epasts@paraugs.lv" autocomplete="off" {% if email %} value="{{ email }}" {% endif %}/>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    <label for="newuser-password1">Parole:</label>
-                    <input type="password" name="newuser-password1" id="newuser-password1" class="form-control" placeholder="••••••••" />
+                    <label for="password1">Parole:</label>
+                    <input type="password" name="password1" id="password1" class="form-control" placeholder="••••••••" />
                 </div>
                 <div class="form-group">
-                    <label for="newuser-password2">Parole vēlreiz:</label>
-                    <input type="password" name="newuser-password2" id="newuser-password2" class="form-control" placeholder="••••••••" />
+                    <label for="password2">Parole vēlreiz:</label>
+                    <input type="password" name="password2" id="password2" class="form-control" placeholder="••••••••" />
                 </div>
             </div>
         </div>
