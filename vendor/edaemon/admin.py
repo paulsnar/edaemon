@@ -2,7 +2,7 @@ from flask import (Blueprint, request, render_template, abort, session,
     redirect, url_for, current_app)
 from werkzeug.security import generate_password_hash, check_password_hash
 from google.appengine.ext import ndb
-import datetime
+from datetime import date
 import json
 from uuid import uuid4 as uuid
 import logging
@@ -13,15 +13,11 @@ from .utility import (parse_change_subjects_for_form,
 
 bp = Blueprint('admin', __name__, template_folder='templates')
 
-@bp.route('/')
-def index():
-    if 'email' in session: return redirect(url_for('.list_changes'))
-    else:
-        return redirect(url_for('.login'))
-
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    if 'email' in session: return redirect(url_for('.index'))
+    if 'email' in session: return redirect(url_for('.list_changes'))
+    elif User.count() == 0:
+        return redirect(url_for('.initial_setup'))
     elif request.method == 'POST':
         if request.form.get('_xsrf') is None or session.get('xsrf') is None:
             # well please log in properly -.-
@@ -43,7 +39,7 @@ def login():
 
         if check_password_hash(user.passwd, request.form['passwd']):
             session['email'] = request.form['email']
-            return redirect(url_for('.index'))
+            return redirect(url_for('.list_changes'))
         else:
             return render_template('admin/login.htm')
     else:
@@ -109,6 +105,58 @@ def enter_change():
         key = change.put()
         return redirect(url_for('main.show_change', change_id=key.urlsafe()))
     else:
-        date = datetime.date.today()
-        today = format_date_ISO8601(date)
+        today = format_date_ISO8601(date.today())
         return render_template('admin/new_change.htm', today=today)
+
+@bp.route('/users/add', methods=['GET', 'POST'])
+def create_user():
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        email = request.form['email']
+        if User.email_exists(email):
+            return render_template('admin/create_user.htm', error=True,
+                email=request.form['email'])
+        elif request.form['password1'] != request.form['password2']:
+            return render_template('admin/create_user.htm', mismatch=True,
+                email=request.form['email'])
+        else:
+            passwd = generate_password_hash(request.form['password1'])
+            user = User(email=email, passwd=passwd)
+            key = user.put()
+            return render_template('admin/create_user.htm', success=True)
+    else:
+        return render_template('admin/create_user.htm')
+
+@bp.route('/password', methods=['GET', 'POST'])
+def change_passwd():
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        pw_1 = request.form['passwd1']
+        pw_2 = request.form['passwd2']
+        if pw_1 != pw_2:
+            return render_template('admin/change_passwd.htm', mismatch=True)
+        else:
+            user = User.lookup(session['email'])
+            user.passwd = generate_password_hash(pw_1)
+            user.put()
+            return render_template('admin/change_passwd.htm', success=True)
+    else:
+        return render_template('admin/change_passwd.htm')
+
+@bp.route('/setup', methods=['GET', 'POST'])
+def initial_setup():
+    if 'email' in session or \
+    User.count() != 0: return redirect(url_for('.list_changes'))
+    elif request.method == 'POST':
+        pw_1 = request.form['passwd1']
+        pw_2 = request.form['passwd2']
+        if pw_1 != pw_2:
+            return render_template('admin/initial_setup.htm', mismatch=True,
+                email=request.form['email'])
+        else:
+            User(email=request.form['email'],
+                passwd=generate_password_hash(pw_1)).put()
+            session['email'] = request.form['email']
+            return redirect(url_for('.list_changes'))
+    else:
+        return render_template('admin/initial_setup.htm')

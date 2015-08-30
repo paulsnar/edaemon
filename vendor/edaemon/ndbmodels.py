@@ -48,4 +48,12 @@ class User(ndb.Model):
 
     @classmethod
     def lookup(cls, email):
-        return cls.query(cls.email == email).fetch(1)[0]
+        return cls.query(cls.email == email).get()
+
+    @classmethod
+    def email_exists(cls, email):
+        return cls.query(cls.email == email).count() > 0
+
+    @classmethod
+    def count(cls):
+        return cls.query().count()
