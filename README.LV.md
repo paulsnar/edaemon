@@ -32,17 +32,11 @@ Lai to uzstādītu:
   repozitorijas atrašanās vietas. `appcfg.py` nodrošina Google App Engine SDK priekš Python.
   Ja tas nedarbojas, konsultējies ar
   [Google App Engine SDK priekš Python rokasgrāmatu](https://cloud.google.com/appengine/docs/python/).
+7. Dodies uz savu jaunuzstādīto Edaemon instanci un izveido pirmo lietotāju!
 
 Priekš Windows šīs (un citas) instrukcijas var atšķirties. Diemžēl pašlaik par
 to es vairāk neko nezinu, bet, ja esi izmēģinājis un tev ir/nav izdevies,
 vienmēr laipni lūdzu iesniegt vilkšanas pieprasījumu.
-
-Pie tam, pašlaik nepastāv nekāds interfeiss uzstādīšanai (pirmā lietotāja
-izveidei). To var veikt manuāli, pievienojot jaunu Datastore ierakstu caur
-[Google Developers Console](https://console.developers.google.com) ar veidu `User`, kura
-divi lauki ir `email` (teksta tips, indeksēts), kura vērtība ir ielogošanās
-e-pasts, un `passwd` (teksta tips, bez indeksācijas), kura vērtība ir
-ar `werkzeug.security.generate_password_hash` izveidots paroles šifrējums.
 
 ## Testēšana
 
