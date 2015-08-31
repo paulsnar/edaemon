@@ -12,6 +12,11 @@ def parse_change_subjects(_s):
     else:
         return subjectsobj
 
+def parse_timetable_subjects(_s):
+    for i, val in enumerate(_s):
+        _s[i] = parse_change_subjects(val)
+    return _s
+
 def parse_change_subjects_for_form(_s):
     subjectsobj = parse_change_subjects(_s)
     for i, val in enumerate(subjectsobj):

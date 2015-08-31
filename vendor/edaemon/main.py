@@ -4,7 +4,8 @@ from datetime import date, timedelta
 from google.appengine.ext import ndb
 
 from .ndbmodels import Change
-from .utility import parse_change_subjects, extract_unique_classnames
+from .utility import (parse_change_subjects, parse_timetable_subjects,
+    extract_unique_classnames)
 
 bp = Blueprint('main', __name__, template_folder='templates')
 
@@ -31,3 +32,14 @@ def show_change(change_id):
     subjects = parse_change_subjects(json.loads(change.changes))
     return render_template('change.htm', change=change, subjects=subjects)
 
+@bp.route('/timetable/<timetable_id>')
+def show_timetable(timetable_id):
+    try:
+        timetable_key = ndb.Key(urlsafe=timetable_id)
+        timetable = timetable_key.get()
+    except Exception:
+        return abort(404)
+
+    subjects = parse_timetable_subjects(json.loads(timetable.timetable))
+    return render_template('timetable.htm', timetable=timetable,
+        subjects=subjects)

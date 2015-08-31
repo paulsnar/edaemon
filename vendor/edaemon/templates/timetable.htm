@@ -1,0 +1,26 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Stundu saraksts klasei {{ timetable.className }}{% endblock %}
+
+{% block body %}
+    <h1>Stundu saraksts klasei {{ timetable.className }}</h1>
+    <div class="row">
+        {% for day in subjects %}
+        <div class="col-lg-2">
+            <ol start="0">
+            {% for subject in day %}
+                {% if subject is none %}
+                <li>&mdash;</li>
+                {% else %}
+                <li>{{ subject }}</li>
+                {% endif %}
+            {% endfor %}
+            </ol>
+        </div>
+        {% endfor %}
+        <div class="col-lg-2">
+            {# there is no 5-dividable grid in Bootstrap :( #}
+            &nbsp;
+        </div>
+    </div>
+{% endblock %}
