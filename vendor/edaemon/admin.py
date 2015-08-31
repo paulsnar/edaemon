@@ -97,10 +97,10 @@ def modify_change(change_id):
 def enter_change():
     if not 'email' in session: return redirect(url_for('.login'))
     elif request.method == 'POST':
-        date = request.form['date']
+        day = request.form['date']
         className = request.form['className']
         changes = parse_change_subjects_from_form(request.form)
-        change = Change(date=date, className=className,
+        change = Change(date=day, className=className,
             changes=json.dumps(changes))
         key = change.put()
         return redirect(url_for('main.show_change', change_id=key.urlsafe()))
