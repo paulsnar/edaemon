@@ -19,7 +19,7 @@ def parse_timetable_subjects(_s):
 
 def parse_timetable_from_form(form):
     days = [ ]
-    for day in xrange(1, 6):
+    for day in xrange(0, 5):
         subjects = [ ]
         for i in xrange(0, 9):
             subject = form.get('day-{0}-subject-{1}'.format(day, i), None)

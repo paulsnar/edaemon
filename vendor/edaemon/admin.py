@@ -125,6 +125,46 @@ def create_timetable():
     else:
         return render_template('admin/create_timetable.htm')
 
+@bp.route('/timetables/edit/<timetable_id>', methods=['GET', 'POST'])
+def edit_timetable(timetable_id):
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        try:
+            timetable = Timetable.lookup(timetable_id)
+        except Exception:
+            return redirect(url_for('.enter_timetable'))
+        timetable.className = request.form['className']
+        timetable.timetable = json.dumps(
+            parse_timetable_from_form(request.form))
+        timetable.put()
+        return redirect(url_for('main.show_timetable',
+            timetable_id=timetable_id))
+    else:
+        try:
+            timetable = Timetable.lookup(timetable_id)
+        except Exception:
+            return redirect(url_for('.enter_timetable'))
+        return render_template('admin/edit_timetable.htm', timetable=timetable,
+            subjects=json.loads(timetable.timetable))
+
+@bp.route('/timetables/delete/<timetable_id>', methods=['GET', 'POST'])
+def delete_timetable(timetable_id):
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        try:
+            timetable = Timetable.lookup(timetable_id)
+        except Exception:
+            return redirect(url_for('.enter_timetable'))
+        timetable.key.delete()
+        return redirect(url_for('main.list_timetables'))
+    else:
+        try:
+            timetable = Timetable.lookup(timetable_id)
+        except Exception:
+            return redirect(url_for('.enter_timetable'))
+        return render_template('admin/delete_timetable.htm',
+            timetable=timetable)
+
 @bp.route('/users/add', methods=['GET', 'POST'])
 def create_user():
     if not 'email' in session: return redirect(url_for('.login'))

@@ -1,20 +1,15 @@
 {% extends 'layout.htm' %}
 {% import 'imports/lvdates.htm' as lvdates %}
 
-{% block title %}Stundu saraksta ievadīšana{% endblock %}
+{% block title %}Stundu saraksta rediģēšana{% endblock %}
 
 {% block body %}
-    <h1>Stundu saraksta ievadīšana</h1>
-    {% if error %}
-    <div class="alert alert-danger" role="alert">
-        <strong>Ak vai!</strong> Stundu saraksts šai klasei jau ir ievadīts.
-    </div>
-    {% endif %}
-    <form action="{{ url_for('.create_timetable') }}" method="POST">
+    <h1>Stundu saraksta rediģēšana</h1>
+    <form action="{{ url_for('.edit_timetable', timetable_id=timetable.key.urlsafe()) }}" method="POST">
         <div class="form-inline">
             <div class="form-group">
                 <label for="className">Klases nosaukums: </label>
-                <input type="text" name="className" id="className" class="form-control" placeholder="0.y" {% if form %} value="{{ form.get('className', '') }}" {% endif %}/>
+                <input type="text" name="className" id="className" class="form-control" placeholder="0.y" value="{{ timetable.className }}" />
             </div>
         </div>
         <div class="row">
@@ -24,7 +19,11 @@
                 {% for i in range(0, 9) %}
                 <div class="input-group" style="padding: 0.2rem">
                     <div class="input-group-addon">{{ i }}.</div>
-                    <input type="text" class="form-control" name="day-{{day}}-subject-{{i}}" {% if form %} value="{{ form.get('day-{0}-subject-{1}'.format(day, i), '') }}" {% endif %} />
+                    {% if subjects[day][i] is none %}
+                    <input type="text" class="form-control" name="day-{{day}}-subject-{{i}}" value="-" />
+                    {% else %}
+                    <input type="text" class="form-control" name="day-{{day}}-subject-{{i}}" value="{{ subjects[day][i] }}" />
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
