@@ -29,6 +29,13 @@ class Change(ndb.Model):
         return cls.query(cls.className == className).fetch()
 
     @classmethod
+    def get_today_for_class(cls, className):
+        today = format_date_ISO8601(date.today())
+        return cls.query(ndb.AND(
+            cls.className == className,
+            cls.date == today)).get()
+
+    @classmethod
     def lookup(cls, urlsafe):
         return ndb.Key(urlsafe=urlsafe).get()
 
@@ -40,6 +47,13 @@ class Change(ndb.Model):
     @classmethod
     def delete(cls, urlsafe):
         ndb.Key(urlsafe=urlsafe).delete()
+
+    @classmethod
+    def has_class_today(cls, className):
+        today = format_date_ISO8601(date.today())
+        return cls.query(ndb.AND(
+            cls.className == className,
+            cls.date == today)).count() > 0
 
 
 class Timetable(ndb.Model):
