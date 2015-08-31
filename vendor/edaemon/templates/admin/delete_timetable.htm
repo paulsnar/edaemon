@@ -1,0 +1,12 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Stundu saraksta dzēšana{% endblock %}
+
+{% block body %}
+    <h1>Izdzēst šīs izmaiņas?</h1>
+    <p><em><a target="_blank" href="{{ url_for('main.show_timetable', timetable_id=timetable.key.urlsafe()) }}">Klase: {{ timetable.className }}</a></em></p>
+    <form action="{{ url_for('.delete_timetable', timetable_id=timetable.key.urlsafe()) }}" method="POST">
+        <input type="submit" value="Jā, esmu pārliecināts un zinu, ka to nevar atgriezt" class="btn btn-danger" />
+    </form>
+    <p><em>Lai atceltu, dodieties atpakaļ.</em></p>
+{% endblock %}

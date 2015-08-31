@@ -1,0 +1,18 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Stundu sarakstu skatīšana{% endblock %}
+
+{% block body %}
+    <h1>Visi stundu saraksti</h1>
+    <ul>
+        {% for timetable in timetables %}
+            <li>
+                <a href="{{ url_for('main.show_timetable', timetable_id=timetable.key.urlsafe()) }}">
+                    Klase: {{ timetable.className }}
+                </a>
+            </li>
+        {% else %}
+            Neatradu!
+        {% endfor %}
+    </ul>
+{% endblock %}

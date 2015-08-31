@@ -7,8 +7,8 @@ import json
 from uuid import uuid4 as uuid
 import logging
 
-from .ndbmodels import User, Change
-from .utility import (parse_change_subjects_for_form,
+from .ndbmodels import User, Change, Timetable
+from .utility import (parse_change_subjects_for_form, parse_timetable_from_form,
     parse_change_subjects_from_form, format_date_ISO8601)
 
 bp = Blueprint('admin', __name__, template_folder='templates')
@@ -97,16 +97,73 @@ def modify_change(change_id):
 def enter_change():
     if not 'email' in session: return redirect(url_for('.login'))
     elif request.method == 'POST':
-        date = request.form['date']
+        day = request.form['date']
         className = request.form['className']
         changes = parse_change_subjects_from_form(request.form)
-        change = Change(date=date, className=className,
+        change = Change(date=day, className=className,
             changes=json.dumps(changes))
         key = change.put()
         return redirect(url_for('main.show_change', change_id=key.urlsafe()))
     else:
         today = format_date_ISO8601(date.today())
         return render_template('admin/new_change.htm', today=today)
+
+@bp.route('/timetables/add', methods=['GET', 'POST'])
+def create_timetable():
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        className = request.form['className']
+        if Timetable.class_exists(className):
+            return render_template('admin/create_timetable.htm',
+                form=request.form, error=True)
+        subjects = parse_timetable_from_form(request.form)
+        timetable = Timetable(className=className,
+            timetable=json.dumps(subjects))
+        key = timetable.put()
+        return redirect(url_for('main.show_timetable',
+            timetable_id=key.urlsafe()))
+    else:
+        return render_template('admin/create_timetable.htm')
+
+@bp.route('/timetables/edit/<timetable_id>', methods=['GET', 'POST'])
+def edit_timetable(timetable_id):
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        try:
+            timetable = Timetable.lookup(timetable_id)
+        except Exception:
+            return redirect(url_for('.enter_timetable'))
+        timetable.className = request.form['className']
+        timetable.timetable = json.dumps(
+            parse_timetable_from_form(request.form))
+        timetable.put()
+        return redirect(url_for('main.show_timetable',
+            timetable_id=timetable_id))
+    else:
+        try:
+            timetable = Timetable.lookup(timetable_id)
+        except Exception:
+            return redirect(url_for('.enter_timetable'))
+        return render_template('admin/edit_timetable.htm', timetable=timetable,
+            subjects=json.loads(timetable.timetable))
+
+@bp.route('/timetables/delete/<timetable_id>', methods=['GET', 'POST'])
+def delete_timetable(timetable_id):
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        try:
+            timetable = Timetable.lookup(timetable_id)
+        except Exception:
+            return redirect(url_for('.enter_timetable'))
+        timetable.key.delete()
+        return redirect(url_for('main.list_timetables'))
+    else:
+        try:
+            timetable = Timetable.lookup(timetable_id)
+        except Exception:
+            return redirect(url_for('.enter_timetable'))
+        return render_template('admin/delete_timetable.htm',
+            timetable=timetable)
 
 @bp.route('/users/add', methods=['GET', 'POST'])
 def create_user():
