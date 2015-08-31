@@ -7,7 +7,7 @@ import json
 from uuid import uuid4 as uuid
 import logging
 
-from .ndbmodels import User, Change
+from .ndbmodels import User, Change, Timetable
 from .utility import (parse_change_subjects_for_form,
     parse_change_subjects_from_form, format_date_ISO8601)
 
@@ -107,6 +107,14 @@ def enter_change():
     else:
         today = format_date_ISO8601(date.today())
         return render_template('admin/new_change.htm', today=today)
+
+@bp.route('/timetables/')
+def list_timetables():
+    if not 'email' in session: return redirect(url_for('.login'))
+    else:
+        timetables = Timetable.get_all()
+        return render_template('admin/list_timetables.htm',
+            timetables=timetables)
 
 @bp.route('/users/add', methods=['GET', 'POST'])
 def create_user():
