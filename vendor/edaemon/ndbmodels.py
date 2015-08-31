@@ -46,6 +46,10 @@ class Timetable(ndb.Model):
     className = ndb.StringProperty(indexed=True)
     timetable = ndb.StringProperty(indexed=False)
 
+    @classmethod
+    def get_all(cls):
+        return cls.query().fetch()
+
 class User(ndb.Model):
     email = ndb.StringProperty(indexed=True)
     passwd = ndb.StringProperty(indexed=False)
