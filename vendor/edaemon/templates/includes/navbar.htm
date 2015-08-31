@@ -14,6 +14,7 @@
         <div class="collapse navbar-collapse" id="ed-navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{{ url_for('main.index') }}">Izmaiņas nedēļai</a></li>
+                <li><a href="{{ url_for('main.list_timetables') }}">Stundu saraksti</a></li>
                 {% if 'email' in session %}
                 <li><a href="{{ url_for('admin.list_changes') }}">Visas izmaiņas</a></li>
                 <li class="dropdown">
@@ -29,9 +30,14 @@
             </ul>
             {% if 'email' in session %}
             <div class="navbar-form navbar-right">
-                <a href="{{ url_for('admin.enter_change') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </a>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('admin.enter_change') }}">Stundu izmaiņas</a></li>
+                    </ul>
+                </div>
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
