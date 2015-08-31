@@ -64,6 +64,10 @@ class Timetable(ndb.Model):
     def get_all(cls):
         return cls.query().fetch()
 
+    @classmethod
+    def class_exists(cls, className):
+        return cls.query(cls.className == className).count() > 0
+
 class User(ndb.Model):
     email = ndb.StringProperty(indexed=True)
     passwd = ndb.StringProperty(indexed=False)

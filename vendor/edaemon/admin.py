@@ -113,6 +113,9 @@ def create_timetable():
     if not 'email' in session: return redirect(url_for('.login'))
     elif request.method == 'POST':
         className = request.form['className']
+        if Timetable.class_exists(className):
+            return render_template('admin/create_timetable.htm',
+                form=request.form, error=True)
         subjects = parse_timetable_from_form(request.form)
         timetable = Timetable(className=className,
             timetable=json.dumps(subjects))
