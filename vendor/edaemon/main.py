@@ -3,7 +3,7 @@ import json
 from datetime import date, timedelta
 from google.appengine.ext import ndb
 
-from .ndbmodels import Change
+from .ndbmodels import Change, Timetable
 from .utility import (parse_change_subjects, parse_timetable_subjects,
     extract_unique_classnames)
 
@@ -49,3 +49,8 @@ def show_timetable(timetable_id):
     else:
         return render_template('timetable.htm', timetable=timetable,
             subjects=subjects, show_banner=False)
+
+@bp.route('/timetable/')
+def list_timetables():
+    return render_template('list_timetables.htm',
+        timetables=Timetable.get_all())
