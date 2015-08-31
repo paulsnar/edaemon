@@ -5,6 +5,15 @@
 
 {% block body %}
     <h1>Stundu saraksts klasei {{ timetable.className }}</h1>
+    {% if show_banner %}
+    <div class="alert alert-warning alert-dismissible" role="alert">
+        <button class="close" data-dismiss="alert" aria-label="Close" type="button">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>Hei!</strong> Šai klasei šodien ir izmaiņas!
+        <a href="{{ banner_changes_url }}" class="alert-link">Spied šeit, lai tās skatītu.</a>
+    </div>
+    {% endif %}
     <div class="row">
         {% for day in subjects %}
         <div class="col-lg-2">

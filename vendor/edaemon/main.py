@@ -41,5 +41,11 @@ def show_timetable(timetable_id):
         return abort(404)
 
     subjects = parse_timetable_subjects(json.loads(timetable.timetable))
-    return render_template('timetable.htm', timetable=timetable,
-        subjects=subjects)
+    if Change.has_class_today(timetable.className):
+        change = Change.get_today_for_class(timetable.className)
+        return render_template('timetable.htm', timetable=timetable,
+            subjects=subjects, show_banner=has_change,
+            banner_changes_url=change.key.urlsafe())
+    else:
+        return render_template('timetable.htm', timetable=timetable,
+            subjects=subjects, show_banner=False)
