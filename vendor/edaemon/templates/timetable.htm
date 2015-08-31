@@ -1,4 +1,5 @@
 {% extends 'layout.htm' %}
+{% import 'imports/lvdates.htm' as lvdates %}
 
 {% block title %}Stundu saraksts klasei {{ timetable.className }}{% endblock %}
 
@@ -7,6 +8,7 @@
     <div class="row">
         {% for day in subjects %}
         <div class="col-lg-2">
+            <h3>{{ lvdates.weekday_name(loop.index) }}</h3>
             <ol start="0">
             {% for subject in day %}
                 {% if subject is none %}
@@ -14,6 +16,8 @@
                 {% else %}
                 <li>{{ subject }}</li>
                 {% endif %}
+            {% else %}
+            (Te nekā nav!)
             {% endfor %}
             </ol>
         </div>

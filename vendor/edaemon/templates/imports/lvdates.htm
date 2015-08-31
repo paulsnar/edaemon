@@ -1,0 +1,12 @@
+{# TODO: Move this to a Python file, attached to context on app init #}
+{# see http://flask.pocoo.org/docs/0.10/templating/ #}
+{% macro weekday_name(weekday_int) -%}
+{%-      if weekday_int == 1 -%} Pirmdiena
+{%- elif weekday_int == 2 -%} Otrdiena
+{%- elif weekday_int == 3 -%} Trešdiena
+{%- elif weekday_int == 4 -%} Ceturtdiena
+{%- elif weekday_int == 5 -%} Piektdiena
+{%- elif weekday_int == 6 -%} Sestdiena
+{%- elif weekday_int == 7 -%} Svētdiena
+{%- endif -%}
+{%- endmacro -%}
