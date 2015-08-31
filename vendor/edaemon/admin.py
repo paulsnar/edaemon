@@ -8,7 +8,7 @@ from uuid import uuid4 as uuid
 import logging
 
 from .ndbmodels import User, Change, Timetable
-from .utility import (parse_change_subjects_for_form,
+from .utility import (parse_change_subjects_for_form, parse_timetable_from_form,
     parse_change_subjects_from_form, format_date_ISO8601)
 
 bp = Blueprint('admin', __name__, template_folder='templates')
@@ -107,6 +107,20 @@ def enter_change():
     else:
         today = format_date_ISO8601(date.today())
         return render_template('admin/new_change.htm', today=today)
+
+@bp.route('/timetables/add', methods=['GET', 'POST'])
+def create_timetable():
+    if not 'email' in session: return redirect(url_for('.login'))
+    elif request.method == 'POST':
+        className = request.form['className']
+        subjects = parse_timetable_from_form(request.form)
+        timetable = Timetable(className=className,
+            timetable=json.dumps(subjects))
+        key = timetable.put()
+        return redirect(url_for('main.show_timetable',
+            timetable_id=key.urlsafe()))
+    else:
+        return render_template('admin/create_timetable.htm')
 
 @bp.route('/users/add', methods=['GET', 'POST'])
 def create_user():

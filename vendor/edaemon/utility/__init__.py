@@ -17,6 +17,20 @@ def parse_timetable_subjects(_s):
         _s[i] = parse_change_subjects(val)
     return _s
 
+def parse_timetable_from_form(form):
+    days = [ ]
+    for day in xrange(1, 6):
+        subjects = [ ]
+        for i in xrange(0, 9):
+            subject = form.get('day-{0}-subject-{1}'.format(day, i), None)
+            if type(subject) == unicode and \
+            subject == u'-' or subject == u'':
+                subjects.append(None)
+            else:
+                subjects.append(subject)
+        days.append(subjects)
+    return days
+
 def parse_change_subjects_for_form(_s):
     subjectsobj = parse_change_subjects(_s)
     for i, val in enumerate(subjectsobj):

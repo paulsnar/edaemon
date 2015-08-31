@@ -1,0 +1,34 @@
+{% extends 'layout.htm' %}
+{% import 'imports/lvdates.htm' as lvdates %}
+
+{% block title %}Stundu saraksta ievadīšana{% endblock %}
+
+{% block body %}
+    <h1>Stundu saraksta ievadīšana</h1>
+    <form action="{{ url_for('.create_timetable') }}" method="POST">
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="className">Klases nosaukums: </label>
+                <input type="text" name="className" id="className" class="form-control" placeholder="0.y" />
+            </div>
+        </div>
+        <div class="row">
+            {% for day in range(1, 6) %}
+            <div class="col-lg-2">
+                <h3>{{ lvdates.weekday_name(loop.index) }}</h3>
+                {% for i in range(0, 9) %}
+                <div class="input-group" style="padding: 0.2rem">
+                    <div class="input-group-addon">{{ i }}.</div>
+                    <input type="text" class="form-control" name="day-{{day}}-subject-{{i}}" />
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            <div class="col-lg-2">&nbsp;</div>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            <span aria-hidden="true" class="glyphicon glyphicon-floppy-disk"></span>
+            Saglabāt
+        </button>
+    </form>
+{% endblock %}
