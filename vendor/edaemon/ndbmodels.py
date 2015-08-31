@@ -42,6 +42,10 @@ class Change(ndb.Model):
         ndb.Key(urlsafe=urlsafe).delete()
 
 
+class Timetable(ndb.Model):
+    className = ndb.StringProperty(indexed=True)
+    timetable = ndb.StringProperty(indexed=False)
+
 class User(ndb.Model):
     email = ndb.StringProperty(indexed=True)
     passwd = ndb.StringProperty(indexed=False)
