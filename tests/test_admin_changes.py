@@ -48,11 +48,14 @@ class AdminChangesTestcase(unittest.TestCase):
         today = format_date_ISO8601(date.today())
         with self.app as c:
             self.login(c)
+            rv = c.get('/a/changes/new')
+            assert rv.status_code == 200
             rv, change_id = self.create_change(c, dict(
                 className='99.z', date=today,
                 subject_0='-', subject_1='Test Subject 1', subject_2='-',
                 subject_3='Test Subject 3', subject_6='Test Subject 6',
                 subject_9='Test Subject 9', subject_none='Test Subject None'))
+            assert rv.status_code == 200
             assert '99.z' in rv.data
             assert today in rv.data
             assert 'Test Subject 1' in rv.data
@@ -71,7 +74,7 @@ class AdminChangesTestcase(unittest.TestCase):
             rv, change_id = self.create_change(c)
             rv = c.post('/a/changes/delete/{0}'.format(change_id),
                 follow_redirects=True)
-            assert 'Neatradu!' in rv.data
+            assert rv.status_code == 200
 
     def test_admin_changes_list(self):
         today = format_date_ISO8601(date.today())
@@ -83,6 +86,7 @@ class AdminChangesTestcase(unittest.TestCase):
             change3 = Change(className='3.c', date='2020-12-31', changes='[]')\
                 .put()
             rv = c.get('/a/changes/')
+            assert rv.status_code == 200
             assert '1.a' in rv.data and '2000-01-01' in rv.data
             assert '2.b' in rv.data and today in rv.data
             assert '3.c' in rv.data and '2020-12-31' in rv.data
@@ -94,7 +98,7 @@ class AdminChangesTestcase(unittest.TestCase):
         with self.app as c:
             self.login(c)
             rv = c.get('/a/changes/')
-            assert 'Neatradu!' in rv.data
+            assert rv.status_code == 200
 
     def test_admin_changes_edit(self):
         today = format_date_ISO8601(date.today())
@@ -104,11 +108,15 @@ class AdminChangesTestcase(unittest.TestCase):
                 className='99.z', date=today,
                 subject_0='-', subject_1='Test Subject 1', subject_2='-',
                 subject_3='Test Subject 3'))
+            assert rv.status_code == 200
+            rv = c.get('/a/changes/edit/{0}'.format(change_id))
+            assert rv.status_code == 200
             rv = c.post('/a/changes/edit/{0}'.format(change_id),
                 follow_redirects=True, data=dict(
                     className='98.z', date=today,
                     subject_0='Test Subject 0', subject_1='-', subject_2='-',
                     subject_3='Test Subject 3'))
+            assert rv.status_code == 200
             assert not 'Test Subject 1' in rv.data
             assert not '99.z' in rv.data
             assert today in rv.data
