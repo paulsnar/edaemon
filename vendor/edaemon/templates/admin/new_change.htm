@@ -3,34 +3,166 @@
 {% block title %}Izmaiņu ievadīšana{% endblock %}
 
 {% block body %}
-    <h1>Izmaiņu ievadīšana</h1>
-    <form action="{{ url_for('.enter_change') }}" method="POST">
-        <div class="row">
-            <div class="col-md-6 form-group">
-                <label for="className">Klases nosaukums:</label>
-                <input type="text" name="className" id="className" class="form-control" placeholder="0.y" />
+    {% if multi_mode %}
+
+        <h1>Izmaiņu ievadīšana <span class="label label-default">Multi</span></h1>
+        <div class="alert alert-success hidden"></div>
+        <form id="js-multi-form">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="multi-form-date">Datums (GGGG-MM-DD):</label>
+                    <input type="text" class="form-control" placeholder="{{ today }}" id="multi-form-date" />
+                </div>
             </div>
-            <div class="col-md-6 form-group">
-                <label for="date">Datums (formātā GGGG-MM-DD, piem., {{ today }}):</label>
-                <input type="text" name="date" id="date" class="form-control" placeholder="GGGG-MM-YY" />
+            <div class="row">
+                {% for column in range(0, 6) %}
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Klase:</label>
+                        <input type="text" class="form-control" data-row="0" data-column="{{ column }}" data-type="className" />
+                    </div>
+                    {% for i in range(0, 9) %}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">{{ i }}.</div>
+                            <input type="text" class="form-control" data-row="0" data-column="{{ column }}" data-num="{{ i }}" />
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
             </div>
-        </div>
-        <ol start="0" class="form-inline">
-            <strong>Stundas:</strong>
-            <li><input type="text" name="subject_0" id="subject_0" class="form-control" /></li>
-            <li><input type="text" name="subject_1" id="subject_1" class="form-control" /></li>
-            <li><input type="text" name="subject_2" id="subject_2" class="form-control" /></li>
-            <li><input type="text" name="subject_3" id="subject_3" class="form-control" /></li>
-            <li><input type="text" name="subject_4" id="subject_4" class="form-control" /></li>
-            <li><input type="text" name="subject_5" id="subject_5" class="form-control" /></li>
-            <li><input type="text" name="subject_6" id="subject_6" class="form-control" /></li>
-            <li><input type="text" name="subject_7" id="subject_7" class="form-control" /></li>
-            <li><input type="text" name="subject_8" id="subject_8" class="form-control" /></li>
-        </ol>
-        <button type="submit" class="btn btn-primary">
-            <span aria-hidden="true" class="glyphicon glyphicon-floppy-disk"></span>
-            Saglabāt
-        </button>
-        <!-- <input type="submit" value="Saglabāt!" /> -->
-    </form>
+            <button type="button" class="btn btn-default" id="js-multi-form-add-rows">
+                <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <span aria-hidden="true" class="glyphicon glyphicon-floppy-disk"></span>
+                Saglabāt
+            </button>
+        </form>
+
+    {% else %}
+
+        <h1>Izmaiņu ievadīšana</h1>
+        <a href="{{ url_for('.enter_change', multi='\x2713') }}">Pārslēgties uz multi režīmu</a>
+        <form action="{{ url_for('.enter_change') }}" method="POST">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="className">Klases nosaukums:</label>
+                    <input type="text" name="className" id="className" class="form-control" placeholder="0.y" />
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="date">Datums (formātā GGGG-MM-DD, piem., {{ today }}):</label>
+                    <input type="text" name="date" id="date" class="form-control" placeholder="GGGG-MM-DD" />
+                </div>
+            </div>
+            <ol start="0" class="form-inline">
+                <strong>Stundas:</strong>
+                <li><input type="text" name="subject_0" id="subject_0" class="form-control" /></li>
+                <li><input type="text" name="subject_1" id="subject_1" class="form-control" /></li>
+                <li><input type="text" name="subject_2" id="subject_2" class="form-control" /></li>
+                <li><input type="text" name="subject_3" id="subject_3" class="form-control" /></li>
+                <li><input type="text" name="subject_4" id="subject_4" class="form-control" /></li>
+                <li><input type="text" name="subject_5" id="subject_5" class="form-control" /></li>
+                <li><input type="text" name="subject_6" id="subject_6" class="form-control" /></li>
+                <li><input type="text" name="subject_7" id="subject_7" class="form-control" /></li>
+                <li><input type="text" name="subject_8" id="subject_8" class="form-control" /></li>
+            </ol>
+            <button type="submit" class="btn btn-primary">
+                <span aria-hidden="true" class="glyphicon glyphicon-floppy-disk"></span>
+                Saglabāt
+            </button>
+        </form>
+
+    {% endif %}
 {% endblock %}
+
+{% if multi_mode %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+    $(function() {
+        var _row = 0;
+        var $form = $('#js-multi-form');
+        $form.submit(function(e) {
+            e.preventDefault();
+            var data = {
+                multi: 'indeed',
+                date: $('#multi-form-date').val(),
+                classes: ''
+            };
+            for (var row = 0; row <= _row; row++) {
+                for (var column = 0; column < 6; column++) {
+                    var className = $('[data-row="'+row+'"][data-column="'+column+'"][data-type="className"]').val().trim();
+                    if (className === '') continue;
+                    data.classes += ',' + className;
+                    for (var i = 0; i < 9; i++) {
+                        var _i = $('[data-row="'+row+'"][data-column="'+column+'"][data-num="'+i+'"]').val().trim();
+                        if (_i !== '') data['class_'+className+'_change_'+i] = _i;
+                    }
+                }
+            }
+            data.classes = data.classes.substr(1); // leading comma ^.^
+            $.post("{{ url_for('.enter_change') }}", data)
+            .done(function(data) {
+                if (data.ok) {
+                    $form.hide();
+                    var $successAlert = $('div.alert.alert-success');
+                    $successAlert.removeClass('hidden');
+                    var _contents = ['Saglabāts veiksmīgi! Skatīt izmaiņas: '];
+                    for (var i = data.ids.length - 1; i >= 0; i--) {
+                        if (_contents.length !== 1) _contents.push(', ');
+                        _contents.push('<a href="/show/'+data.ids[i]+'">#'+i+'</a>');
+                    };
+                    $successAlert.html(_contents.join(''));
+                }
+            });
+        });
+        $('#js-multi-form-add-rows').click(function() {
+            _row++;
+            var $row = $('<div>');
+            $row.addClass('row');
+            for (var column = 0; column < 6; column++) {
+                var $column = $('<div>');
+                $column.addClass('col-md-2');
+                var $classNameGroup = $('<div>');
+                $classNameGroup.addClass('form-group');
+                var $classNameLabel = $('<label>');
+                $classNameLabel.text('Klase:');
+                $classNameGroup.append($classNameLabel);
+                var $classNameInput = $('<input>');
+                $classNameInput.attr('type', 'text');
+                $classNameInput.addClass('form-control');
+                $classNameInput.attr('data-row', _row);
+                $classNameInput.attr('data-column', column);
+                $classNameInput.attr('data-type', 'className');
+                $classNameGroup.append($classNameInput);
+                $column.append($classNameGroup);
+
+                for (var i = 0; i < 9; i++) {
+                    var $formGroup = $('<div>');
+                    $formGroup.addClass('form-group');
+                    var $inputGroup = $('<div>');
+                    $inputGroup.addClass('input-group');
+                    var $inputAddon = $('<div>');
+                    $inputAddon.addClass('input-group-addon');
+                    $inputAddon.text(i + '.');
+                    $inputGroup.append($inputAddon);
+                    var $input = $('<input>');
+                    $input.attr('type', 'text');
+                    $input.addClass('form-control');
+                    $input.attr('data-row', _row);
+                    $input.attr('data-column', column);
+                    $input.attr('data-below', i);
+                    $inputGroup.append($input);
+                    $formGroup.append($inputGroup);
+                    $column.append($formGroup);
+                }
+                $row.append($column);
+            }
+            $form.children('.row').last().after($row);
+        });
+    });
+    </script>
+{% endblock %}
+{% endif %}
