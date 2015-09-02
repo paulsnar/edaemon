@@ -1,5 +1,5 @@
 from flask import (Blueprint, request, render_template, abort, session,
-    redirect, url_for, current_app)
+    redirect, url_for, current_app, jsonify)
 from werkzeug.security import generate_password_hash, check_password_hash
 from google.appengine.ext import ndb
 from datetime import date
@@ -97,16 +97,37 @@ def modify_change(change_id):
 def enter_change():
     if not 'email' in session: return redirect(url_for('.login'))
     elif request.method == 'POST':
-        day = request.form['date']
-        className = request.form['className']
-        changes = parse_change_subjects_from_form(request.form)
-        change = Change(date=day, className=className,
-            changes=json.dumps(changes))
-        key = change.put()
-        return redirect(url_for('main.show_change', change_id=key.urlsafe()))
+        if request.form['multi'] == u'indeed':
+            classes = request.form['classes'].split(u',')
+            ids = []
+            day = request.form['date']
+            for className in classes:
+                changes = []
+                for i in xrange(0, 9):
+                    change = request.form.get('class_{0}_change_{1}'.format(
+                        className, i))
+                    if type(change) == unicode and \
+                    change == u'-' or change == u'':
+                        changes.append(None)
+                    else:
+                        changes.append(change)
+                change = Change(date=day, className=className,
+                    changes=json.dumps(changes)).put()
+                ids.append(change.urlsafe())
+            return jsonify(ok=True, ids=ids)
+        else:
+            day = request.form['date']
+            className = request.form['className']
+            changes = parse_change_subjects_from_form(request.form)
+            change = Change(date=day, className=className,
+                changes=json.dumps(changes))
+            key = change.put()
+            return redirect(url_for('main.show_change',
+                change_id=key.urlsafe()))
     else:
         today = format_date_ISO8601(date.today())
-        return render_template('admin/new_change.htm', today=today)
+        return render_template('admin/new_change.htm', today=today,
+            multi_mode=not not request.args.get('multi', False))
 
 @bp.route('/users/add', methods=['GET', 'POST'])
 def create_user():
