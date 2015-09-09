@@ -3,19 +3,38 @@
 {% block title %}Izmaiņu saraksts{% endblock %}
 
 {% block body %}
-    {% if className is undefined %}
-    <h1>Izmaiņas tuvākajā nedēļā</h1>
-    {% else %}
+    {% if className is defined %}
     <h1>Izmaiņas {{ className }} klasei tuvākajā nedēļā</h1>
+    {% elif date is defined %}
+    <h1>Izmaiņas {{ formatDate(date, form='dativs') }}</h1>
+    {% else %}
+    <h1>Izmaiņas tuvākajā nedēļā</h1>
+    {% endif %}
+    {% if dates is defined and dates | length > 0 %}
+    <div style="padding: 2rem;">
+        <p>Rādīt tikai datumu: </p>
+        <ul class="nav nav-pills">
+            {% for filterableDate in dates %}
+            <li role="presentation">
+                <a href="{{ url_for('.show_date', date=filterableDate) }}">
+                    {{ formatDate(filterableDate, form='nominativs') }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        <hr />
+    </div>
     {% endif %}
     <ul>
         {% for change in changes %}
             <li>
                 <a href="{{ url_for('.show_change', change_id=change.key.urlsafe()) }}">
-                    {% if className is undefined %}
-                    Klase: {{ change.className }}, datums: {{ change.date }}
-                    {% else %}
+                    {% if className is defined %}
                     Datums: {{ change.date }}
+                    {% elif date is defined %}
+                    Klase: {{ change.className }}
+                    {% else %}
+                    Klase: {{ change.className }}, datums: {{ change.date }}
                     {% endif %}
                 </a>
             </li>

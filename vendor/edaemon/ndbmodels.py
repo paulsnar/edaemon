@@ -25,6 +25,10 @@ class Change(ndb.Model):
         return cls.query().fetch()
 
     @classmethod
+    def get_all_for_date(cls, date):
+        return cls.query(cls.date == date).fetch()
+
+    @classmethod
     def get_all_for_class(cls, className):
         return cls.query(cls.className == className).fetch()
 

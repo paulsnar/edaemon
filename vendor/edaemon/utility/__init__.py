@@ -40,6 +40,12 @@ def extract_unique_classnames(changes):
         classNames.add(change.className)
     return classNames # sets should be regularly iteratable
 
+def extract_dates(changes):
+    dates = set()
+    for change in changes:
+        dates.add(change.date)
+    return dates
+
 def create_week_formatted():
     days = [ ]
     today = date.today()
