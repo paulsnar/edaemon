@@ -97,7 +97,7 @@ def modify_change(change_id):
 def enter_change():
     if not 'email' in session: return redirect(url_for('.login'))
     elif request.method == 'POST':
-        if request.form['multi'] == u'indeed':
+        if request.form.get('multi') == u'indeed':
             classes = request.form['classes'].split(u',')
             ids = []
             day = request.form['date']

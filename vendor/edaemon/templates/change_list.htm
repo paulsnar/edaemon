@@ -8,11 +8,11 @@
     {% elif date is defined %}
     <h1>Izmaiņas {{ formatDate(date, form='dativs') }}</h1>
     {% else %}
-    <h1>Izmaiņas tuvākajā nedēļā</h1>
+    <h1>Izmaiņas</h1>
     {% endif %}
     {% if dates is defined and dates | length > 0 %}
     <div style="padding: 2rem;">
-        <p>Rādīt tikai datumu: </p>
+        <p>Rādīt datumu: </p>
         <ul class="nav nav-pills">
             {% for filterableDate in dates %}
             <li role="presentation">
@@ -22,19 +22,19 @@
             </li>
             {% endfor %}
         </ul>
-        <hr />
     </div>
     {% endif %}
-    <ul>
+    {% if not changes is none %}
+    <ul class="nav nav-pills">
         {% for change in changes %}
             <li>
                 <a href="{{ url_for('.show_change', change_id=change.key.urlsafe()) }}">
                     {% if className is defined %}
-                    Datums: {{ change.date }}
+                    {{ formatDate(change.date, form='nominativs') }}
                     {% elif date is defined %}
-                    Klase: {{ change.className }}
+                    {{ change.className }}
                     {% else %}
-                    Klase: {{ change.className }}, datums: {{ change.date }}
+                    {{ change.className }} klase, {{ formatDate(change.date, form='dativs') }}
                     {% endif %}
                 </a>
             </li>
@@ -42,14 +42,28 @@
             Neatradu!
         {% endfor %}
     </ul>
+    {% endif %}
+    {% if classnameObjects is defined %}
+    <ul class="nav nav-pills">
+        {% for classnameObject in classnameObjects %}
+            <li>
+                <a href="{{ url_for('.show_change', change_id=classnameObject.change.key.urlsafe()) }}">
+                    {{ classnameObject.className }}
+                </a>
+            </li>
+        {% else %}
+            Nav :(
+        {% endfor %}
+    </ul>
+    {% endif %}
     {% if classNames is defined and classNames | length > 0 %}
     <div style="padding: 2rem;">
         <hr />
-        <p>Rādīt tikai klasi: </p>
+        <p>Rādīt klasi: </p>
         <ul class="nav nav-pills">
             {% for filterableClassName in classNames %}
             <li role="presentation">
-                <a href="{{ url_for('.index', class_name=filterableClassName) }}">
+                <a href="{{ url_for('.show_class', class_name=filterableClassName) }}">
                     {{ filterableClassName }}
                 </a>
             </li>
