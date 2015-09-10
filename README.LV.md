@@ -1,6 +1,6 @@
 # Edaemon
 
-This README is also [available in English](README.EN.md).
+This README is also [available in English](README.md).
 
 Edaemon ir samērā vienkārša stundu saraksta izmaiņu attēlošanas programmatūra.
 

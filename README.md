@@ -1,6 +1,6 @@
 # Edaemon
 
-Šis LASIMANI ir pieejams arī [latviešu valodā](README.md).
+Šis LASIMANI ir pieejams arī [latviešu valodā](README.lv.md).
 
 Edaemon is a quite simple application for managing changes of school timetables.
 
