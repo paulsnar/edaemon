@@ -1,4 +1,4 @@
-# Edaemon
+# Edaemon β
 
 Šis LASIMANI ir pieejams arī [latviešu valodā](README.LV.md).
 

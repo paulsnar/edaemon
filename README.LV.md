@@ -1,4 +1,4 @@
-# Edaemon
+# Edaemon β
 
 This README is also [available in English](README.md).
 
