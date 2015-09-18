@@ -95,7 +95,17 @@ def _month_form_lookup(month, form='nominativs'):
 def formatDate(_date, form=None):
     if type(_date) != date:
         # convert ISO8601 string to date object
-        _date = date(int(_date[0:4]), int(_date[5:7]), int(_date[8:10]))
+        try:
+            _date = date(int(_date[0:4]), int(_date[5:7]), int(_date[8:10]))
+        except ValueError:
+            # improper input
+            if form == 'nominativs': return u'nezināms datums'
+            if form == 'genitivs': return u'nezināma datuma'
+            if form == 'dativs': return u'nezināmam datumam'
+            if form == 'akuzativs': return u'nezināmu datumu'
+            if form == 'instrumentalis': return u'ar nezināmu datumu'
+            if form == 'lokativs': return u'nezināmā datumā'
+            if form == 'vokativs': return u'nezināmais datum'
     return '{0}.gada {1}.{2}'.format(_date.year, _date.day,
         _month_form_lookup(_date.month, form=form))
 
