@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" />
+    <meta name="robots" content="noindex,nofollow" />
     <title>{% block title %}{% endblock %} &ndash; Edaemon</title>
 </head>
 <body>
@@ -12,7 +13,6 @@
         {% block body %}{% endblock %}
         <hr />
         <footer>
-            <p style="font-size: 0.95rem;">Datumi tiek pasniegti formātā GGGG-MM-DD.</p>
             <p style="font-size: 0.95rem;" class="text-muted">Šo lapu jums uz paplātes piegādā Edaemon v{{ config.VERSION }}. Pirmkods ir pieejams <a href="https://github.com/paulsnar/edaemon">Github</a>.</p>
         </footer>
     </div>

@@ -10,6 +10,10 @@ class Change(ndb.Model):
     changes = ndb.StringProperty(indexed=False)
 
     @classmethod
+    def get_first_for_class(cls, className):
+        return cls.query(cls.className == className).fetch(1)[0]
+
+    @classmethod
     def get_week(cls):
         return cls.query(cls.date.IN(create_week_formatted())).fetch()
 
@@ -23,6 +27,10 @@ class Change(ndb.Model):
     @classmethod
     def get_all(cls):
         return cls.query().fetch()
+
+    @classmethod
+    def get_all_for_date(cls, date):
+        return cls.query(cls.date == date).fetch()
 
     @classmethod
     def get_all_for_class(cls, className):

@@ -4,6 +4,14 @@
 
 {% block body %}
     <h1>Visas izmaiņas</h1>
+    {% if changes | length > 0 %}
+    <p>
+        <button id="js__purge" class="btn btn-danger">
+            <span class="glyphicon glyphicon-trash"></span>
+            Satīrīt novecojušās izmaiņas
+        </button>
+    </p>
+    {% endif %}
     <ul>
         {% for change in changes %}
             <li style="padding: 0.5rem;">
@@ -22,3 +30,32 @@
         {% endfor %}
     </ul>
 {% endblock %}
+
+{% if changes | length > 0 %}
+{% block scripts %}
+{{ super() }}
+<script>
+    $(function() {
+        $('#js__purge').click(function() {
+            $('#js__purge').prop('disabled', 'disabled')
+                            .text('Notiek satīrīšana, lūdzu uzgaidiet...');
+            $.post("{{ url_for('.cleanup_changes') }}", function(data) {
+                var parent = $('#js__purge').parent();
+                $('#js__purge').remove();
+                var alert = $('<div>');
+                alert.addClass('alert');
+                if (data.ok === true) {
+                    alert.addClass('alert-success');
+                    alert.text('Satīrīšana darīta!');
+                    window.location.reload();
+                } else {
+                    alert.addClass('alert-danger');
+                    alert.text('Satīrīšana neizdevās.');
+                }
+                parent.append(alert);
+            });
+        });
+    });
+</script>
+{% endblock %}
+{% endif %}

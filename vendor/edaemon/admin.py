@@ -57,6 +57,23 @@ def list_changes():
     if not 'email' in session: return redirect(url_for('.login'))
     return render_template('admin/list_changes.htm', changes=Change.get_all())
 
+@bp.route('/changes/cleanup.json', methods=['POST'])
+def cleanup_changes():
+    if not 'email' in session: return jsonify(error=401, description="Not authorized")
+    else:
+        changes = Change.get_all()
+        today = date.today()
+        for change in changes:
+            try:
+                _date = date(int(change.date[0:4]), int(change.date[5:7]), int(change.date[8:10]))
+            except ValueError:
+                change.key.delete()
+            if _date.year <= today.year and \
+                _date.month <= today.month and \
+                _date.day < today.day:
+                change.key.delete()
+        return jsonify(ok=True)
+
 @bp.route('/changes/delete/<change_id>', methods=['GET', 'POST'])
 def delete_change(change_id):
     if not 'email' in session: return redirect(url_for('.login'))
