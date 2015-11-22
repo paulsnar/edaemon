@@ -97,8 +97,8 @@
                     if (className === '') continue;
                     data.classes += ',' + className;
                     for (var i = 0; i < 9; i++) {
-                        var _i = $('[data-row="'+row+'"][data-column="'+column+'"][data-num="'+i+'"]').val().trim();
-                        if (_i !== '') data['class_'+className+'_change_'+i] = _i;
+                        var _i = $('[data-row="'+row+'"][data-column="'+column+'"][data-num="'+i+'"]').val();
+                        if (_i && _i.trim() !== '') data['class_'+className+'_change_'+i] = _i.trim();
                     }
                 }
             }
