@@ -7,11 +7,11 @@ import json
 from uuid import uuid4 as uuid
 import logging
 
-from .ndbmodels import User, Change
-from .utility import (parse_change_subjects_for_form,
+from ..models import User, Change
+from ..utility import (parse_change_subjects_for_form,
     parse_change_subjects_from_form, format_date_ISO8601)
 
-bp = Blueprint('admin', __name__, template_folder='templates')
+bp = Blueprint('admin', __name__, template_folder='../templates')
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -66,11 +66,11 @@ def cleanup_changes():
         for change in changes:
             try:
                 _date = date(int(change.date[0:4]), int(change.date[5:7]), int(change.date[8:10]))
+                if _date.year <= today.year and \
+                    _date.month <= today.month and \
+                    _date.day < today.day:
+                    change.key.delete()
             except ValueError:
-                change.key.delete()
-            if _date.year <= today.year and \
-                _date.month <= today.month and \
-                _date.day < today.day:
                 change.key.delete()
         return jsonify(ok=True)
 
@@ -82,11 +82,10 @@ def delete_change(change_id):
         return redirect(url_for('.list_changes'))
     else:
         try:
-            change = Change.lookup(change_id)
+            return render_template('admin/delete_change.htm',
+                change=Change.lookup(change_id))
         except Exception:
             return render_template('admin/delete_change.htm', error=True)
-        return render_template('admin/delete_change.htm',
-            change=Change.lookup(change_id))
 
 @bp.route('/changes/edit/<change_id>', methods=['GET', 'POST'])
 def modify_change(change_id):
@@ -180,6 +179,14 @@ def change_passwd():
             return render_template('admin/change_passwd.htm', success=True)
     else:
         return render_template('admin/change_passwd.htm')
+
+@bp.route('/plans')
+def show_plans():
+    return render_template('admin/show_plans.htm')
+
+@bp.route('/plans/input', methods=['GET', 'POST'])
+def input_plan():
+    pass
 
 @bp.route('/setup', methods=['GET', 'POST'])
 def initial_setup():

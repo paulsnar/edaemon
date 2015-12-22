@@ -1,8 +1,7 @@
-from datetime import date, timedelta
 from google.appengine.ext import ndb
 import json
 
-from .utility import format_date_ISO8601, create_week_formatted
+from ..utility import create_week_formatted
 
 class Change(ndb.Model):
     className = ndb.StringProperty(indexed=True)
@@ -48,20 +47,3 @@ class Change(ndb.Model):
     @classmethod
     def delete(cls, urlsafe):
         ndb.Key(urlsafe=urlsafe).delete()
-
-
-class User(ndb.Model):
-    email = ndb.StringProperty(indexed=True)
-    passwd = ndb.StringProperty(indexed=False)
-
-    @classmethod
-    def lookup(cls, email):
-        return cls.query(cls.email == email).get()
-
-    @classmethod
-    def email_exists(cls, email):
-        return cls.query(cls.email == email).count() > 0
-
-    @classmethod
-    def count(cls):
-        return cls.query().count()
