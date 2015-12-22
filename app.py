@@ -20,6 +20,7 @@ app.config['VERSION'] = VERSION
 app.config['silent'] = int(os.environ['EDAEMON_APP_SILENT']) == 1
 
 app.register_blueprint(blueprints.main)
+app.register_blueprint(blueprints.api, url_prefix='/api')
 app.register_blueprint(blueprints.admin, url_prefix='/a')
 app.register_blueprint(blueprints.rss, url_prefix='/feeds')
 
