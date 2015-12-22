@@ -7,7 +7,7 @@ import json
 from uuid import uuid4 as uuid
 import logging
 
-from ..models import User, Change
+from ..models import User, Change, Class
 from ..utility import (parse_change_subjects_for_form,
     parse_change_subjects_from_form, format_date_ISO8601)
 
@@ -96,6 +96,7 @@ def modify_change(change_id):
         except Exception:
             return redirect(url_for('.edit_change'))
         change.className = request.form['className']
+        Class.ensure_exists(change.className)
         change.date = request.form['date']
         change.changes = json.dumps(
             parse_change_subjects_from_form(request.form))
@@ -127,6 +128,7 @@ def enter_change():
                         changes.append(None)
                     else:
                         changes.append(change)
+                Class.ensure_exists(className)
                 change = Change(date=day, className=className,
                     changes=json.dumps(changes)).put()
                 ids.append(change.urlsafe())
@@ -134,6 +136,7 @@ def enter_change():
         else:
             day = request.form['date']
             className = request.form['className']
+            Class.ensure_exists(className)
             changes = parse_change_subjects_from_form(request.form)
             change = Change(date=day, className=className,
                 changes=json.dumps(changes))
