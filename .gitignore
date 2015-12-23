@@ -1,7 +1,9 @@
-app.yaml
 lib/
-_private_*.*
-_private_*/
 *.pyc
 __pycache__
 .DS_Store
+static/**/*
+node_modules/**/*
+_private_*.*
+_private_*/**/*
+index.yaml

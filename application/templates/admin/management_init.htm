@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <title>Pārvaldīšana &ndash; Edaemon</title>
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.min.css" />
+    <meta name="robots" content="noindex,nofollow" />
+    <style>
+        .spinner {
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+        }
+        /* taken near-verbatim from https://github.com/FortAwesome/Font-Awesome/blob/83e23c36dfa56ef1c25a3a0f69e6eeb9cb763da1/less/animated.less */
+        ._spin {
+            -webkit-animation: _icon_spin 2s infinite linear;
+                    animation: _icon_spin 2s infinite linear;
+        }
+        @-webkit-keyframes _icon_spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                        transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(359deg);
+                        transform: rotate(359deg);
+            }
+        }
+        @keyframes _icon_spin {
+            0% {
+                -webkit-transform: rotate(0deg);
+                        transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(359deg);
+                        transform: rotate(359deg);
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="js__content">
+<noscript>
+    <div class="container">
+        <p>Ja jūs lasat *šo* ziņu, jums nav iespējots JavaScript, kas nozīmē, ka šo interfeisu nevar izmantot. Pamēģiniet izmantot <a href="http://browsehappy.com">jaunāku pārlūku</a> vai iespējot JavaScript.</p>
+        <p><a href="/">Doties uz sākumlapu</a></p>
+    </div>
+</noscript>
+</div>
+<script src="/static/mgmt/bundle.js"></script>
+</body>
+</html>

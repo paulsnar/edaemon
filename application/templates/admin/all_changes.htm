@@ -1,0 +1,28 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Visas izmaiņas{% endblock %}
+
+{% block body %}
+<h1>Visas izmaiņas</h1>
+{% if changes | length > 0 %}
+<p>
+    <a href="/admin/changes/purge" class="btn btn-danger">
+        <span class="glyphicon glyphicon-trash"></span>
+        Satīrīt novecojušās izmaiņas
+    </a>
+</p>
+{% endif %}
+<ul>
+    {% for change in changes %}
+    <li>
+        <a href="/changes/show/{{ change.key.urlsafe() }}">
+            klase: {{ change.for_class }}, datums: {{ change.date }}
+        </a>
+        <a href="#"> delete </a>
+        <a href="#"> edit </a>
+    </li>
+    {% else %}
+    Neatradu!
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <title>{% block title %}{% endblock %} &ndash; Edaemon</title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.min.css" />
+    {% endblock %}
+    <meta name="robots" content="noindex,nofollow" />
+</head>
+<body>
+    {% include 'includes/navbar.htm' %}
+    <div class="container">
+        {% block body %}{% endblock %}
+        <footer>
+            <hr />
+            <p style="font-size: 0.85rem;">Edaemon v{{ edaemon.version | safe }}</p>
+        </footer>
+    </div>
+{% block scripts %}
+<script src="/static/jquery/dist/jquery.min.js"></script>
+<script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
+{% endblock %}
+</body>
+</html>

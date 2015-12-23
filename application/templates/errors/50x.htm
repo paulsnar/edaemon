@@ -1,0 +1,10 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Servera kļūda{% endblock %}
+
+{% block body %}
+<h1>Akvaimandieniņ!</h1>
+<p>Serveris saskārās ar kļūdu!</p>
+<pre>Error {{ code }}{% if debug %}: {{ exception }}: {{ text }}{% endif %}</pre>
+<p>Atvainojamies par neērtībām.</p>
+{% endblock %}

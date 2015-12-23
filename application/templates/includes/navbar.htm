@@ -1,0 +1,47 @@
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ed-navbar-collapse" aria-expanded="false" type="button">
+                <span class="sr-only">Pārslēgt navigāciju</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">Edaemon</a>
+        </div>
+
+
+        <div class="collapse navbar-collapse" id="ed-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Izmaiņas nedēļai</a></li>
+                {% if users.is_current_user_admin() %}
+                <li><a href="/admin/#/">Pārvaldīšana</a></li>
+                {% endif %}
+            </ul>
+            {% if users.is_current_user_admin() %}
+            <div class="navbar-form navbar-right">
+                <a href="/admin/changes/new" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </div>
+            {% endif %}
+            {% if users.get_current_user() %}
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button" class="dropdown-toggle">
+                        {{ users.get_current_user().email() }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ users.create_logout_url('/') }}">Izlogoties</a></li>
+                    </ul>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ users.create_login_url('/') }}">Ielogoties</a></li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</nav>

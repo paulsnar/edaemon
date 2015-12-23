@@ -1,0 +1,43 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Izmaiņas{% endblock %}
+
+{% block body %}
+    <h1>Izmaiņas tuvākajai nedēļai</h1>
+    {% if dates is defined and dates | length > 0 %}
+    <br />
+    <div>
+        <p>Rādīt datumu:</p>
+        <ul class="nav nav-pills">
+            {% for date in dates %}
+            <li>
+                <a href="/changes/by_date/{{ date }}">
+                    {{ format_date(date, 'nominativs') }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% if classNames is defined and classNames | length > 0 %}
+    <br />
+    <div>
+        <p>Rādīt klasi:</p>
+        <ul class="nav nav-pills">
+            {% for className in classNames %}
+            <li>
+                <a href="/changes/for_class/{{ className }}">
+                    {{ className }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% if dates is undefined or dates | length == 0 and classNames is undefined or classNames | length == 0 %}
+    <br />
+    <div>
+        <p>Te nekā nav! Hm...</p>
+    </div>
+    {% endif %}
+{% endblock %}
