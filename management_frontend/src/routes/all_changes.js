@@ -1,17 +1,12 @@
+/*jshint -W097 */
 'use strict';
+/*jshint unused: false */
 
-// import React from 'react';
 var React = require('react');
-// import { Link } from 'react-router';
-var Link = require('react-router').Link;
-// import _ from 'lodash';
 var _ = require('lodash');
-// import { rpc, events } from '../rp';
 var rp = require('../rp');
-// import Data from '../data';
 var Data = require('../data');
 
-// import DefaultChange from '../components/DefaultChange';
 var DefaultChange = require('../components/DefaultChange');
 
 var AllChangesHandler = React.createClass({
@@ -21,7 +16,9 @@ var AllChangesHandler = React.createClass({
     componentDidMount: function() {
         rp.events.publish('spinner.start');
         this.data = { };
+        /*jshint -W119 */
         Data.changes.getAll().then(resp => {
+        /*jshint +W119 */
             rp.events.publish('spinner.stop');
             if (!this.isMounted()) return;
             this.data.changes = resp.changes;
@@ -30,7 +27,9 @@ var AllChangesHandler = React.createClass({
             } else {
                 this.setState({ loaded: true, cursor: null });
             }
+        /*jshint -W119 */
         }).catch(err => {
+        /*jshint +W119 */
             this.setState({ error: err });
         });
     },
@@ -40,7 +39,9 @@ var AllChangesHandler = React.createClass({
     },
     loadMore: function() {
         rp.events.publish('spinner.start');
+        /*jshint -W119 */
         Data.changes.getAll(this.state.cursor).then(resp => {
+        /*jshint +W119 */
             rp.events.publish('spinner.stop');
             if (!this.isMounted()) return;
             this.data.changes = this.data.changes.concat(resp.changes);
@@ -52,8 +53,9 @@ var AllChangesHandler = React.createClass({
         });
     },
     render: function() {
-        let changes, loadMore;
+        var changes, loadMore;
         if (this.state.loaded) {
+            /*jshint ignore:start */
             changes = <ul>
                 {this.data.changes.map(change =>
                     <li key={change.id}>
@@ -63,21 +65,27 @@ var AllChangesHandler = React.createClass({
                     </li>
                 )}
             </ul>;
+            /*jshint ignore:end */
         } else {
+            /*jshint ignore:start */
             changes = <p>Vienu mirklīti…</p>
+            /*jshint ignore:end */
         }
         if (this.state.cursor) {
+            /*jshint ignore:start */
             loadMore = <button className="btn btn-default" onClick={this.loadMore}>
                 <span className="glyphicon glyphicon-asterisk" /> Ielādēt vairāk
             </button>;
+            /*jshint ignore:end */
         }
+        /*jshint ignore:start */
         return <div>
             <h1>Visas izmaiņas</h1>
             {changes}
             {loadMore}
         </div>;
+        /*jshint ignore:end */
     }
 });
 
-// export { AllChangesHandler };
 module.exports = { AllChangesHandler: AllChangesHandler };

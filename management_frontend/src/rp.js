@@ -1,6 +1,8 @@
+/*jshint -W097 */
 'use strict';
 
-// import { EventEmitter } from 'events';
+/* globals Map */
+
 var events = require('events');
 var EventEmitter = events.EventEmitter;
 
@@ -19,7 +21,7 @@ var rpc = {
     is_registered: function(name) {
         return _rpmap.has(name);
     },
-    call: function(name, ...args) {
+    call: function() {
         // sign: (name, ...args, _this)
         var name = _.first(arguments);
         var args = _(arguments).drop(1).dropRight(1).value();
@@ -28,7 +30,7 @@ var rpc = {
         var func = _rpmap.get(name);
         func.apply(_this, args);
     }
-}
+};
 
 var events = {
     subscribe: function(name, callback) {
@@ -48,7 +50,6 @@ var events = {
         // _events.emit(name, ...data);
         _events.emit.apply(_events, [name].concat(args));
     }
-}
+};
 
-// export { rpc, events };
 module.exports = { rpc: rpc, events: events };

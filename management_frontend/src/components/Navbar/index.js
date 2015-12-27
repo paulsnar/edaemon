@@ -1,17 +1,15 @@
+/*jshint -W097 */
 'use strict';
+/*jshint unused: false */
 
-// import React from 'react';
 var React = require('react');
-// import { Link } from 'react-router';
 var Link = require('react-router').Link;
 
-// import { rpc, events } from '../../rp';
-var rp = require('rp');
-// import { Spinner } from './Spinner';
 var Spinner = require('./Spinner').Spinner;
 
 var Navbar = React.createClass({
     render: function() {
+        /*jshint ignore:start */
         return <nav className="navbar navbar-inverse navbar-fixed-top">
             <div className="container">
                 <div className="navbar-header">
@@ -55,8 +53,8 @@ var Navbar = React.createClass({
                 </div>
             </div>
         </nav>;
+        /*jshint ignore:end */
     }
 });
 
-// export { Navbar };
 module.exports = { Navbar: Navbar };

@@ -1,13 +1,12 @@
 'use strict';
+/*jshint ignore:start */
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var babel = require('gulp-babel');
-var minify = require('gulp-minify');
-var webpack = require('webpack');
-var karma = require('karma');
 
 /* begin dist */
+var webpack = require('webpack');
+var minify = require('gulp-minify');
 
 gulp.task('js.dist.pack', function(cb) {
     webpack({
@@ -56,11 +55,20 @@ gulp.task('dist', ['js.dist']);
 /* end dist */
 
 /* begin dev */
+var babel = require('gulp-babel');
+var karma = require('karma');
+var jshint = require('gulp-jshint');
 
 gulp.task('js.babel', function() {
     return gulp.src('src/**/*.js')
         .pipe(babel())
         .pipe(gulp.dest('js/'));
+});
+
+gulp.task('js.hint', function() {
+    return gulp.src('src/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter('default', { verbose: true }));
 });
 
 gulp.task('js.babel-test', function() {

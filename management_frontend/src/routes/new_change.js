@@ -1,14 +1,10 @@
+/*jshint -W097 */
 'use strict';
+/*jshint unused: false */
 
-// import React from 'react';
 var React = require('react');
-// import { Link } from 'react-router';
 var Link = require('react-router').Link;
-// import _ from 'lodash';
 var _ = require('lodash');
-// import { rpc, events } from '../rp';
-var rp = require('../rp');
-// import Data from '../data';
 var Data = require('../data');
 
 var Column = React.createClass({
@@ -21,10 +17,12 @@ var Column = React.createClass({
     addRow: function() {
         var lessons = this.state.lessons;
         lessons.push('');
-        this.setState({ lessons });
+        this.setState({ lessons: lessons });
     },
     createHandleChange: function(name, index) {
+        /*jshint -W119 */
         return (e) => {
+        /*jshint +W119 */
             if (!this.isMounted()) return;
             if (name === 'className') {
                 this.setState({ className: e.target.value });
@@ -41,7 +39,9 @@ var Column = React.createClass({
             return false;
         }
         var s = _.cloneDeep(this.state);
+        /*jshint -W119 */
         s.lessons = _.map(s.lessons, lesson => {
+        /*jshint +W119 */
             if (lesson === '' || lesson === '-') {
                 return null;
             } else {
@@ -52,6 +52,7 @@ var Column = React.createClass({
         return s;
     },
     render: function() {
+        /*jshint ignore:start */
         return <div>
             <div className={`input-group ${this.state.error === 'className' ? 'has-error' : ''}`}>
                 <span className="input-group-addon">Klase</span>
@@ -69,6 +70,7 @@ var Column = React.createClass({
                 <span className="glyphicon glyphicon-plus" />
             </button>
         </div>;
+        /*jshint ignore:end */
     }
 });
 
@@ -90,7 +92,9 @@ var NewChangeHandler = React.createClass({
                 this.setState({ saving: false, error: 'date' });
                 return false;
             }
+            /*jshint -W119 */
             var changes = _.times(this.state.columns, (i) => {
+            /*jshint +W119 */
                 var serialized = this.refs[i].serialize();
                 if (serialized === false) {
                     this.setState({ saving: false, error: 'className' });
@@ -99,8 +103,10 @@ var NewChangeHandler = React.createClass({
                     return serialized;
                 }
             });
-            Data.changes.input({ date: this.state.date, changes })
+            Data.changes.input({ date: this.state.date, changes: changes })
+                /*jshint -W119 */
                 .then(result => {
+                /*jshint +W119 */
                     if (!this.isMounted()) return;
                     if (result.success) {
                         // show stuff
@@ -113,35 +119,44 @@ var NewChangeHandler = React.createClass({
             return false;
         }
     },
-    render() {
+    render: function() {
         if (this.state.saved === false) {
             var _error = '';
             if (this.state.savingError) {
                 var _innerText = '';
                 if (this.state.errorText) {
+                    /*jshint ignore:start */
                     _innerText = <span>
                         Serveris atbildēja:&nbsp;
                         <pre>{this.state.errorText}</pre>
                     </span>;
+                    /*jshint ignore:end */
                 }
+                /*jshint ignore:start */
                 _error = <div className="alert alert-danger alert-dismissible">
                     <button className="close">&times;</button>
                     <strong>Ak vai!</strong>&nbsp;
                     Saglabājot radās kļūda.&nbsp;
                     {_innerText}
                 </div>;
+                /*jshint ignore:end */
             }
             if (this.state.error) {
                 if (this.state.error === 'date') {
+                    /*jshint ignore:start */
                     _error = <div className="alert alert-danger">
                         Lūdzu ievadiet datumu.
                     </div>;
+                    /*jshint ignore:end */
                 } else if (this.state.error === 'className') {
+                    /*jshint ignore:start */
                     _error = <div className="alert alert-danger">
                         Lūdzu pārliecinieties, ka visas klases ir aizpildītas pareizi.
                     </div>;
+                    /*jshint ignore:end */
                 }
             }
+            /*jshint ignore:start */
             return <div>
                 <h1><span className="glyphicon glyphicon-plus" /> Ievadīt jaunas izmaiņas</h1>
                 {_error}
@@ -176,7 +191,9 @@ var NewChangeHandler = React.createClass({
                     {this.state.saving ? 'Notiek saglabāšana…' : 'Saglabāt'}
                 </button>
             </div>;
+            /*jshint ignore:end */
         } else {
+            /*jshint ignore:start */
             return <div>
                 <h1><span className="glyphicon glyphicon-plus" /> Ievadīt jaunas izmaiņas</h1>
                 <div className="alert alert-success">
@@ -191,6 +208,7 @@ var NewChangeHandler = React.createClass({
                     )}
                 </ul>
             </div>;
+            /*jshint ignore:end */
         }
     }
 });

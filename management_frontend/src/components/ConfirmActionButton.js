@@ -1,8 +1,7 @@
+/*jshint -W097 */
 'use strict';
 
-// import React from 'react';
 var React = require('react');
-// import _ from 'lodash';
 var _ = require('lodash');
 
 /**
@@ -40,7 +39,9 @@ var ConfirmActionButton = React.createClass({
             // second click
             this.setState({ confirm: false, processing: true, disabled: true });
             if (this.props.callback) {
+                /*jshint -W119 */
                 this.props.callback((success, newText, disabled) => {
+                /*jshint +W119 */
                     disabled = disabled || false;
                     // onError
                     if (newText) {
@@ -95,6 +96,7 @@ var ConfirmActionButton = React.createClass({
         if (this.state.disabled) {
             _disabled = true;
         }
+        /*jshint ignore:start */
         return <button
             className={(this.props.className || 'btn btn-default') +
                 (_disabled ? ' disabled' : '')}
@@ -102,8 +104,8 @@ var ConfirmActionButton = React.createClass({
             <span className={_iconClass} />&nbsp;
             {_innerText}
         </button>
+        /*jshint ignore:end */
     }
 });
 
-// export default ConfirmActionButton;
 module.exports = ConfirmActionButton;

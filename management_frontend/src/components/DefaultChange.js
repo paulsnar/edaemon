@@ -1,26 +1,28 @@
+/*jshint -W097 */
 'use strict';
+/*jshint unused: false */
 
-// import React from 'react';
 var React = require('react');
-// import { Link } from 'react-router';
 var Link = require('react-router').Link;
 
-// import Data from '../data';
 var Data = require('../data');
-// import ConfirmActionButton from './ConfirmActionButton';
 var ConfirmActionButton = require('./ConfirmActionButton');
 
 var DefaultChange = React.createClass({
     handleDeleteClicked: function(callback) {
         Data.changes.delete(this.props.change.id)
+            /*jshint -W119 */
             .then(result => {
+            /*jshint +W119 */
                 if (result.success) {
                     if (this.props.removeCallback) {
                         this.props.removeCallback();
                     }
                 }
             })
-            .catch(err => {
+            /*jshint -W119 */
+            .catch(() => {
+            /*jshint +W119 */
                 if (!this.isMounted()) return;
                 callback(false);
             });
@@ -31,6 +33,7 @@ var DefaultChange = React.createClass({
         }
     },
     render: function() {
+        /*jshint ignore:start */
         return <span>
             <ConfirmActionButton
                 className="btn btn-danger btn-xs"
@@ -47,8 +50,8 @@ var DefaultChange = React.createClass({
                 klase: {this.props.change.for_class}
             </Link>
         </span>;
+        /*jshint ignore:end */
     }
 });
 
 module.exports = DefaultChange;
-// export default DefaultChange;

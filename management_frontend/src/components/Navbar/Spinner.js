@@ -1,11 +1,9 @@
+/*jshint -W097 */
 'use strict';
 
-// import React from 'react';
 var React = require('react');
-// import Spin from 'spin';
 var Spin = require('spin');
 
-// import { rpc, events } from '../../rp';
 var rp = require('../../rp');
 
 var Spinner = React.createClass({
@@ -39,7 +37,14 @@ var Spinner = React.createClass({
         }
     },
     render: function() {
-        return <a ref="spinner" className="disabled" style={{ color: 'transparent' }}>&nbsp;</a>;
+        /*jshint ignore:start */
+        return <a
+            ref="spinner"
+            className="disabled"
+            style={{ color: 'transparent' }}>
+            &nbsp;
+        </a>;
+        /*jshint ignore:end */
     }
 });
 

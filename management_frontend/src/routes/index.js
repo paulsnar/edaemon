@@ -1,40 +1,39 @@
+/*jshint -W097 */
 'use strict';
+/*jshint unused: false */
 
-// import React from 'react';
 var React = require('react');
-// import { Link } from 'react-router';
 var Link = require('react-router').Link;
-// import _ from 'lodash';
 var _ = require('lodash');
-// import { rpc, events } from '../rp';
-var rp = require('rp');
-// import Data from '../data';
+var rp = require('../rp');
 var Data = require('../data');
 
-// import DefaultChange from '../components/DefaultChange';
 var DefaultChange = require('../components/DefaultChange');
 
 var ChangesColumn = React.createClass({
-    getInitialState() {
+    getInitialState: function() {
         return { loaded: false };
     },
-    componentDidMount() {
+    componentDidMount: function() {
         rp.events.publish('spinner.start');
         this.data = { };
+        /*jshint -W119 */
         Data.changes.getWeek().then(resp => {
+        /*jshint +W119 */
             rp.events.publish('spinner.stop');
             if (!this.isMounted()) return;
             this.data.changes = resp.changes;
             this.setState({ loaded: true });
         });
     },
-    removeChild(change) {
+    removeChild: function(change) {
         _.remove(this.data.changes, change);
         this.forceUpdate();
     },
-    render() {
+    render: function() {
         var changes;
         if (this.state.loaded) {
+            /*jshint ignore:start */
             changes = <ul>
                 {this.data.changes.map(change =>
                     <li key={change.id}>
@@ -44,9 +43,13 @@ var ChangesColumn = React.createClass({
                     </li>
                 )}
             </ul>;
+            /*jshint ignore:end */
         } else {
+            /*jshint ignore:start */
             changes = <p>Vienu mirklīti!</p>;
+            /*jshint ignore:end */
         }
+        /*jshint ignore:start */
         return <div>
             <h2>Izmaiņas <small>(nedēļai)</small></h2>
             {changes}
@@ -62,19 +65,21 @@ var ChangesColumn = React.createClass({
                 </Link>
             </p>
         </div>;
+        /*jshint ignore:end */
     }
 });
 
 var IndexHandler = React.createClass({
-    render() {
+    render: function() {
+        /*jshint ignore:start */
         return <div>
             <h1>Pārvaldīšana</h1>
             <div className="row">
                 <ChangesColumn className="col-md-6" />
             </div>
         </div>;
+        /*jshint ignore:end */
     }
 });
 
-// export { IndexHandler };
 module.exports = { IndexHandler: IndexHandler };
