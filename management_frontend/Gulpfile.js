@@ -2,10 +2,14 @@
 
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var babel = require('gulp-babel');
 var minify = require('gulp-minify');
 var webpack = require('webpack');
+var karma = require('karma');
 
-gulp.task('js.pack', function(cb) {
+/* begin dist */
+
+gulp.task('js.dist.pack', function(cb) {
     webpack({
         context: __dirname + '/src',
         entry: './entry.js',
@@ -34,20 +38,49 @@ gulp.task('js.pack', function(cb) {
     });
 });
 
-gulp.task('js.minify', ['js.pack'], function() {
+gulp.task('js.dist.minify', ['js.dist.pack'], function() {
     gulp.src('dist/bundle.js')
         .pipe(minify())
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('js.copy', ['js.pack', 'js.minify'], function() {
+gulp.task('js.dist.copy', ['js.dist.pack', 'js.dist.minify'], function() {
     gulp.src('dist/*.js')
         .pipe(gulp.dest('../static/mgmt/'));
 });
 
-gulp.task('js', ['js.pack', 'js.minify', 'js.copy']);
-gulp.task('js.watch', function() {
-    return gulp.watch('src/**/*.js', ['js']);
+gulp.task('js.dist', ['js.dist.pack', 'js.dist.minify', 'js.dist.copy']);
+
+gulp.task('dist', ['js.dist']);
+
+/* end dist */
+
+/* begin dev */
+
+gulp.task('js.babel', function() {
+    return gulp.src('src/**/*.js')
+        .pipe(babel())
+        .pipe(gulp.dest('js/'));
 });
 
-gulp.task('default', ['js']);
+gulp.task('js.babel-test', function() {
+    return gulp.src('src/**/*.js')
+        .pipe(babel({
+            plugins: ['babel-plugin-rewire']
+        }))
+        .pipe(gulp.dest('js/'));
+});
+gulp.task('js.test', ['js.babel-test'], function(done) {
+    new karma.Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done).start();
+});
+
+/* end dev */
+
+// gulp.task('js.watch', function() {
+//     return gulp.watch('src/**/*.js', ['js']);
+// });
+
+// gulp.task('default', ['js']);
