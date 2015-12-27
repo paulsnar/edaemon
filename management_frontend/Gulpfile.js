@@ -71,14 +71,7 @@ gulp.task('js.hint', function() {
         .pipe(jshint.reporter('default', { verbose: true }));
 });
 
-gulp.task('js.babel-test', function() {
-    return gulp.src('src/**/*.js')
-        .pipe(babel({
-            plugins: ['babel-plugin-rewire']
-        }))
-        .pipe(gulp.dest('js/'));
-});
-gulp.task('js.test', ['js.babel-test'], function(done) {
+gulp.task('js.test', function(done) {
     new karma.Server({
         configFile: __dirname + '/karma.conf.js',
         singleRun: true
