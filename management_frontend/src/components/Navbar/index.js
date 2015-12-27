@@ -1,13 +1,17 @@
 'use strict';
 
-import React from 'react';
-import { Link } from 'react-router';
+// import React from 'react';
+var React = require('react');
+// import { Link } from 'react-router';
+var Link = require('react-router').Link;
 
-import { rpc, events } from '../../rp';
-import { Spinner } from './Spinner';
+// import { rpc, events } from '../../rp';
+var rp = require('rp');
+// import { Spinner } from './Spinner';
+var Spinner = require('./Spinner').Spinner;
 
-let Navbar = React.createClass({
-    render() {
+var Navbar = React.createClass({
+    render: function() {
         return <nav className="navbar navbar-inverse navbar-fixed-top">
             <div className="container">
                 <div className="navbar-header">
@@ -26,10 +30,22 @@ let Navbar = React.createClass({
                 </div>
 
                 <div className="collapse navbar-collapse">
-                    <ul className="nav navbar-nav">
-                        <li><Link to="/">Something something</Link></li>
-                        <li><Link to="/">Something something</Link></li>
-                        <li><Link to="/">Something something</Link></li>
+                    <div className="navbar-form navbar-left btn-group">
+                        <button className="btn btn-default dropdown-toggle"
+                            data-toggle="dropdown"
+                            ref={(c) => { $(c).dropdown(); }}>
+                            <span className="glyphicon glyphicon-plus" />
+                        </button>
+                        <ul className="dropdown-menu">
+                            <li><Link to="/changes/new">Izmaiņas</Link></li>
+                        </ul>
+                    </div>
+                    <ul className="nav navbar-nav navbar-left">
+                        <li>
+                            <Link to="/changes/all">
+                                Visas izmaiņas
+                            </Link>
+                        </li>
                     </ul>
                     <ul className="nav navbar-nav navbar-right">
                         <li>
@@ -40,6 +56,7 @@ let Navbar = React.createClass({
             </div>
         </nav>;
     }
-})
+});
 
-export { Navbar };
+// export { Navbar };
+module.exports = { Navbar: Navbar };

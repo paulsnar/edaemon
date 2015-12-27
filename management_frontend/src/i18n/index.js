@@ -1,6 +1,7 @@
 'use strict';
 
-import _ from 'lodash';
+// import _ from 'lodash';
+var _ = require('lodash');
 
 function formatMonth(month, form='nominativs') {
     switch (form) {
@@ -126,11 +127,11 @@ function formatMonth(month, form='nominativs') {
 }
 
 function formatDate(ISO8601_string, form='nominativs') {
-    let split = ISO8601_string.split('-');
+    var split = ISO8601_string.split('-');
     if (split.length !== 3) {
-
+        return null;
     } else {
-        let [year, month, day] = split;
+        var [year, month, day] = split;
         if (_.isNaN(Number(year)) || _.isNaN(Number(month)) ||
             _.isNaN(Number(day))) {
             switch (form) {
@@ -149,4 +150,5 @@ function formatDate(ISO8601_string, form='nominativs') {
     }
 }
 
-export { formatMonth, formatDate };
+// export { formatMonth, formatDate };
+module.exports = { formatMonth: formatMonth, formatDate: formatDate };

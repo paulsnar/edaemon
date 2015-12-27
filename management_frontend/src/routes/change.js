@@ -1,33 +1,39 @@
 'use strict';
 
-import React from 'react';
-import { Link } from 'react-router';
-import _ from 'lodash';
+// import React from 'react';
+var React = require('react');
+// import { Link } from 'react-router';
+var Link = require('react-router').Link;
+// import _ from 'lodash';
+var _ = require('lodash');
 
-import { formatDate } from '../i18n';
-import { rpc, events } from '../rp';
-import Data from '../data';
+// import { formatDate } from '../i18n';
+var formatDate = require('../i18n').formatDate;
+// import { rpc, events } from '../rp';
+var rp = require('../rp');
+// import Data from '../data';
+var Data = require('../data');
 
-let ChangeHandler = React.createClass({
-    componentDidMount() {
-        events.publish('spinner.start');
+var ChangeHandler = React.createClass({
+    componentDidMount: function() {
+        rp.events.publish('spinner.start');
         this.data = { };
         Data.changes.get(this.props.params.id).then(change => {
-            events.publish('spinner.stop');
+            rp.events.publish('spinner.stop');
             if (!this.isMounted()) return;
             this.data.change = change.change;
             this.setState({ loaded: true });
         }).catch(err => {
-            events.publish('spinner.stop');
+            rp.events.publish('spinner.stop');
             console.log(err);
             if (!this.isMounted()) return;
             this.setState({ error: err });
         });
     },
-    getInitialState() {
+    getInitialState: function() {
         return { loaded: false };
     },
-    render() {
+    render: function() {
         if (this.state.loaded) {
             return <div>
                 <h1>Izmaiņas {this.data.change.for_class} klasei</h1>
@@ -60,4 +66,5 @@ let ChangeHandler = React.createClass({
     }
 });
 
-export { ChangeHandler };
+// export { ChangeHandler };
+module.exports = { ChangeHandler: ChangeHandler };

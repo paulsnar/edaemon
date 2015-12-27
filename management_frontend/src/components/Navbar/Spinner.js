@@ -1,12 +1,15 @@
 'use strict';
 
-import React from 'react';
-import Spin from 'spin';
+// import React from 'react';
+var React = require('react');
+// import Spin from 'spin';
+var Spin = require('spin');
 
-import { rpc, events } from '../../rp';
+// import { rpc, events } from '../../rp';
+var rp = require('../../rp');
 
-let Spinner = React.createClass({
-    componentDidMount() {
+var Spinner = React.createClass({
+    componentDidMount: function() {
         this.spinner = new Spin({
             length: 6,
             width: 3,
@@ -19,23 +22,26 @@ let Spinner = React.createClass({
             hwaccel: true
         });
         this._s = 0;
-        events.subscribe('spinner.start', this.startSpinner);
-        events.subscribe('spinner.stop', this.stopSpinner);
+        rp.events.subscribe('spinner.start', this.startSpinner);
+        rp.events.subscribe('spinner.stop', this.stopSpinner);
     },
-    startSpinner() {
+    startSpinner: function() {
         // this spinner is a semaphore
         this._s++;
-        if (this._s > 0)
+        if (this._s > 0) {
             this.spinner.spin(this.refs.spinner);
+        }
     },
-    stopSpinner() {
+    stopSpinner: function() {
         this._s--;
-        if (this._s <= 0)
+        if (this._s <= 0) {
             this.spinner.stop();
+        }
     },
-    render() {
+    render: function() {
         return <a ref="spinner" className="disabled" style={{ color: 'transparent' }}>&nbsp;</a>;
     }
 });
 
-export { Spinner };
+// export { Spinner };
+module.exports = { Spinner: Spinner };

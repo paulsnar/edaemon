@@ -1,41 +1,46 @@
 'use strict';
 
-import React from 'react';
-import { Link } from 'react-router';
-import _ from 'lodash';
-import { rpc, events } from '../rp';
-import Data from '../data';
+// import React from 'react';
+var React = require('react');
+// import { Link } from 'react-router';
+var Link = require('react-router').Link;
+// import _ from 'lodash';
+var _ = require('lodash');
+// import { rpc, events } from '../rp';
+var rp = require('../rp');
+// import Data from '../data';
+var Data = require('../data');
 
-let Column = React.createClass({
-    getInitialState() {
+var Column = React.createClass({
+    getInitialState: function() {
         return {
             className: '',
             lessons: [ '', '', '', '', '', '' ]
         };
     },
-    addRow() {
-        let lessons = this.state.lessons;
+    addRow: function() {
+        var lessons = this.state.lessons;
         lessons.push('');
         this.setState({ lessons });
     },
-    createHandleChange(name, index) {
+    createHandleChange: function(name, index) {
         return (e) => {
             if (!this.isMounted()) return;
             if (name === 'className') {
                 this.setState({ className: e.target.value });
             } else if (name === 'lesson') {
-                let lessons = this.state.lessons;
+                var lessons = this.state.lessons;
                 lessons[index] = e.target.value;
-                this.setState({ lessons });
+                this.setState({ lessons: lessons });
             }
         };
     },
-    serialize() {
+    serialize: function() {
         if (this.state.className.trim() === '') {
             this.setState({ error: 'className' });
             return false;
         }
-        let s = _.cloneDeep(this.state);
+        var s = _.cloneDeep(this.state);
         s.lessons = _.map(s.lessons, lesson => {
             if (lesson === '' || lesson === '-') {
                 return null;
@@ -45,9 +50,8 @@ let Column = React.createClass({
         });
         this.setState({ error: null });
         return s;
-        // return this.state; // so good
     },
-    render() {
+    render: function() {
         return <div>
             <div className={`input-group ${this.state.error === 'className' ? 'has-error' : ''}`}>
                 <span className="input-group-addon">Klase</span>
@@ -68,33 +72,26 @@ let Column = React.createClass({
     }
 });
 
-let NewChangeHandler = React.createClass({
-    // componentWillMount() {
-    //     this.columns = [ <Column key={0} /> ];
-    // },
-    addColumn() {
-        // this.columns.push(<Column key={this.columns.length} />);
-        // this.forceUpdate();
+var NewChangeHandler = React.createClass({
+    addColumn: function() {
         this.setState({ columns: this.state.columns + 1 });
     },
-    getInitialState() {
+    getInitialState: function() {
         return { columns: 1, saving: false,
             savingError: false, saved: false, date: '' };
     },
-    handleDateChange(e) {
+    handleDateChange: function(e) {
         this.setState({ date: e.target.value });
     },
-    doSave() {
+    doSave: function() {
         try {
             this.setState({ saving: true, error: null });
             if (this.state.date === '') {
                 this.setState({ saving: false, error: 'date' });
                 return false;
             }
-            let changes = _.map(Array(this.state.columns), (drop, i) => {
-                // column.serialize()
-                // console.log(column);
-                let serialized = this.refs[i].serialize();
+            var changes = _.times(this.state.columns, (i) => {
+                var serialized = this.refs[i].serialize();
                 if (serialized === false) {
                     this.setState({ saving: false, error: 'className' });
                     throw new Error();
@@ -118,9 +115,9 @@ let NewChangeHandler = React.createClass({
     },
     render() {
         if (this.state.saved === false) {
-            let _error = '';
+            var _error = '';
             if (this.state.savingError) {
-                let _innerText = '';
+                var _innerText = '';
                 if (this.state.errorText) {
                     _innerText = <span>
                         Serveris atbildēja:&nbsp;
@@ -163,10 +160,7 @@ let NewChangeHandler = React.createClass({
                     </div>
                 </div>
                 <div className="row">
-                    {/*this.columns.map((column, i) => <div className="col-md-2" key={i} style={{ padding: '0.5rem' }}>
-                         {column}
-                    </div>)*/}
-                    {_.map(Array(this.state.columns), (drop, i) =>
+                    {_.times(this.state.columns, (i) =>
                     <div className="col-md-2" key={i} style={{ padding: '0.5rem' }}>
                         <Column ref={i} />
                     </div>
@@ -201,4 +195,5 @@ let NewChangeHandler = React.createClass({
     }
 });
 
-export { NewChangeHandler };
+// export { NewChangeHandler };
+module.exports = { NewChangeHandler: NewChangeHandler };

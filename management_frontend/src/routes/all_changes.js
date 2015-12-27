@@ -1,22 +1,28 @@
 'use strict';
 
-import React from 'react';
-import { Link } from 'react-router';
-import _ from 'lodash';
-import { rpc, events } from '../rp';
-import Data from '../data';
+// import React from 'react';
+var React = require('react');
+// import { Link } from 'react-router';
+var Link = require('react-router').Link;
+// import _ from 'lodash';
+var _ = require('lodash');
+// import { rpc, events } from '../rp';
+var rp = require('../rp');
+// import Data from '../data';
+var Data = require('../data');
 
-import { Change } from './index';
+// import DefaultChange from '../components/DefaultChange';
+var DefaultChange = require('../components/DefaultChange');
 
-let AllChangesHandler = React.createClass({
-    getInitialState() {
+var AllChangesHandler = React.createClass({
+    getInitialState: function() {
         return { loaded: false, changes: null };
     },
-    componentDidMount() {
-        events.publish('spinner.start');
+    componentDidMount: function() {
+        rp.events.publish('spinner.start');
         this.data = { };
         Data.changes.getAll().then(resp => {
-            events.publish('spinner.stop');
+            rp.events.publish('spinner.stop');
             if (!this.isMounted()) return;
             this.data.changes = resp.changes;
             if (resp.cursor) {
@@ -28,14 +34,14 @@ let AllChangesHandler = React.createClass({
             this.setState({ error: err });
         });
     },
-    removeChild(change) {
+    removeChild: function(change) {
         _.remove(this.data.changes, change);
         this.forceUpdate();
     },
-    loadMore() {
-        events.publish('spinner.start');
+    loadMore: function() {
+        rp.events.publish('spinner.start');
         Data.changes.getAll(this.state.cursor).then(resp => {
-            events.publish('spinner.stop');
+            rp.events.publish('spinner.stop');
             if (!this.isMounted()) return;
             this.data.changes = this.data.changes.concat(resp.changes);
             if (resp.cursor) {
@@ -45,15 +51,16 @@ let AllChangesHandler = React.createClass({
             }
         });
     },
-    render() {
+    render: function() {
         let changes, loadMore;
         if (this.state.loaded) {
             changes = <ul>
                 {this.data.changes.map(change =>
-                    <Change
-                        key={change.id}
-                        change={change}
-                        removeSelfCallback={this.removeChild.bind(this, change)} />
+                    <li key={change.id}>
+                        <DefaultChange
+                            change={change}
+                            removeCallback={this.removeChild.bind(this, change)} />
+                    </li>
                 )}
             </ul>;
         } else {
@@ -72,4 +79,5 @@ let AllChangesHandler = React.createClass({
     }
 });
 
-export { AllChangesHandler };
+// export { AllChangesHandler };
+module.exports = { AllChangesHandler: AllChangesHandler };

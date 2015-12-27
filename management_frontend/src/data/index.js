@@ -12,21 +12,21 @@ function check200(resp) {
     }
 }
 
-let changes = {
-    get(id) {
+var changes = {
+    get: function(id) {
         return fetch(`/api/changes/${id}`,
             { credentials: 'same-origin' })
             .then(check200)
             .then(r => r.json());
     },
-    getWeek() {
+    getWeek: function() {
         return fetch('/api/changes/week',
             { credentials: 'same-origin' })
             .then(check200)
             .then(r => r.json());
     },
-    getAll(cursor) {
-        let p;
+    getAll: function(cursor) {
+        var p;
         if (cursor) {
             p = fetch(`/api/changes/all?cursor=${cursor}`,
                 { credentials: 'same-origin' });
@@ -38,12 +38,12 @@ let changes = {
             .then(check200)
             .then(r => r.json());
     },
-    delete(id) {
+    delete: function(id) {
         return fetch(`/api/changes/${id}`,
             { method: 'delete', credentials: 'same-origin' })
             .then(r => r.json());
     },
-    input(data) {
+    input: function(data) {
         return fetch('/api/changes',
             { method: 'post', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
@@ -52,8 +52,6 @@ let changes = {
     }
 }
 
-let Data = {
+module.exports = {
     changes
 };
-
-export default Data;

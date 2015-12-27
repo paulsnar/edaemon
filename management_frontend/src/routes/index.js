@@ -1,79 +1,28 @@
 'use strict';
 
-import React from 'react';
-import { Link } from 'react-router';
-import _ from 'lodash';
-import { rpc, events } from '../rp';
-import Data from '../data';
+// import React from 'react';
+var React = require('react');
+// import { Link } from 'react-router';
+var Link = require('react-router').Link;
+// import _ from 'lodash';
+var _ = require('lodash');
+// import { rpc, events } from '../rp';
+var rp = require('rp');
+// import Data from '../data';
+var Data = require('../data');
 
-let Change = React.createClass({
-    getInitialState() {
-        return { deleteConfirm: false, deleting: false, deletionError: false };
-    },
-    handleDeleteClicked() {
-        if (this.state.deleting) {
-            // noop!
-        } else if (this.state.deleteConfirm) {
-            this.setState({ deleteConfirm: false, deleting: true });
-            Data.changes.delete(this.props.change.id)
-                .then(result => {
-                    if (result.success) {
-                        this.props.removeSelfCallback();
-                    }
-                })
-                .catch(err => {
-                    if (!this.isMounted()) return;
-                    this.setState({ deleting: false, deletionError: true });
-                })
-        } else {
-            this.setState({ deletionError: false, deleteConfirm: true });
-        }
-    },
-    render() {
-        let _deleteText, _iconClass, _disabled = false;
-        if (this.state.deleteConfirm) {
-            _deleteText = 'Tiešām?';
-            _iconClass = 'glyphicon-trash';
-        } else if (this.state.deletionError) {
-            _deleteText = 'Neizdevās!';
-            _iconClass = 'glyphicon-alert';
-        } else if (this.state.deleting) {
-            _deleteText = 'Vienu mirklīti...';
-            _iconClass = 'glyphicon-cog _spin';
-            _disabled = true;
-        } else {
-            _deleteText = '';
-            _iconClass = 'glyphicon-trash';
-        }
-        return <li style={{ padding: '0.5rem' }}>
-            <button
-                className={`btn btn-danger btn-xs ${_disabled ? 'disabled':''}`}
-                onClick={this.handleDeleteClicked}>
-                <span className={`glyphicon ${_iconClass}`} /> {_deleteText}
-            </button>
-            &nbsp;
-            <Link className="btn btn-default btn-xs"
-                to={`/changes/${this.props.change.id}/edit`}>
-                <span className="glyphicon glyphicon-pencil" />
-            </Link>
-            &nbsp;
-            <Link to={`/changes/${this.props.change.id}`}>
-                Datums: {this.props.change.for_date},&nbsp;
-                klase: {this.props.change.for_class}
-            </Link>
-        </li>;
-    }
-});
+// import DefaultChange from '../components/DefaultChange';
+var DefaultChange = require('../components/DefaultChange');
 
-let ChangesColumn = React.createClass({
+var ChangesColumn = React.createClass({
     getInitialState() {
         return { loaded: false };
     },
     componentDidMount() {
-        events.publish('spinner.start');
+        rp.events.publish('spinner.start');
         this.data = { };
         Data.changes.getWeek().then(resp => {
-            events.publish('spinner.stop');
+            rp.events.publish('spinner.stop');
             if (!this.isMounted()) return;
             this.data.changes = resp.changes;
             this.setState({ loaded: true });
@@ -84,14 +33,15 @@ let ChangesColumn = React.createClass({
         this.forceUpdate();
     },
     render() {
-        let changes;
+        var changes;
         if (this.state.loaded) {
             changes = <ul>
                 {this.data.changes.map(change =>
-                    <Change
-                        key={change.id}
-                        change={change}
-                        removeSelfCallback={this.removeChild.bind(this, change)} />
+                    <li key={change.id}>
+                        <DefaultChange
+                            change={change}
+                            removeCallback={this.removeChild.bind(this, change)} />
+                    </li>
                 )}
             </ul>;
         } else {
@@ -115,7 +65,7 @@ let ChangesColumn = React.createClass({
     }
 });
 
-let IndexHandler = React.createClass({
+var IndexHandler = React.createClass({
     render() {
         return <div>
             <h1>Pārvaldīšana</h1>
@@ -126,4 +76,5 @@ let IndexHandler = React.createClass({
     }
 });
 
-export { Change, IndexHandler };
+// export { IndexHandler };
+module.exports = { IndexHandler: IndexHandler };
