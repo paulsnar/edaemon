@@ -14,19 +14,15 @@ let ChangeHandler = React.createClass({
         this.data = { };
         Data.changes.get(this.props.params.id).then(change => {
             events.publish('spinner.stop');
+            if (!this.isMounted()) return;
             this.data.change = change.change;
             this.setState({ loaded: true });
         }).catch(err => {
             events.publish('spinner.stop');
-            this.setState({ error: err });
             console.log(err);
+            if (!this.isMounted()) return;
+            this.setState({ error: err });
         });
-    },
-    componentWillUnmount() {
-        if (this._loadTimeout) {
-            window.clearTimeout(this._loadTimeout);
-            events.publish('spinner.stop');
-        }
     },
     getInitialState() {
         return { loaded: false };

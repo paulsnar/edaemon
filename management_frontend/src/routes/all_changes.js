@@ -17,6 +17,7 @@ let AllChangesHandler = React.createClass({
         this.data = { };
         Data.changes.getAll().then(resp => {
             events.publish('spinner.stop');
+            if (!this.isMounted()) return;
             this.data.changes = resp.changes;
             if (resp.cursor) {
                 this.setState({ loaded: true, cursor: resp.cursor });
@@ -35,6 +36,7 @@ let AllChangesHandler = React.createClass({
         events.publish('spinner.start');
         Data.changes.getAll(this.state.cursor).then(resp => {
             events.publish('spinner.stop');
+            if (!this.isMounted()) return;
             this.data.changes = this.data.changes.concat(resp.changes);
             if (resp.cursor) {
                 this.setState({ cursor: resp.cursor });

@@ -20,6 +20,7 @@ let Column = React.createClass({
     },
     createHandleChange(name, index) {
         return (e) => {
+            if (!this.isMounted()) return;
             if (name === 'className') {
                 this.setState({ className: e.target.value });
             } else if (name === 'lesson') {
@@ -103,6 +104,7 @@ let NewChangeHandler = React.createClass({
             });
             Data.changes.input({ date: this.state.date, changes })
                 .then(result => {
+                    if (!this.isMounted()) return;
                     if (result.success) {
                         // show stuff
                         this.setState({ saving: false, saved: true, items: result.stored });

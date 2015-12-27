@@ -22,6 +22,7 @@ let Change = React.createClass({
                     }
                 })
                 .catch(err => {
+                    if (!this.isMounted()) return;
                     this.setState({ deleting: false, deletionError: true });
                 })
         } else {
@@ -73,6 +74,7 @@ let ChangesColumn = React.createClass({
         this.data = { };
         Data.changes.getWeek().then(resp => {
             events.publish('spinner.stop');
+            if (!this.isMounted()) return;
             this.data.changes = resp.changes;
             this.setState({ loaded: true });
         });
