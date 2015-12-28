@@ -77,6 +77,41 @@ var changes = {
     }
 };
 
+var timetables = {
+    getForClass: function(forClass) {
+        if (!forClass || forClass.trim() === '') {
+            return new Promise((res, rej) => {
+                rej(new Error('No class specified'))
+            })
+        } else {
+            return fetch(`/api/timetables/for_class/${forClass}`,
+                { credentials: 'same-origin' })
+                .then(check200)
+                .then(r => r.json());
+        }
+    },
+    getAll: function(cursor) {
+        var p;
+        if (cursor) {
+            p = fetch(`/api/timetables/all?cursor=${cursor}`,
+                { credentials: 'same-origin' });
+        } else {
+            p = fetch('/api/timetables/all', { credentials: 'same-origin' });
+        }
+        return p
+            .then(check200)
+            .then(r => r.json());
+    },
+    input: function(data) {
+        return fetch('/api/timetables',
+            { method: 'post', credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data) })
+            .then(r => r.json());
+    }
+}
+
 module.exports = {
-    changes: changes
+    changes: changes,
+    timetables: timetables
 };
