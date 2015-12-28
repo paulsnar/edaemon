@@ -20,21 +20,25 @@ var Spinner = React.createClass({
             hwaccel: true
         });
         this._s = 0;
-        rp.events.subscribe('spinner.start', this.startSpinner);
-        rp.events.subscribe('spinner.stop', this.stopSpinner);
+        // for rpc:
+        this.startSpinner.__context__ = this;
+        this.stopSpinner.__context__ = this;
+
+        rp.rpc.register('spinner.start', this.startSpinner);
+        rp.rpc.register('spinner.stop', this.stopSpinner);
     },
     startSpinner: function() {
         // this spinner is a semaphore
-        this._s++;
-        if (this._s > 0) {
+        if (this._s === 0) {
             this.spinner.spin(this.refs.spinner);
         }
+        this._s++;
     },
     stopSpinner: function() {
-        this._s--;
-        if (this._s <= 0) {
+        if (this._s === 1) {
             this.spinner.stop();
         }
+        this._s--;
     },
     render: function() {
         /*jshint ignore:start */

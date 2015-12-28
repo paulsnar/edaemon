@@ -18,17 +18,19 @@ var rpc = {
     unregister: function(name) {
         _rpmap.delete(name);
     },
-    is_registered: function(name) {
+    isRegistered: function(name) {
         return _rpmap.has(name);
     },
     call: function() {
-        // sign: (name, ...args, _this)
         var name = _.first(arguments);
-        var args = _(arguments).drop(1).dropRight(1).value();
-        var _this = _.last(arguments);
+        var args = _.drop(arguments, 1);
+
+        if (!rpc.isRegistered(name)) {
+            throw new Error('Attempted to call a nonexistant RPC');
+        }
 
         var func = _rpmap.get(name);
-        func.apply(_this, args);
+        func.apply(func.__context__ || null, args);
     }
 };
 
@@ -49,6 +51,9 @@ var events = {
 
         // _events.emit(name, ...data);
         _events.emit.apply(_events, [name].concat(args));
+    },
+    subscribers: function(name) {
+        return _events.listenerCount(name);
     }
 };
 

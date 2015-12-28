@@ -1,3 +1,4 @@
+/*jshint ignore:start */
 'use strict';
 
 var rewire = require('rewire');
@@ -6,7 +7,7 @@ describe('i18n', function() {
     var i18n;
 
     beforeAll(function() {
-        i18n = rewire('../src/i18n');
+        i18n = rewire('../index');
     });
 
     it('should return month name in nominative when formatting without specifying form',

@@ -10,19 +10,19 @@ var Data = require('../data');
 
 var ChangeHandler = React.createClass({
     componentDidMount: function() {
-        rp.events.publish('spinner.start');
+        rp.rpc.call('spinner.start');
         this.data = { };
         /*jshint -W119 */
         Data.changes.get(this.props.params.id).then(change => {
         /*jshint +W119 */
-            rp.events.publish('spinner.stop');
+            rp.rpc.call('spinner.stop');
             if (!this.isMounted()) return;
             this.data.change = change.change;
             this.setState({ loaded: true });
         /*jshint -W119 */
         }).catch(err => {
         /*jshint +W119 */
-            rp.events.publish('spinner.stop');
+            rp.rpc.call('spinner.stop');
             console.log(err);
             if (!this.isMounted()) return;
             this.setState({ error: err });

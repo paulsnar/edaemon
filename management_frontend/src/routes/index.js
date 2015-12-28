@@ -15,12 +15,12 @@ var ChangesColumn = React.createClass({
         return { loaded: false };
     },
     componentDidMount: function() {
-        rp.events.publish('spinner.start');
+        rp.rpc.call('spinner.start');
         this.data = { };
         /*jshint -W119 */
         Data.changes.getWeek().then(resp => {
         /*jshint +W119 */
-            rp.events.publish('spinner.stop');
+            rp.rpc.call('spinner.stop');
             if (!this.isMounted()) return;
             this.data.changes = resp.changes;
             this.setState({ loaded: true });

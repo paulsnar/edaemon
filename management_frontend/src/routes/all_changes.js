@@ -14,12 +14,12 @@ var AllChangesHandler = React.createClass({
         return { loaded: false, changes: null };
     },
     componentDidMount: function() {
-        rp.events.publish('spinner.start');
+        rp.rpc.call('spinner.start');
         this.data = { };
         /*jshint -W119 */
         Data.changes.getAll().then(resp => {
         /*jshint +W119 */
-            rp.events.publish('spinner.stop');
+            rp.rpc.call('spinner.stop');
             if (!this.isMounted()) return;
             this.data.changes = resp.changes;
             if (resp.cursor) {
@@ -38,11 +38,11 @@ var AllChangesHandler = React.createClass({
         this.forceUpdate();
     },
     loadMore: function() {
-        rp.events.publish('spinner.start');
+        rp.rpc.call('spinner.start');
         /*jshint -W119 */
         Data.changes.getAll(this.state.cursor).then(resp => {
         /*jshint +W119 */
-            rp.events.publish('spinner.stop');
+            rp.rpc.call('spinner.stop');
             if (!this.isMounted()) return;
             this.data.changes = this.data.changes.concat(resp.changes);
             if (resp.cursor) {

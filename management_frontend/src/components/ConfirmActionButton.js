@@ -70,7 +70,7 @@ var ConfirmActionButton = React.createClass({
             },
             icon: {
                 base: 'glyphicon ',
-                confirm: this.props.config.icon.standby,
+                confirm: this.props.config ? this.props.config.icon.standby : '',
                 processing: 'glyphicon-cog _spin',
                 error: 'glyphicon-alert'
             }

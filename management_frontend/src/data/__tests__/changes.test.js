@@ -1,12 +1,12 @@
+/*jshint ignore:start */
 'use strict';
 
-var rewire = require('rewire');
-
 describe('Data.changes', function() {
+    var rewire = require('rewire');
     var data, fetch, status, ret_json, last_url, last_options;
 
     beforeAll(function() {
-        data = rewire('../src/data');
+        data = rewire('../index');
         data.__set__('fetch', function fetch(url, options) {
             last_url = url;
             last_options = options;
@@ -97,5 +97,4 @@ describe('Data.changes', function() {
             done();
         }).catch(err => done.fail(err));
     });
-
 });
