@@ -116,8 +116,6 @@ describe('route: /changes/all', function() {
 
         setTimeout(function() {
             // settle promises etc
-            expect(spy.withArgs('spinner.start').callCount).toBeGreaterThan(0);
-            expect(spy.withArgs('spinner.stop').callCount).toBeGreaterThan(0);
             expect(spy.withArgs('spinner.start').callCount).toEqual(
                 spy.withArgs('spinner.stop').callCount);
 

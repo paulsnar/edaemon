@@ -59,14 +59,9 @@ describe('route:/ -> ChangesColumn', function() {
 
         setTimeout(function() {
             // wait a little bit due to (sometimes) async stuff w/ promises
-            // expect(spy.withArgs('spinner.start').calledOnce).toEqual(true);
-            // expect(spy.withArgs('spinner.stop').calledOnce).toEqual(true); // TODO: fails
-            expect(spy.withArgs('spinner.start').callCount).toBeGreaterThan(0);
-            expect(spy.withArgs('spinner.stop').callCount).toBeGreaterThan(0);
             expect(spy.withArgs('spinner.start').callCount).toEqual(
                 spy.withArgs('spinner.stop').callCount);
 
-            // mock.rp.rpc.call.restore();
             done();
         }, 100);
     });
