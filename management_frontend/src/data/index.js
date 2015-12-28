@@ -1,6 +1,6 @@
 /*jshint -W097 */
 'use strict';
-/* globals fetch */
+/* globals fetch, Promise */
 
 // TODO: caching
 
@@ -78,11 +78,12 @@ var changes = {
 };
 
 var timetables = {
+    /*jshint -W119 */
     getForClass: function(forClass) {
         if (!forClass || forClass.trim() === '') {
             return new Promise((res, rej) => {
-                rej(new Error('No class specified'))
-            })
+                rej(new Error('No class specified'));
+            });
         } else {
             return fetch(`/api/timetables/for_class/${forClass}`,
                 { credentials: 'same-origin' })
@@ -90,6 +91,7 @@ var timetables = {
                 .then(r => r.json());
         }
     },
+    /*jshint +W119 */
     getAll: function(cursor) {
         var p;
         if (cursor) {
@@ -100,16 +102,20 @@ var timetables = {
         }
         return p
             .then(check200)
+            /*jshint -W119 */
             .then(r => r.json());
+            /*jshint +W119 */
     },
     input: function(data) {
         return fetch('/api/timetables',
             { method: 'post', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data) })
+        /*jshint -W119 */
             .then(r => r.json());
+        /*jshint +W119 */
     }
-}
+};
 
 module.exports = {
     changes: changes,
