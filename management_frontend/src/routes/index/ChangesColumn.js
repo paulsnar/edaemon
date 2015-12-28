@@ -5,10 +5,10 @@
 var React = require('react');
 var Link = require('react-router').Link;
 var _ = require('lodash');
-var rp = require('../rp');
-var Data = require('../data');
+var rp = require('../../rp');
+var Data = require('../../data');
 
-var DefaultChange = require('../components/DefaultChange');
+var DefaultChange = require('../../components/DefaultChange');
 
 var ChangesColumn = React.createClass({
     getInitialState: function() {
@@ -69,17 +69,4 @@ var ChangesColumn = React.createClass({
     }
 });
 
-var IndexHandler = React.createClass({
-    render: function() {
-        /*jshint ignore:start */
-        return <div>
-            <h1>Pārvaldīšana</h1>
-            <div className="row">
-                <ChangesColumn className="col-md-6" />
-            </div>
-        </div>;
-        /*jshint ignore:end */
-    }
-});
-
-module.exports = { IndexHandler: IndexHandler };
+module.exports = ChangesColumn;
