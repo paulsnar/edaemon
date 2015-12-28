@@ -17,10 +17,15 @@ function check200(resp) {
 var changes = {
     /*jshint -W119 */
     get: function(id) {
-        return fetch(`/api/changes/${id}`,
-            { credentials: 'same-origin' })
-            .then(check200)
-            .then(r => r.json());
+        if (!id || id.trim() === '') {
+            return new Promise((res, rej) => {
+                rej(new Error('No id specified'));
+            });
+        } else {
+            return fetch(`/api/changes/${id}`,
+                { credentials: 'same-origin' })
+                .then(r => r.json());
+        }
     },
     /*jshint +W119 */
     getWeek: function() {
@@ -50,9 +55,15 @@ var changes = {
     },
     /*jshint -W119 */
     delete: function(id) {
-        return fetch(`/api/changes/${id}`,
-            { method: 'delete', credentials: 'same-origin' })
-            .then(r => r.json());
+        if (!id || id.trim() === '') {
+            return new Promise((res, rej) => {
+                rej(new Error('No id specified'));
+            });
+        } else {
+            return fetch(`/api/changes/${id}`,
+                { method: 'delete', credentials: 'same-origin' })
+                .then(r => r.json());
+        }
     },
     /*jshint +W119 */
     input: function(data) {

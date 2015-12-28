@@ -1,6 +1,12 @@
 // Karma configuration
 // Generated on Sun Dec 27 2015 21:35:19 GMT+0200 (EET)
 
+var webpackConfig = {
+    plugins: [
+        new (require('rewire-webpack'))
+    ]
+}
+
 module.exports = function(config) {
   config.set({
 
@@ -10,7 +16,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine', 'sinon'],
 
 
     // list of files / patterns to load in the browser
@@ -27,6 +33,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+        'tests/**/*.js': ['webpack']
     },
 
 
@@ -65,6 +72,17 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: Infinity,
+
+    plugins: [
+        'karma-jasmine',
+        'karma-jasmine-html-reporter',
+        'karma-mocha-reporter',
+        'karma-chrome-launcher',
+        'karma-sinon',
+        require('karma-webpack')
+    ],
+
+    webpack: webpackConfig
   })
 }

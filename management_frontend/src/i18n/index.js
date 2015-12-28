@@ -129,16 +129,27 @@ function formatMonth(month, form) {
 
 function formatDate(ISO8601_string, form) {
     form = form || 'nominativs';
+    var allowedForms = ['nominativs', 'genitivs', 'dativs', 'akuzativs',
+        'instrumentalis', 'lokativs', 'vokativs'];
     var split = ISO8601_string.split('-');
-    if (split.length !== 3) {
-        return null;
+    if (split.length !== 3 || !_.includes(allowedForms, form)) {
+        switch (form) {
+            case     'nominativs': return 'nezināms datums';
+            case       'genitivs': return 'nezināma datuma';
+            case         'dativs': return 'nezināmam datumam';
+            case      'akuzativs': return 'nezināmu datumu';
+            case 'instrumentalis': return 'ar nezināmu datumu';
+            case       'lokativs': return 'nezināmā datumā';
+            case       'vokativs': return 'nezināmais datum';
+            default:               return 'nezināms datums';
+        }
     } else {
         // var [year, month, day] = split;
-        var year = split[0];
-        var month = split[1];
-        var day = split[2];
-        if (_.isNaN(Number(year)) || _.isNaN(Number(month)) ||
-            _.isNaN(Number(day))) {
+        var year = Number(split[0]);
+        var month = Number(split[1]);
+        var day = Number(split[2]);
+        if (_.isNaN(year) || _.isNaN(month) || _.isNaN(day) ||
+            month <= 0 || month > 12) {
             switch (form) {
                 case     'nominativs': return 'nezināms datums';
                 case       'genitivs': return 'nezināma datuma';

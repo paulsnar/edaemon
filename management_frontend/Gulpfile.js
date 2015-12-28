@@ -77,6 +77,12 @@ gulp.task('js.test', function(done) {
         singleRun: true
     }, done).start();
 });
+gulp.task('js.test.long', function(done) {
+    new karma.Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: false
+    }, done).start();
+})
 
 /* end dev */
 
