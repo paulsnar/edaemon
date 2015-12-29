@@ -15,7 +15,7 @@ var TimetableRow = React.createClass({
     serialize: function() {
         if (this.refs.className.value.trim() === '') {
             this.setState({ error: 'className' });
-            return false;
+            return null;
         } else {
             var className = this.refs.className.value.trim();
         }
@@ -101,6 +101,13 @@ var NewTimetableHandler = React.createClass({
             </div>;
         } else {
             var _error;
+            if (this.state.savingError) {
+                _error = <div className="alert alert-danger">
+                    <strong>Ak vai!</strong>
+                    &nbsp;
+                    Saglabāšana neizdevās: {this.state.errorText}
+                </div>;
+            }
             return <div>
                 <h1><span className="glyphicon glyphicon-plus" /> Ievadīt stundu sarakstu</h1>
                 {_error}
