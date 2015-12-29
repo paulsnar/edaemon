@@ -36,6 +36,7 @@ var Navbar = React.createClass({
                         </button>
                         <ul className="dropdown-menu">
                             <li><Link to="/changes/new">Izmaiņas</Link></li>
+                            <li><Link to="/timetables/new">Stundu sarakstu</Link></li>
                         </ul>
                     </div>
                     <ul className="nav navbar-nav navbar-left">
