@@ -21,6 +21,7 @@ var IndexHandler = require('./routes/index').IndexHandler;
 var NewChangeHandler = require('./routes/new_change').NewChangeHandler;
 var ChangeHandler = require('./routes/change').ChangeHandler;
 var AllChangesHandler = require('./routes/all_changes').AllChangesHandler;
+var EditChangeHandler = require('./routes/edit_change');
 
 var App = React.createClass({
     render: function() {
@@ -43,6 +44,7 @@ render(
             <Route path="/changes/new" component={NewChangeHandler} />
             <Route path="/changes/all" component={AllChangesHandler} />
             <Route path="/changes/:id" component={ChangeHandler} />
+            <Route path="/changes/:id/edit" component={EditChangeHandler} />
         </Route>
     </Router>,
     /* jshint ignore: end */
