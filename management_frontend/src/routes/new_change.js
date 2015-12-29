@@ -6,7 +6,7 @@ var React = require('react');
 var Link = require('react-router').Link;
 var _ = require('lodash');
 var Data = require('../data');
-
+var SerializationError = require('../components/SerializationError');
 var ChangeColumn = require('../components/ChangeColumn');
 
 var NewChangeHandler = React.createClass({
@@ -33,7 +33,7 @@ var NewChangeHandler = React.createClass({
                 var serialized = this.refs[i].serialize();
                 if (serialized === false) {
                     this.setState({ saving: false, error: 'className' });
-                    throw new Error();
+                    throw new SerializationError();
                 } else {
                     return serialized;
                 }
@@ -54,7 +54,7 @@ var NewChangeHandler = React.createClass({
                 if (!this.isMounted()) return;
                 this.setState({ saving: false, savingError: true });
             });
-        } catch (Error) {
+        } catch (SerializationError) {
             return false;
         }
     },
