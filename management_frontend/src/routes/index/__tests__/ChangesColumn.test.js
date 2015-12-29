@@ -1,7 +1,7 @@
 /*jshint ignore:start */
 'use strict';
 
-describe('route:/ -> ChangesColumn', function() {
+describe('route: / → ChangesColumn', function() {
     var React = require('react');
     var ReactDOM = require('react-dom');
     var ReactTestUtils = require('react-addons-test-utils');
@@ -34,13 +34,17 @@ describe('route:/ -> ChangesColumn', function() {
 
     it('should request Data.changes.getWeek on load', function() {
         ChangesColumn.__set__('rp', mock.rp);
-        var spy = sinon.spy(mock.Data.changes, 'getWeek');
-        ChangesColumn.__set__('Data', mock.Data);
+        var Data = {
+            changes: {
+                getWeek: function() { return mock.Data.changes.getWeek(); }
+            }
+        }
+        var spy = sinon.spy(Data.changes, 'getWeek');
+        ChangesColumn.__set__('Data', Data);
 
         var page = ReactTestUtils.renderIntoDocument(<ChangesColumn />);
 
         expect(spy.calledOnce).toEqual(true);
-        mock.Data.changes.getWeek.restore();
     });
 
     it('should call the spinner RPCs while loading', function(done) {

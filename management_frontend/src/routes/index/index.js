@@ -5,6 +5,7 @@
 var React = require('react');
 
 var ChangesColumn = require('./ChangesColumn');
+var TimetablesColumn = require('./TimetablesColumn');
 
 var IndexHandler = React.createClass({
     render: function() {
@@ -13,6 +14,7 @@ var IndexHandler = React.createClass({
             <h1>Pārvaldīšana</h1>
             <div className="row">
                 <ChangesColumn className="col-md-6" />
+                <TimetablesColumn className="col-md-6" />
             </div>
         </div>;
         /*jshint ignore:end */
