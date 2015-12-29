@@ -3,10 +3,13 @@
 /*jshint unused: false */
 
 var React = require('react');
+var Link = require('react-router').Link;
 
 var formatDate = require('../i18n').formatDate;
 var rp = require('../rp');
 var Data = require('../data');
+var history = require('../history');
+var ConfirmActionButton = require('../components/ConfirmActionButton');
 
 var ChangeHandler = React.createClass({
     componentDidMount: function() {
@@ -31,11 +34,46 @@ var ChangeHandler = React.createClass({
     getInitialState: function() {
         return { loaded: false };
     },
+
+    deleteActionButtonConfig: {
+        text: {
+            standby: 'Dzēst'
+        },
+        icon: {
+            standby: 'glyphicon-trash'
+        }
+    },
+    handleDeleteClicked: function(callback) {
+        Data.changes.delete(this.props.params.id)
+        .then(result => {
+            if (result.success) {
+                history.push('/');
+            }
+        })
+        .catch(err => {
+            if (!this.isMounted()) return;
+            callback(false);
+        });
+    },
     render: function() {
         if (this.state.loaded) {
             /*jshint ignore:start */
             return <div>
                 <h1>Izmaiņas {this.data.change.for_class} klasei</h1>
+                <p>
+                    <ConfirmActionButton
+                        className="btn btn-danger"
+                        config={this.deleteActionButtonConfig}
+                        callback={this.handleDeleteClicked} />
+                    &nbsp;
+                    <Link
+                        className="btn btn-default"
+                        to={`/changes/${this.props.params.id}/edit`}>
+                        <span className="glyphicon glyphicon-pencil" />
+                        &nbsp;
+                        Rediģēt
+                    </Link>
+                </p>
                 <p><strong>Datums:</strong> {formatDate(this.data.change.for_date)}</p>
                 <ol start="0">
                 {this.data.change.lessons.map((lesson, i) =>
