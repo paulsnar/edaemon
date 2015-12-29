@@ -127,6 +127,106 @@ function formatMonth(month, form) {
     }
 }
 
+function formatWeekday(weekday, form) {
+    switch (form) {
+        case 'nominativs':
+        switch (weekday) {
+            case 1: return 'pirmdiena';
+            case 2: return 'otrdiena';
+            case 3: return 'trešdiena';
+            case 4: return 'ceturtdiena';
+            case 5: return 'piektdiena';
+            case 6: return 'sestdiena';
+            case 7: return 'svētdiena';
+        }
+        break;
+
+        case 'genitivs':
+        switch (weekday) {
+            case 1: return 'pirmdienas';
+            case 2: return 'otrdienas';
+            case 3: return 'trešdienas';
+            case 4: return 'ceturtdienas';
+            case 5: return 'piektdienas';
+            case 6: return 'sestdienas';
+            case 7: return 'svētdienas';
+        }
+        break;
+
+        case 'dativs':
+        switch (weekday) {
+            case 1: return 'pirmdienai';
+            case 2: return 'otrdienai';
+            case 3: return 'trešdienai';
+            case 4: return 'ceturtdienai';
+            case 5: return 'piektdienai';
+            case 6: return 'sestdienai';
+            case 7: return 'svētdienai';
+        }
+        break;
+
+        case 'akuzativs':
+        switch (weekday) {
+            case 1: return 'pirmdienu';
+            case 2: return 'otrdienu';
+            case 3: return 'trešdienu';
+            case 4: return 'ceturtdienu';
+            case 5: return 'piektdienu';
+            case 6: return 'sestdienu';
+            case 7: return 'svētdienu';
+        }
+        break;
+
+        case 'instrumentalis':
+        switch (weekday) {
+            case 1: return 'ar pirmdienu';
+            case 2: return 'ar otrdienu';
+            case 3: return 'ar trešdienu';
+            case 4: return 'ar ceturtdienu';
+            case 5: return 'ar piektdienu';
+            case 6: return 'ar sestdienu';
+            case 7: return 'ar svētdienu';
+        }
+        break;
+
+        case 'lokativs':
+        switch (weekday) {
+            case 1: return 'pirmdienā';
+            case 2: return 'otrdienā';
+            case 3: return 'trešdienā';
+            case 4: return 'ceturtdienā';
+            case 5: return 'piektdienā';
+            case 6: return 'sestdienā';
+            case 7: return 'svētdienā';
+        }
+        break;
+
+        case 'vokativs':
+        switch (weekday) {
+            case 1: return 'pirmdiena';
+            case 2: return 'otrdiena';
+            case 3: return 'trešdiena';
+            case 4: return 'ceturtdiena';
+            case 5: return 'piektdiena';
+            case 6: return 'sestdiena';
+            case 7: return 'svētdiena';
+        }
+        break;
+
+        default:
+        switch (weekday) {
+            // kā laika apstāklis
+            case 1: return 'pirmdien';
+            case 2: return 'otrdien';
+            case 3: return 'trešdien';
+            case 4: return 'ceturtdien';
+            case 5: return 'piektdien';
+            case 6: return 'sestdien';
+            case 7: return 'svētdien';
+        }
+    }
+}
+
 function formatDate(ISO8601_string, form) {
     form = form || 'nominativs';
     var allowedForms = ['nominativs', 'genitivs', 'dativs', 'akuzativs',
@@ -168,4 +268,8 @@ function formatDate(ISO8601_string, form) {
     }
 }
 
-module.exports = { formatMonth: formatMonth, formatDate: formatDate };
+module.exports = {
+    formatMonth: formatMonth,
+    formatDate: formatDate,
+    formatWeekday: formatWeekday
+};
