@@ -50,7 +50,7 @@ var ChangesColumn = React.createClass({
             /*jshint ignore:end */
         }
         /*jshint ignore:start */
-        return <div>
+        return <div className={this.props.className}>
             <h2>Izmaiņas <small>(nedēļai)</small></h2>
             {changes}
             <p>
