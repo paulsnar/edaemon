@@ -77,6 +77,26 @@ class SpecificChange(Handler):
             self.response.set_status(400)
             self.jsonify(error=True, code=400, message='Malformed request')
 
+    def put(self, change_id):
+        try:
+            change = Change.lookup_url(change_id)
+            if change is None:
+                self.response.set_status(404)
+                self.jsonify(error=True, code=404, message='Not found')
+            else:
+                data = json.loads(self.request.body)
+                # data: { date: …, className: …, lessons: […, …, …] }
+                change.date = data['date']
+                change.for_class = data['className']
+                change.lessons = json.dumps(data['lessons'])
+                change.put()
+                self.jsonify(success=True, change=dict(id=change.key.urlsafe()))
+        except Exception:
+            self.response.set_status(400)
+            self.jsonify(error=True, code=400, message='Malformed request')
+            raise
+
+
 changes_routes = [
     ('/api/changes', Changes),
     ('/api/changes/all', AllChanges),

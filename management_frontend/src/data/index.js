@@ -75,6 +75,13 @@ var changes = {
             /*jshint -W119 */
             .then(r => r.json());
             /*jshint +W119 */
+    },
+    edit: function(id, data) {
+        return fetch(`/api/changes/${id}`,
+            { method: 'put', credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data) })
+            .then(r => r.json());
     }
 };
 
