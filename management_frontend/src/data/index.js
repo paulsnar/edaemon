@@ -24,6 +24,7 @@ var changes = {
         } else {
             return fetch(`/api/changes/${id}`,
                 { credentials: 'same-origin' })
+                .then(check200)
                 .then(r => r.json());
         }
     },

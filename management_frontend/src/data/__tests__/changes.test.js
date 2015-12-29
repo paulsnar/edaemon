@@ -47,14 +47,15 @@ describe('Data.changes', function() {
         data.changes.getAll().then(() => done.fail()).catch(() => done());
     });
 
-    it('should ignore non-200 responses with .get', done => {
+    it('should fail if .get gets non-200 response', function(done) {
         status = 404;
         ret_json = { dummy: 'json' };
 
-        data.changes.get('1').then(ret => {
-            expect(ret).toEqual(ret_json);
-            done();
-        }).catch(err => done.fail(err));
+        data.changes.get('1').then(() => done.fail()).catch(() => done());
+        // data.changes.get('1').then(ret => {
+        //     expect(ret).toEqual(ret_json);
+        //     done();
+        // }).catch(err => done.fail(err));
     });
     it('should ignore non-200 responses with .delete', function(done) {
         status = 404;
