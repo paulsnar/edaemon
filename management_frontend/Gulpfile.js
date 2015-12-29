@@ -83,7 +83,11 @@ gulp.task('js.test.long', function(done) {
         configFile: __dirname + '/karma.conf.js',
         singleRun: false
     }, done).start();
-})
+});
+
+gulp.task('js.watch', function() {
+    return gulp.watch('src/**/*.js', ['js.hint', 'js.test', 'js.dist']);
+});
 
 /* end dev */
 
