@@ -15,6 +15,8 @@ var Link = ReactRouter.Link;
 var Data = require('./data');
 var Navbar = require('./components/Navbar').Navbar;
 
+var history = require('./history');
+
 var IndexHandler = require('./routes/index').IndexHandler;
 var NewChangeHandler = require('./routes/new_change').NewChangeHandler;
 var ChangeHandler = require('./routes/change').ChangeHandler;
@@ -35,7 +37,7 @@ var App = React.createClass({
 
 render(
     /* jshint ignore:start */
-    <Router>
+    <Router history={history}>
         <Route path="/" component={App}>
             <IndexRoute component={IndexHandler} />
             <Route path="/changes/new" component={NewChangeHandler} />
