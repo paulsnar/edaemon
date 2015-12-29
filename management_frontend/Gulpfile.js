@@ -36,19 +36,20 @@ gulp.task('js.dist.pack', function(cb) {
         cb();
     });
 });
-
+// Uglify is disabled for arrow function's sake. :(
+/*
 gulp.task('js.dist.minify', ['js.dist.pack'], function() {
     gulp.src('dist/bundle.js')
         .pipe(minify())
         .pipe(gulp.dest('dist'));
 });
-
-gulp.task('js.dist.copy', ['js.dist.pack', 'js.dist.minify'], function() {
+*/
+gulp.task('js.dist.copy', ['js.dist.pack', /*'js.dist.minify'*/], function() {
     gulp.src('dist/*.js')
         .pipe(gulp.dest('../static/mgmt/'));
 });
 
-gulp.task('js.dist', ['js.dist.pack', 'js.dist.minify', 'js.dist.copy']);
+gulp.task('js.dist', ['js.dist.pack', /*'js.dist.minify',*/ 'js.dist.copy']);
 
 gulp.task('dist', ['js.dist']);
 
