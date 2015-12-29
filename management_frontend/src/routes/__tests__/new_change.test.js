@@ -51,14 +51,14 @@ describe('route: /changes/new', function() {
         expect(spy.called).toEqual(false);
 
         var column = ReactTestUtils.findRenderedComponentWithType(
-            page, new_change.__get__('Column'));
+            page, new_change.__get__('ChangeColumn'));
         column.setState({ className: '1.0' });
         _precondition = true;
         page.doSave();
         expect(spy.called).toEqual(true);
     });
 
-    it('should format submitted data according to format', function(done) {
+    it('should submit data according to format', function(done) {
         var Data = {
             changes: {
                 input: function(data) {
@@ -79,7 +79,7 @@ describe('route: /changes/new', function() {
 
         var page = ReactTestUtils.renderIntoDocument(<NewChangeHandler />);
         var column = ReactTestUtils.findRenderedComponentWithType(
-            page, new_change.__get__('Column'));
+            page, new_change.__get__('ChangeColumn'));
 
         page.setState({ date: '2015-12-12' });
         column.setState({ className: '1.0', lessons: ['a', 'b', 'c', 'd', 'e', 'f'] });

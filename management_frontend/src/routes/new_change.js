@@ -7,72 +7,7 @@ var Link = require('react-router').Link;
 var _ = require('lodash');
 var Data = require('../data');
 
-var Column = React.createClass({
-    getInitialState: function() {
-        return {
-            className: '',
-            lessons: [ '', '', '', '', '', '' ]
-        };
-    },
-    addRow: function() {
-        var lessons = this.state.lessons;
-        lessons.push('');
-        this.setState({ lessons: lessons });
-    },
-    createHandleChange: function(name, index) {
-        /*jshint -W119 */
-        return (e) => {
-        /*jshint +W119 */
-            if (!this.isMounted()) return;
-            if (name === 'className') {
-                this.setState({ className: e.target.value });
-            } else if (name === 'lesson') {
-                var lessons = this.state.lessons;
-                lessons[index] = e.target.value;
-                this.setState({ lessons: lessons });
-            }
-        };
-    },
-    serialize: function() {
-        if (this.state.className.trim() === '') {
-            this.setState({ error: 'className' });
-            return false;
-        }
-        var s = _.cloneDeep(this.state);
-        /*jshint -W119 */
-        s.lessons = _.map(s.lessons, lesson => {
-        /*jshint +W119 */
-            if (lesson === '' || lesson === '-') {
-                return null;
-            } else {
-                return lesson;
-            }
-        });
-        this.setState({ error: null });
-        return s;
-    },
-    render: function() {
-        /*jshint ignore:start */
-        return <div>
-            <div className={`input-group ${this.state.error === 'className' ? 'has-error' : ''}`}>
-                <span className="input-group-addon">Klase</span>
-                <input type="text" className="form-control"
-                    onChange={this.createHandleChange('className')} />
-            </div>
-            {this.state.lessons.map((text, i) =>
-            <div className="input-group" key={i}>
-                <span className="input-group-addon">{i}.</span>
-                <input type="text" className="form-control"
-                    onChange={this.createHandleChange('lesson', i)} />
-            </div>
-            )}
-            <button className="btn btn-default btn-block" onClick={this.addRow}>
-                <span className="glyphicon glyphicon-plus" />
-            </button>
-        </div>;
-        /*jshint ignore:end */
-    }
-});
+var ChangeColumn = require('../components/ChangeColumn');
 
 var NewChangeHandler = React.createClass({
     addColumn: function() {
@@ -104,17 +39,21 @@ var NewChangeHandler = React.createClass({
                 }
             });
             Data.changes.input({ date: this.state.date, changes: changes })
-                /*jshint -W119 */
-                .then(result => {
-                /*jshint +W119 */
-                    if (!this.isMounted()) return;
-                    if (result.success) {
-                        // show stuff
-                        this.setState({ saving: false, saved: true, items: result.stored });
-                    } else {
-                        this.setState({ saving: false, savingError: true, errorText: result.message || false });
-                    }
-                });
+            /*jshint -W119 */
+            .then(result => {
+            /*jshint +W119 */
+                if (!this.isMounted()) return;
+                if (result.success) {
+                    // show stuff
+                    this.setState({ saving: false, saved: true, items: result.stored });
+                } else {
+                    this.setState({ saving: false, savingError: true, errorText: result.message || false });
+                }
+            })
+            .catch(err => {
+                if (!this.isMounted()) return;
+                this.setState({ saving: false, savingError: true });
+            });
         } catch (Error) {
             return false;
         }
@@ -140,8 +79,7 @@ var NewChangeHandler = React.createClass({
                     {_innerText}
                 </div>;
                 /*jshint ignore:end */
-            }
-            if (this.state.error) {
+            } else if (this.state.error) {
                 if (this.state.error === 'date') {
                     /*jshint ignore:start */
                     _error = <div className="alert alert-danger">
@@ -177,7 +115,7 @@ var NewChangeHandler = React.createClass({
                 <div className="row">
                     {_.times(this.state.columns, (i) =>
                     <div className="col-md-2" key={i} style={{ padding: '0.5rem' }}>
-                        <Column ref={i} />
+                        <ChangeColumn ref={i} />
                     </div>
                     )}
                     <div className="col-md-2">
