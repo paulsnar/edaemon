@@ -5,7 +5,7 @@
 var React = require('react');
 var Link = require('react-router').Link;
 
-var formatDate = require('../i18n').formatDate;
+var formatDate = require('../l10n').formatDate;
 var rp = require('../rp');
 var Data = require('../data');
 var history = require('../history');
