@@ -7,7 +7,7 @@
 
 {% if users.is_current_user_admin() %}
 <p>
-    <a href="/admin/#/changes/{{ change.key.urlsafe() }}" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <a href="/admin/#/changes/{{ change.key.urlsafe() }}" class="btn btn-default">
         <span class="glyphicon glyphicon-cog"></span>
         Pārvaldīt
     </a>
