@@ -24,7 +24,7 @@ var EditChangeHandler = React.createClass({
         .catch(err => {
             rp.rpc.call('spinner.stop');
             if (!this.isMounted()) return;
-            this.setState({ loadingError: err });
+            this.setState({ loadingError: '' + err });
         });
     },
     getInitialState: function() {
@@ -79,9 +79,11 @@ var EditChangeHandler = React.createClass({
             return <div>
                 <h1><span className="glyphicon glyphicon-pencil" /> Rediģēt izmaiņas</h1>
                 <div className="alert alert-danger">
-                    <strong>Ak vai!</strong>&nbsp;
-                    Mēģinot ielādēt informāciju, radās kļūda.&nbsp;
-                    <code>{'' + this.state.loadingError}</code>
+                    <strong>Ak vai!</strong>
+                    &nbsp;
+                    Mēģinot ielādēt informāciju, radās kļūda.
+                    &nbsp;
+                    <code>{this.state.loadingError}</code>
                 </div>
             </div>;
         } else {
@@ -92,7 +94,7 @@ var EditChangeHandler = React.createClass({
                     &nbsp;
                     Mēģinot saglabāt, radās kļūda.
                 </div>;
-            } else if (this.state.error) {
+            } else if (this.state.inputError) {
                 var _text;
                 if (this.state.inputError === 'date') {
                     _text = 'Lūdzu pārliecinieties, ka datums ir ievadīts pareizi.';
