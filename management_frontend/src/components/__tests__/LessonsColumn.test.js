@@ -48,11 +48,23 @@ describe('LessonsColumn', function() {
 
     it('should pre-fill state if lessons prop is passed', function() {
         var lessons = [ 'lesson0', 'lesson1', 'lesson2',
-                        'lesson3', 'lesson4', 'lesson5'];
+                        'lesson3', 'lesson4', 'lesson5' ];
         var component = ReactTestUtils.renderIntoDocument(<LessonsColumn
             lessons={lessons} />);
 
-        expect(component.state.lessons).toEqual(lessons);
+        expect(component.serialize()).toEqual(lessons);
+    });
+
+    it('should leave the last field empty when initiated w/ prop', function() {
+        var lessons = [ 'lesson0', 'lesson1', 'lesson2',
+                        'lesson3', 'lesson4', 'lesson5' ];
+        var component = ReactTestUtils.renderIntoDocument(<LessonsColumn
+            lessons={lessons} />);
+
+        var inputs = ReactTestUtils.scryRenderedDOMComponentsWithTag(component,
+            'input');
+
+        expect(inputs.length).toBeGreaterThan(lessons.length);
     });
 
     it('should return (serialized) data in specified layout (test without trailing empties)', function() {

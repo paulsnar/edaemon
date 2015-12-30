@@ -7,14 +7,14 @@ var _ = require('lodash');
 var LessonsColumn = React.createClass({
     getInitialState: function() {
         if (this.props.lessons) {
-            return { lessons: _.clone(this.props.lessons) };
+            return { lessons: _.clone(this.props.lessons).concat([ '' ]) };
         } else {
             return { lessons: [ '', '', '', '', '', '', '' ] };
         }
     },
     componentWillReceiveProps: function(nextProps) {
         if (nextProps.lessons) {
-            this.setState({ lessons: _.clone(nextProps.lessons) });
+            this.setState({ lessons: _.clone(nextProps.lessons).concat([ '' ]) });
         }
     },
     addRow: function() {
