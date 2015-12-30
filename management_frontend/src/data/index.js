@@ -86,6 +86,18 @@ var changes = {
 };
 
 var timetables = {
+    get: function(id) {
+        if (!id || id.trim() === '') {
+            return new Promise((res, rej) => {
+                rej(new Error('No id specified'));
+            });
+        } else {
+            return fetch(`/api/timetables/${id}`,
+                { credentials: 'same-origin' })
+                .then(check200)
+                .then(r => r.json());
+        }
+    },
     /*jshint -W119 */
     getForClass: function(forClass) {
         if (!forClass || forClass.trim() === '') {
@@ -114,6 +126,17 @@ var timetables = {
             .then(r => r.json());
             /*jshint +W119 */
     },
+    delete: function(id) {
+        if (!id || id.trim() === '') {
+            return new Promise((res, rej) => {
+                rej(new Error('No id specified'));
+            });
+        } else {
+            return fetch(`/api/timetables/${id}`,
+                { method: 'delete', credentials: 'same-origin' })
+                .then(r => r.json());
+        }
+    },
     input: function(data) {
         return fetch('/api/timetables',
             { method: 'post', credentials: 'same-origin',
@@ -122,6 +145,13 @@ var timetables = {
         /*jshint -W119 */
             .then(r => r.json());
         /*jshint +W119 */
+    },
+    edit: function(id, data) {
+        return fetch(`/api/timetables/${id}`,
+            { method: 'put', credentials: 'same-origin',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data) })
+            .then(r => r.json());
     }
 };
 

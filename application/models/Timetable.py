@@ -13,6 +13,14 @@ class Timetable(ndb.Model):
     def get_all(cls):
         return cls.query()
 
+    @classmethod
+    def lookup_url(cls, urlsafe):
+        return ndb.Key(urlsafe=urlsafe).get()
+
+    @classmethod
+    def delete_url(cls, urlsafe):
+        return ndb.Key(urlsafe=urlsafe).delete()
+
     def to_dict(self):
         selfdict = dict(
             id=self.key.urlsafe(),

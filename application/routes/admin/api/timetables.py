@@ -35,7 +35,52 @@ class AllTimetables(Handler):
             ret['cursor'] = next_c.urlsafe()
         self.jsonify(**ret)
 
+class SpecificTimetable(Handler):
+    def get(self, timetable_id):
+        try:
+            timetable = Timetable.lookup_url(timetable_id)
+            if timetable is None:
+                self.response.set_status(404)
+                self.jsonify(error=True, code=404, message='Not found')
+            else:
+                self.jsonify(timetable=timetable.to_dict())
+        except Exception:
+            self.response.set_status(400)
+            self.jsonify(error=True, code=400, message='Malformed request')
+
+    def delete(self, timetable_id):
+        try:
+            timetable = Timetable.lookup_url(timetable_id)
+            if timetable is None:
+                self.response.set_status(404)
+                self.jsonify(error=True, code=404, message='Not found')
+            else:
+                timetable.key.delete()
+                self.jsonify(success=True)
+        except Exception:
+            self.response.set_status(400)
+            self.jsonify(error=True, code=400, message='Malformed request')
+
+    def put(self, timetable_id):
+        try:
+            timetable = Timetable.lookup_url(timetable_id)
+            if timetable is None:
+                self.response.set_status(404)
+                self.jsonify(error=True, code=400, message='Not found')
+            else:
+                data = json.loads(self.request.body)
+                # data: { className: …, lessons: […, …, …] }
+                timetable.for_class = data['className']
+                timetable.plan = json.dumps(data['lessons'])
+                timetable.put()
+                self.jsonify(success=True,
+                    timetable=dict(id=timetable.key.urlsafe()))
+        except Exception:
+            self.response.set_status(400)
+            self.jsonify(error=True, code=400, message='Malformed request')
+
 timetables_routes = [
     ('/api/timetables', Timetables),
     ('/api/timetables/all', AllTimetables),
+    ('/api/timetables/([0-9A-Za-z\-]+)', SpecificTimetable),
 ]
