@@ -23,6 +23,7 @@ var ChangeHandler = require('./routes/change').ChangeHandler;
 var AllChangesHandler = require('./routes/all_changes').AllChangesHandler;
 var EditChangeHandler = require('./routes/edit_change');
 var NewTimetableHandler = require('./routes/new_timetable');
+var EditTimetableHandler = require('./routes/edit_timetable');
 
 var App = React.createClass({
     render: function() {
@@ -48,6 +49,7 @@ render(
             <Route path="/changes/:id/edit" component={EditChangeHandler} />
 
             <Route path="/timetables/new" component={NewTimetableHandler} />
+            <Route path="/timetables/:id/edit" component={EditTimetableHandler} />
         </Route>
     </Router>,
     /* jshint ignore: end */
