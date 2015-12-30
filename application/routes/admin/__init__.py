@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from .management_init import ManagementBootstrap
+from .management_bootstrap import ManagementBootstrap
 
 from .api_routes import api_routes
 
