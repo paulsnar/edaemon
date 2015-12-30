@@ -105,12 +105,11 @@ describe('route: /changes/:id/edit', function() {
         expect(spy.called).toEqual(false);
 
         component.setState({ date: mock.change.for_date });
-        var col = component.refs.change;
-        col.setState({ className: '' });
+        component.setState({ className: '' });
         component.save();
         expect(spy.called).toEqual(false);
 
-        col.setState({ className: mock.change.for_class });
+        component.setState({ className: mock.change.for_class });
         _precondition = true;
         component.save();
         expect(spy.called).toEqual(true);
@@ -125,6 +124,7 @@ describe('route: /changes/:id/edit', function() {
                     expect(data.className).toBeDefined();
                     expect(data.lessons).toBeDefined();
                     done();
+                    return new Promise(res => res());
                 }
             }
         };
@@ -135,7 +135,8 @@ describe('route: /changes/:id/edit', function() {
             params={{ id: mock.change.id }} />);
         // force load
         component.data.change = mock.change;
-        component.setState({ loaded: true, date: mock.change.for_date });
+        component.setState({ loaded: true, date: mock.change.for_date,
+            className: mock.change.for_class });
         component.save();
     });
 });

@@ -5,7 +5,7 @@ var _ = require('lodash');
 var Data = require('../data');
 var history = require('../history');
 var rp = require('../rp');
-var ChangeColumn = require('../components/ChangeColumn');
+var LessonsColumn = require('../components/LessonsColumn');
 
 var EditChangeHandler = React.createClass({
     componentDidMount: function() {
@@ -16,7 +16,8 @@ var EditChangeHandler = React.createClass({
             rp.rpc.call('spinner.stop');
             if (!this.isMounted()) return;
             this.data.change = change.change;
-            this.setState({ loaded: true, date: change.change.for_date });
+            this.setState({ loaded: true, date: change.change.for_date,
+                className: change.change.for_class });
         })
         .catch(err => {
             rp.rpc.call('spinner.stop');
@@ -27,26 +28,30 @@ var EditChangeHandler = React.createClass({
     getInitialState: function() {
         return { loaded: false, loadingError: null,
                  saving: false, savingError: null,
-                 error: null,
-                 date: '' };
+                 inputError: null,
+                 date: '', className: '' };
     },
     handleDateChange: function(e) {
-        this.setState({ date: e.target.value });
+        this.setState({ date: e.target.value.trim() });
+    },
+    handleClassnameChange: function(e) {
+        this.setState({ className: e.target.value.trim() });
     },
     save: function() {
         if (this.state.date === '') {
-            this.setState({ error: 'date' });
+            this.setState({ inputError: 'date' });
+            return false;
+        } else if (this.state.className === '') {
+            this.setState({ inputError: 'className' });
             return false;
         }
-        var serializedChange = this.refs.change.serialize();
-        if (serializedChange === false) {
-            this.setState({ error: 'className' });
-            return false;
-        }
-        this.setState({ saving: true, error: null });
+        var lessons = this.refs.lessons.serialize();
+
+        this.setState({ saving: true, inputError: null });
+
         Data.changes.edit(this.props.params.id,
-            { date: this.state.date, className: serializedChange.className,
-                lessons: serializedChange.lessons })
+            { date: this.state.date, className: this.state.className,
+                lessons: lessons })
         .then(result => {
             if (!this.isMounted()) return;
             if (result.success) {
@@ -80,19 +85,22 @@ var EditChangeHandler = React.createClass({
             var _error;
             if (this.state.savingError) {
                 _error = <div className="alert alert-danger">
-                    <strong>Ak vai!</strong>&nbsp;
-                    Mēģinot saglabāt, radās kļūda.&nbsp;
+                    <strong>Ak vai!</strong>
+                    &nbsp;
+                    Mēģinot saglabāt, radās kļūda.
                 </div>;
             } else if (this.state.error) {
-                if (this.state.error === 'date') {
-                    _error = <div className="alert alert-danger">
-                        Lūdzu ievadiet datumu.
-                    </div>;
-                } else if (this.state.error === 'className') {
-                    _error = <div className="alert alert-danger">
-                        Lūdzu pārliecinieties, ka visas klases ir aizpildītas pareizi.
-                    </div>;
+                var _text;
+                if (this.state.inputError === 'date') {
+                    _text = 'Lūdzu pārliecinieties, ka datums ir ievadīts pareizi.';
+                } else if (this.state.inputError === 'className') {
+                    _text = 'Lūdzu pārliecinieties, ka klases nosaukums ir ievadīts pareizi.';
                 }
+                _error = <div className="alert alert-danger">
+                    <span className="glyphicon glyphicon-hand-right" />
+                    &nbsp;
+                    {_text}
+                </div>;
             }
             return <div>
                 <h1><span className="glyphicon glyphicon-pencil" /> Rediģēt izmaiņas</h1>
@@ -100,10 +108,10 @@ var EditChangeHandler = React.createClass({
                 <div className="row">
                     <div className="col-md-3 form-inline">
                         <div className={`form-group ${this.state.error === 'date' ? 'has-error' : ''}`}>
-                            <label htmlFor="date">Datums: </label>
+                            <label>Datums: </label>
                             &nbsp;
                             <input type="date" className="form-control"
-                                id="date" name="date" placeholder="YYYY-MM-DD"
+                                placeholder="YYYY-MM-DD"
                                 onChange={this.handleDateChange}
                                 value={this.state.date} />
                         </div>
@@ -111,7 +119,12 @@ var EditChangeHandler = React.createClass({
                 </div>
                 <div className="row">
                     <div className="col-md-3" style={{ padding: '0.5rem' }}>
-                        <ChangeColumn changeData={this.data.change} ref="change" />
+                        <div className={`input-group ${this.state.inputError === 'className' ? 'has-error' : ''}`}>
+                            <span className="input-group-addon">Klase</span>
+                            <input type="text" className="form-control" value={this.state.className}
+                                onChange={this.handleClassnameChange} />
+                        </div>
+                        <LessonsColumn lessons={this.data.change.lessons} ref="lessons" />
                     </div>
                 </div>
                 <button className={`btn btn-primary ${this.state.saving ? 'disabled' : ''}`}
