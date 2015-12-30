@@ -74,10 +74,10 @@ describe('TimetableRow', function() {
 
         expect(component.state.className).toEqual(timetable.for_class);
 
-        expect(component.refs[0].state.lessons).toEqual(timetable.plan.mon);
-        expect(component.refs[1].state.lessons).toEqual(timetable.plan.tue);
-        expect(component.refs[2].state.lessons).toEqual(timetable.plan.wed);
-        expect(component.refs[3].state.lessons).toEqual(timetable.plan.thu);
-        expect(component.refs[4].state.lessons).toEqual(timetable.plan.fri);
+        expect(component.refs[0].serialize()).toEqual(timetable.plan.mon);
+        expect(component.refs[1].serialize()).toEqual(timetable.plan.tue);
+        expect(component.refs[2].serialize()).toEqual(timetable.plan.wed);
+        expect(component.refs[3].serialize()).toEqual(timetable.plan.thu);
+        expect(component.refs[4].serialize()).toEqual(timetable.plan.fri);
     });
 });
