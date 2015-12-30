@@ -1,4 +1,6 @@
+/*jshint -W097 */
 'use strict';
+/*jshint -W119 */ // I hate you, W119
 
 var React = require('react');
 var _ = require('lodash');
@@ -67,6 +69,7 @@ var EditChangeHandler = React.createClass({
         });
     },
     render: function() {
+        /*jshint ignore:start */
         if (!this.state.loaded) {
             return <div>
                 <h1><span className="glyphicon glyphicon-pencil" /> Rediģēt izmaiņas</h1>
@@ -135,6 +138,7 @@ var EditChangeHandler = React.createClass({
                 </button>
             </div>;
         }
+        /*jshint ignore:end */
     }
 });
 

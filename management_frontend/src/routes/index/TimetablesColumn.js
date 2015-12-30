@@ -27,6 +27,7 @@ var TimetablesColumn = React.createClass({
     },
     loadMore: function(cursor) {
         rp.rpc.call('spinner.start');
+        /*jshint -W119 */
         Data.timetables.getAll(cursor).then(resp => {
             rp.rpc.call('spinner.stop');
             if (!this.isMounted()) return;
@@ -37,6 +38,7 @@ var TimetablesColumn = React.createClass({
                 this.setState({ cursor: null });
             }
         });
+        /*jshint +W119 */
     },
     removeChild: function(timetable) {
         _.remove(this.data.timetables, timetable);

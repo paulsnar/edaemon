@@ -1,3 +1,4 @@
+/*jshint -W097 */
 'use strict';
 
 var React = require('react');
@@ -12,22 +13,23 @@ var TimetableRow = React.createClass({
         return { error: null };
     },
     serialize: function() {
+        var className;
         if (this.refs.className.value.trim() === '') {
             this.setState({ error: 'className' });
             return null;
         } else {
-            var className = this.refs.className.value.trim();
+            className = this.refs.className.value.trim();
         }
         var plan = { };
-        _.times(5, (i) => {
-            // return this.refs[i].serialize();
-            var _days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+        var _days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+        for (var i = 0; i < 5; i++) {
             plan[_days[i]] = this.refs[i].serialize();
-        });
+        }
         this.setState({ error: null });
         return { className: className, lessons: plan };
     },
     render: function() {
+        /*jshint ignore:start */
         return <div style={{ padding: '1rem' }}>
         <div className="row">
             <div className={`row form-group ${this.state.error === 'className' ? 'has-error' : ''}`}
@@ -49,6 +51,7 @@ var TimetableRow = React.createClass({
         </div>
         <hr />
         </div>;
+        /*jshint ignore:end */
     }
 });
 
@@ -72,7 +75,9 @@ var NewTimetableHandler = React.createClass({
             }
         }
         Data.timetables.input({ timetables: entries })
+        /*jshint -W119 */
         .then(result => {
+        /*jshint +W119 */
             if (!this.isMounted()) return;
             if (result.success) {
                 this.setState({ saving: false, saved: true, items: result.stored });
@@ -81,12 +86,15 @@ var NewTimetableHandler = React.createClass({
                     errorText: result.message || null });
             }
         })
+        /*jshint -W119 */
         .catch(err => {
+        /*jshint +W119 */
             if (!this.isMounted()) return;
             this.setState({ saving: false, savingError: true, errorText: err });
         });
     },
     render: function() {
+        /*jshint ignore:start */
         if (this.state.saved) {
             return <div>
                 <h1><span className="glyphicon glyphicon-ok" /> Ievadīt stundu sarakstu</h1>
@@ -128,6 +136,7 @@ var NewTimetableHandler = React.createClass({
                 </p>
             </div>;
         }
+        /*jshint ignore:end */
     }
 });
 

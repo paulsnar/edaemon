@@ -81,11 +81,14 @@ var changes = {
             { method: 'put', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data) })
+            /*jshint -W119 */
             .then(r => r.json());
+            /*jshint +W119 */
     }
 };
 
 var timetables = {
+    /*jshint -W119 */
     get: function(id) {
         if (!id || id.trim() === '') {
             return new Promise((res, rej) => {
@@ -98,6 +101,7 @@ var timetables = {
                 .then(r => r.json());
         }
     },
+    /*jshint +W119 */
     /*jshint -W119 */
     getForClass: function(forClass) {
         if (!forClass || forClass.trim() === '') {
@@ -114,12 +118,14 @@ var timetables = {
     /*jshint +W119 */
     getAll: function(cursor) {
         var p;
+        /*jshint -W119 */
         if (cursor) {
             p = fetch(`/api/timetables/all?cursor=${cursor}`,
                 { credentials: 'same-origin' });
         } else {
             p = fetch('/api/timetables/all', { credentials: 'same-origin' });
         }
+        /*jshint +W119 */
         return p
             .then(check200)
             /*jshint -W119 */
@@ -128,13 +134,17 @@ var timetables = {
     },
     delete: function(id) {
         if (!id || id.trim() === '') {
+            /*jshint -W119 */
             return new Promise((res, rej) => {
                 rej(new Error('No id specified'));
             });
+            /*jshint +W119 */
         } else {
+            /*jshint -W119 */
             return fetch(`/api/timetables/${id}`,
                 { method: 'delete', credentials: 'same-origin' })
                 .then(r => r.json());
+            /*jshint +W119 */
         }
     },
     input: function(data) {
@@ -142,16 +152,18 @@ var timetables = {
             { method: 'post', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data) })
-        /*jshint -W119 */
+            /*jshint -W119 */
             .then(r => r.json());
-        /*jshint +W119 */
+            /*jshint +W119 */
     },
     edit: function(id, data) {
         return fetch(`/api/timetables/${id}`,
             { method: 'put', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data) })
+            /*jshint -W119 */
             .then(r => r.json());
+            /*jshint +W119 */
     }
 };
 

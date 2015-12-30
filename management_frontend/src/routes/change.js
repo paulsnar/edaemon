@@ -44,6 +44,7 @@ var ChangeHandler = React.createClass({
         }
     },
     handleDeleteClicked: function(callback) {
+        /*jshint -W119 */
         Data.changes.delete(this.props.params.id)
         .then(result => {
             if (result.success) {
@@ -54,6 +55,7 @@ var ChangeHandler = React.createClass({
             if (!this.isMounted()) return;
             callback(false);
         });
+        /*jshint +W119 */
     },
     render: function() {
         if (this.state.loaded) {

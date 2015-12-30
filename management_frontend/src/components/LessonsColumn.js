@@ -1,3 +1,4 @@
+/*jshint -W097 */
 'use strict';
 
 var React = require('react');
@@ -33,7 +34,9 @@ var LessonsColumn = React.createClass({
         this.setState({ lessons: lessons });
     },
     serialize: function() {
+        /*jshint -W119*/
         var lessons = this.state.lessons.map(lesson => {
+            /*jshint +W119*/
             if (lesson === '' || lesson === '-') return null;
             else return lesson;
         });
@@ -46,6 +49,7 @@ var LessonsColumn = React.createClass({
         return lessons;
     },
     render: function() {
+        /*jshint ignore:start */
         return <div>
         {this.state.lessons.map((text, i) =>
         <div className="input-group" key={i}>
@@ -58,6 +62,7 @@ var LessonsColumn = React.createClass({
         </div>
         )}
         </div>;
+        /*jshint ignore:end */
     }
 });
 

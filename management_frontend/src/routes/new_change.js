@@ -27,10 +27,14 @@ var NewChangeHandler = React.createClass({
     },
     save: function() {
         var classNames = _.clone(this.state.classNames);
+        /*jshint -W119 */
         var hasEmptyClassnames = _.some(classNames, v => v === '');
+        /*jshint +W119 */
         if (hasEmptyClassnames) {
             var badClassnames = [ ];
+            /*jshint -W119 */
             _.forEach(classNames, (className, i) => {
+            /*jshint +W119 */
                 if (className === '') badClassnames.push(i);
             });
             this.setState({ inputError: 'className',
@@ -42,13 +46,17 @@ var NewChangeHandler = React.createClass({
             return false;
         }
         this.setState({ saving: true });
+        /*jshint -W119 */
         var changes = _.map(classNames, (className, i) => {
+        /*jshint +W119 */
             var serialized = this.refs[i].serialize();
             return { className: className, lessons: serialized };
         });
 
         Data.changes.input({ date: this.state.date, changes: changes })
+        /*jshint -W119 */
         .then(result => {
+        /*jshint +W119 */
             if (!this.isMounted()) return;
             if (result.success) {
                 this.setState({ saving: false, saved: true, items: result.stored });
@@ -57,7 +65,9 @@ var NewChangeHandler = React.createClass({
                     errorText: result.message || 'neko' /* (nothing) */ });
             }
         })
+        /*jshint -W119 */
         .catch(err => {
+        /*jshint +W119 */
             if (!this.isMounted()) return;
             this.setState({ saving: false, savingError: true,
                 errorText: '' + err });
@@ -69,6 +79,7 @@ var NewChangeHandler = React.createClass({
         this.setState({ classNames: classNames });
     },
     render: function() {
+        /*jshint ignore:start */
         if (this.state.saved) {
             return <div>
                 <h1><span className="glyphicon glyphicon-ok" /> Ievadīt jaunas izmaiņas</h1>
@@ -152,6 +163,7 @@ var NewChangeHandler = React.createClass({
                 </p>
             </div>;
         }
+        /*jshint ignore:end */
     }
 });
 

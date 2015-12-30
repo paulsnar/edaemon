@@ -1,3 +1,4 @@
+/*jshint -W097 */
 'use strict';
 
 var React = require('react');
@@ -9,14 +10,18 @@ var ConfirmActionButton = require('./ConfirmActionButton');
 var DefaultTimetable = React.createClass({
     handleDeleteClicked: function(callback) {
         Data.timetables.delete(this.props.timetable.id)
+        /*jshint -W119 */
             .then(result => {
+            /*jshint +W119 */
                 if (result.success) {
                     if (this.props.removeCallback) {
                         this.props.removeCallback();
                     }
                 }
             })
+        /*jshint -W119 */
             .catch(() => {
+            /*jshint +W119 */
                 if (!this.isMounted()) return;
                 callback(false);
             });
@@ -27,6 +32,7 @@ var DefaultTimetable = React.createClass({
         }
     },
     render: function() {
+        /*jshint ignore:start */
         return <span>
             <ConfirmActionButton
                 className="btn btn-danger btn-xs"
@@ -40,6 +46,7 @@ var DefaultTimetable = React.createClass({
             &nbsp;
             {this.props.timetable.for_class} klasei
         </span>;
+        /*jshint ignore:end */
     }
 });
 
