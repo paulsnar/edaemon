@@ -41,7 +41,7 @@ describe('route: /timetables/new', function() {
         expect(spy.called).toEqual(false);
 
         var timetableRow = component.refs[0];
-        timetableRow.refs.className.value = '1.0';
+        timetableRow.setState({ className: '1.0' });
         _precondition = true;
         component.save();
         expect(spy.called).toEqual(true);
@@ -64,7 +64,7 @@ describe('route: /timetables/new', function() {
 
         var component = ReactTestUtils.renderIntoDocument(<NewTimetableHandler />);
         var timetableRow = component.refs[0];
-        timetableRow.refs.className.value = '1.0';
+        timetableRow.setState({ className: '1.0' });
         component.save();
     })
 });

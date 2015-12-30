@@ -31,7 +31,7 @@ describe('TimetableRow', function() {
 
         expect(component.serialize()).toEqual(null);
 
-        component.refs.className.value = '1.0';
+        component.setState({ className: '1.0' });
 
         expect(component.serialize()).not.toEqual(null);
     });
@@ -48,7 +48,7 @@ describe('TimetableRow', function() {
             }
         };
         var component = ReactTestUtils.renderIntoDocument(<TimetableRow />);
-        component.refs.className.value = preserialized.className;
+        component.setState({ className: preserialized.className });
         component.refs[0].setState({ lessons: preserialized.lessons.mon });
         component.refs[1].setState({ lessons: preserialized.lessons.tue });
         component.refs[2].setState({ lessons: preserialized.lessons.wed });
@@ -56,5 +56,28 @@ describe('TimetableRow', function() {
         component.refs[4].setState({ lessons: preserialized.lessons.fri });
 
         expect(component.serialize()).toEqual(preserialized);
+    });
+
+    it('should pre-fill state if timetable prop is passed', function() {
+        var timetable = {
+            for_class: '1.0',
+            plan: {
+                mon: ['zero', 'one', 'two', 'three', 'four', 'five'],
+                tue: ['0', '1', '2', '3', '4', '5'],
+                wed: ['nulle', 'viens', 'divi', 'trīs', 'četri', 'pieci'],
+                thu: ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth'],
+                fri: ['nulltā', 'pirmā', 'otrā', 'trešā', 'ceturtā', 'piektā']
+            }
+        };
+        var component = ReactTestUtils.renderIntoDocument(<TimetableRow
+            timetable={timetable} />);
+
+        expect(component.state.className).toEqual(timetable.for_class);
+
+        expect(component.refs[0].state.lessons).toEqual(timetable.plan.mon);
+        expect(component.refs[1].state.lessons).toEqual(timetable.plan.tue);
+        expect(component.refs[2].state.lessons).toEqual(timetable.plan.wed);
+        expect(component.refs[3].state.lessons).toEqual(timetable.plan.thu);
+        expect(component.refs[4].state.lessons).toEqual(timetable.plan.fri);
     });
 });
