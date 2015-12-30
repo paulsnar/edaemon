@@ -40,12 +40,14 @@ var LessonsColumn = React.createClass({
             if (lesson === '' || lesson === '-') return null;
             else return lesson;
         });
-        var lesson = lessons[lessons.length - 1];
         // remove empty lessons from the end
-        while (_.isNull(lesson)) {
-            lesson = lessons.pop();
+        var lesson = lessons[lessons.length - 1];
+        if (_.isNull(lesson)) {
+            while (_.isNull(lesson)) {
+                lesson = lessons.pop();
+            }
+            if (!_.isNull(lesson)) lessons.push(lesson);
         }
-        if (!_.isNull(lesson)) lessons.push(lesson);
         return lessons;
     },
     render: function() {

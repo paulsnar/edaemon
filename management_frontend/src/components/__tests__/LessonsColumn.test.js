@@ -7,6 +7,8 @@ describe('LessonsColumn', function() {
     var ReactTestUtils = require('react-addons-test-utils');
     var rewire = require('rewire');
 
+    var _ = require('lodash');
+
     var LessonsColumn;
     beforeEach(function() {
         LessonsColumn = rewire('../LessonsColumn');
@@ -26,7 +28,7 @@ describe('LessonsColumn', function() {
 
         var lessons = component.serialize();
 
-        expect(lessons.length).toEqual(3);
+        expect(lessons).toEqual(['0', '1', '2']);
     });
 
     it('should add more fields when the last field is focused', function() {
@@ -44,7 +46,7 @@ describe('LessonsColumn', function() {
         expect(component.state.lessons.length).toBeGreaterThan(previousLength);
     });
 
-    it('should pre-fill fields if lessons prop is passed', function() {
+    it('should pre-fill state if lessons prop is passed', function() {
         var lessons = [ 'lesson0', 'lesson1', 'lesson2',
                         'lesson3', 'lesson4', 'lesson5'];
         var component = ReactTestUtils.renderIntoDocument(<LessonsColumn
@@ -52,4 +54,23 @@ describe('LessonsColumn', function() {
 
         expect(component.state.lessons).toEqual(lessons);
     });
+
+    it('should return (serialized) data in specified layout (test without trailing empties)', function() {
+        var preserialized = ['zero', 'one', 'two', 'three', 'four', 'five'];
+
+        var component = ReactTestUtils.renderIntoDocument(<LessonsColumn />);
+        component.setState({ lessons: preserialized });
+
+        expect(component.serialize()).toEqual(preserialized);
+    });
+
+    it('should return (serialized) data in specified layout (test with trailing empties)', function() {
+        var preserialized = ['zero', 'one', 'two', 'three', 'four', 'five'];
+        var _p = preserialized.concat(['', '', '', '', '']);
+
+        var component = ReactTestUtils.renderIntoDocument(<LessonsColumn />);
+        component.setState({ lessons: _p });
+
+        expect(component.serialize()).toEqual(preserialized);
+    })
 });
