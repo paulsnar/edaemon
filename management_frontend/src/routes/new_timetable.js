@@ -67,7 +67,7 @@ var NewTimetableHandler = React.createClass({
         var entries = [ ];
         for (var i = 0; i < this.state.rows; i++) {
             var serialized = this.refs[i].serialize();
-            if (serialized === false) {
+            if (serialized === null) {
                 this.setState({ saving: false, error: 'className' });
                 return false;
             } else {
