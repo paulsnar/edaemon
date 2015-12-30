@@ -13,7 +13,7 @@ describe('LessonsColumn', function() {
     });
 
     it('should render fine without external input', function() {
-        expect(ReactTestUtils.renderIntoDocument(<LessonsColumn />))
+        expect(() => ReactTestUtils.renderIntoDocument(<LessonsColumn />))
             .not.toThrow();
     });
 
