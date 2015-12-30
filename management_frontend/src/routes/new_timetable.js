@@ -6,54 +6,8 @@ var Link = require('react-router').Link;
 var _ = require('lodash');
 var Data = require('../data');
 var l10n = require('../l10n');
-var LessonsColumn = require('../components/LessonsColumn');
 
-var TimetableRow = React.createClass({
-    getInitialState: function() {
-        return { error: null };
-    },
-    serialize: function() {
-        var className;
-        if (this.refs.className.value.trim() === '') {
-            this.setState({ error: 'className' });
-            return null;
-        } else {
-            className = this.refs.className.value.trim();
-        }
-        var plan = { };
-        var _days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-        for (var i = 0; i < 5; i++) {
-            plan[_days[i]] = this.refs[i].serialize();
-        }
-        this.setState({ error: null });
-        return { className: className, lessons: plan };
-    },
-    render: function() {
-        /*jshint ignore:start */
-        return <div style={{ padding: '1rem' }}>
-        <div className="row">
-            <div className={`row form-group ${this.state.error === 'className' ? 'has-error' : ''}`}
-                style={{ padding: '1rem' }}>
-                <div className="col-md-1 col-sm-2 col-xs-3 text-right">
-                    <label>Klase:</label>
-                </div>
-                <div className="col-md-2 col-sm-3 col-xs-3">
-                    <input type="text" ref="className" className="form-control"
-                        placeholder="0.z" />
-                </div>
-            </div>
-            {_.times(5, i =>
-                <div className="col-md-2" key={i}>
-                    <strong>{_.capitalize(l10n.formatWeekday(i + 1, 'nominativs'))}</strong>
-                    <LessonsColumn ref={i} />
-                </div>
-            )}
-        </div>
-        <hr />
-        </div>;
-        /*jshint ignore:end */
-    }
-});
+var TimetableRow = require('../components/TimetableRow');
 
 var NewTimetableHandler = React.createClass({
     addRow: function() {

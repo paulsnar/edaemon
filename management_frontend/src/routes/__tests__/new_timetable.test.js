@@ -53,6 +53,7 @@ describe('route: /timetables/new', function() {
                 input: function(data) {
                     expect(data.timetables).toBeDefined();
                     expect(data.timetables[0].className).toBeDefined();
+                    expect(data.timetables[0].className).toEqual('1.0');
                     expect(data.timetables[0].lessons).toBeDefined();
                     done();
                     return new Promise(res => res({ success: true }));
