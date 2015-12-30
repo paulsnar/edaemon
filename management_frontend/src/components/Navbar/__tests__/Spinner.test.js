@@ -16,21 +16,14 @@ describe('Spinner', function() {
     });
 
     it('should render without any outside influence', function() {
-        var Renderer = ReactTestUtils.createRenderer();
-        Renderer.render(<Spinner />);
-        var rendered = Renderer.getRenderOutput();
-
-        expect(rendered).toBeDefined();
-        expect(rendered.type).toEqual('a');
+        expect(() => ReactTestUtils.renderIntoDocument(<Spinner />))
+            .not.toThrow();
     });
 
     it('should register itself as RPC for "spinner.start" and "spinner.stop" methods', function() {
         var rp = rewire('../../../rp');
         _Spinner.__set__('rp', rp);
 
-        // var Renderer = ReactTestUtils.createRenderer();
-        // Renderer.render(<Spinner />);
-        // var rendered = Renderer.getRenderOutput();
         var component = ReactTestUtils.renderIntoDocument(<Spinner />);
 
         expect(rp.rpc.isRegistered('spinner.start')).toEqual(true);

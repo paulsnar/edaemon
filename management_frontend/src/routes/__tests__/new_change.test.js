@@ -15,11 +15,8 @@ describe('route: /changes/new', function() {
     });
 
     it('should render fine without any router passed params', function() {
-        var page = ReactTestUtils.renderIntoDocument(<NewChangeHandler />);
-        var domElement = ReactDOM.findDOMNode(page);
-
-        expect(page).toBeDefined();
-        expect(domElement.tagName.toLowerCase()).toEqual('div');
+        expect(() => ReactTestUtils.renderIntoDocument(<NewChangeHandler />))
+            .not.toThrow();
     });
 
     it('should not submit until all the required fields (date and classnames) are filled out', function() {

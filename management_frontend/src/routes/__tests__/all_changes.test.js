@@ -50,11 +50,8 @@ describe('route: /changes/all', function() {
         all_changes.__set__('Data', mock.Data);
         all_changes.__set__('rp', mock.rp);
 
-        var page = ReactTestUtils.renderIntoDocument(<AllChangesHandler />);
-        var domElement = ReactDOM.findDOMNode(page);
-
-        expect(page).toBeDefined();
-        expect(domElement.tagName.toLowerCase()).toEqual('div');
+        expect(() => ReactTestUtils.renderIntoDocument(<AllChangesHandler />))
+            .not.toThrow();
     });
 
     it('should call Data.changes.getAll on load', function() {

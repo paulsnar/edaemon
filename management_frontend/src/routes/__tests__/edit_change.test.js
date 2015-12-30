@@ -46,11 +46,8 @@ describe('route: /changes/:id/edit', function() {
         EditChangeHandler.__set__('rp', mock.rp);
         EditChangeHandler.__set__('Data', mock.Data);
 
-        var page = ReactTestUtils.renderIntoDocument(<EditChangeHandler
-            params={{ id: mock.change.id }} />);
-        var domNode = ReactDOM.findDOMNode(page);
-
-        expect(domNode.tagName.toLowerCase()).toEqual('div');
+        expect(() => ReactTestUtils.renderIntoDocument(<EditChangeHandler
+            params={{ id: mock.change.id }} />)).not.toThrow();
     });
 
     it('should call the spinner RPCs while loading', function(done) {

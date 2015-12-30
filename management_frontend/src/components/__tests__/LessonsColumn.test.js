@@ -13,10 +13,8 @@ describe('LessonsColumn', function() {
     });
 
     it('should render fine without external input', function() {
-        var component = ReactTestUtils.renderIntoDocument(<LessonsColumn />);
-        var domNode = ReactDOM.findDOMNode(component);
-
-        expect(domNode.tagName.toLowerCase()).toEqual('div');
+        expect(ReactTestUtils.renderIntoDocument(<LessonsColumn />))
+            .not.toThrow();
     });
 
     it('should trim unnecessary trailing empty fields on serialization', function() {

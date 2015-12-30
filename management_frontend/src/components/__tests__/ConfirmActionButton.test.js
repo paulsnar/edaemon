@@ -14,12 +14,8 @@ describe('ConfirmActionButton', function() {
     });
 
     it('should render, even without any props', function() {
-        var Renderer = ReactTestUtils.createRenderer();
-        Renderer.render(<ConfirmActionButton />);
-        var rendered = Renderer.getRenderOutput();
-
-        expect(rendered).toBeDefined();
-        expect(rendered.type).toEqual('button');
+        expect(() => ReactTestUtils.renderIntoDocument(<ConfirmActionButton />))
+            .not.toThrow();
     });
 
     it('should not call the callback if it is clicked only once', function() {
