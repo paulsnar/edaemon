@@ -43,18 +43,17 @@ describe('route: /changes/new', function() {
         new_change.__set__('Data', Data);
 
         var page = ReactTestUtils.renderIntoDocument(<NewChangeHandler />);
-        page.doSave();
+        page.save();
         expect(spy.called).toEqual(false);
 
         page.setState({ date: '2015-12-12' });
-        page.doSave();
+        page.save();
         expect(spy.called).toEqual(false);
 
-        var column = ReactTestUtils.findRenderedComponentWithType(
-            page, new_change.__get__('ChangeColumn'));
-        column.setState({ className: '1.0' });
+
+        page.setState({ classNames: ['1.0'] });
         _precondition = true;
-        page.doSave();
+        page.save();
         expect(spy.called).toEqual(true);
     });
 
@@ -78,11 +77,11 @@ describe('route: /changes/new', function() {
         new_change.__set__('Data', Data);
 
         var page = ReactTestUtils.renderIntoDocument(<NewChangeHandler />);
-        var column = ReactTestUtils.findRenderedComponentWithType(
-            page, new_change.__get__('ChangeColumn'));
+        page.setState({ date: '2015-12-12', classNames: ['1.0'] });
 
-        page.setState({ date: '2015-12-12' });
-        column.setState({ className: '1.0', lessons: ['a', 'b', 'c', 'd', 'e', 'f'] });
-        page.doSave();
+        var lessonsColumn = page.refs[0];
+
+        lessonsColumn.setState({ lessons: ['a', 'b', 'c', 'd', 'e', 'f'] });
+        page.save();
     });
 });
