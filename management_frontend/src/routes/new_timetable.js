@@ -6,7 +6,6 @@ var _ = require('lodash');
 var Data = require('../data');
 var l10n = require('../l10n');
 var LessonsColumn = require('../components/LessonsColumn');
-var SerializationError = require('../components/SerializationError');
 
 var TimetableRow = React.createClass({
     getInitialState: function() {
@@ -62,33 +61,30 @@ var NewTimetableHandler = React.createClass({
             savingError: false, saved: false };
     },
     save: function() {
-        try {
-            var entries = _.times(this.state.rows, (i) => {
-                var serialized = this.refs[i].serialize();
-                if (serialized === false) {
-                    this.setState({ saving: false, error: 'className' });
-                    throw new SerializationError();
-                } else {
-                    return serialized;
-                }
-            });
-            Data.timetables.input({ timetables: entries })
-            .then(result => {
-                if (!this.isMounted()) return;
-                if (result.success) {
-                    this.setState({ saving: false, saved: true, items: result.stored });
-                } else {
-                    this.setState({ saving: false, savingError: true,
-                        errorText: result.message || null });
-                }
-            })
-            .catch(err => {
-                if (!this.isMounted()) return;
-                this.setState({ saving: false, savingError: true, errorText: err });
-            });
-        } catch (SerializationError) {
-            return false;
+        var entries = [ ];
+        for (var i = 0; i < this.state.rows; i++) {
+            var serialized = this.refs[i].serialize();
+            if (serialized === false) {
+                this.setState({ saving: false, error: 'className' });
+                return false;
+            } else {
+                entries.push(serialized);
+            }
         }
+        Data.timetables.input({ timetables: entries })
+        .then(result => {
+            if (!this.isMounted()) return;
+            if (result.success) {
+                this.setState({ saving: false, saved: true, items: result.stored });
+            } else {
+                this.setState({ saving: false, savingError: true,
+                    errorText: result.message || null });
+            }
+        })
+        .catch(err => {
+            if (!this.isMounted()) return;
+            this.setState({ saving: false, savingError: true, errorText: err });
+        });
     },
     render: function() {
         if (this.state.saved) {
