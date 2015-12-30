@@ -11,39 +11,49 @@ from ....utility.dates import check_ISO8601_compliance
 
 class Changes(Handler):
     def post(self):
-        data = json.loads(self.request.body)
-        # { date: date, changes: [ className: .., lessons: [ ... ] ] }
-        ret = dict()
-        changes = data['changes']
-        for change in changes:
-            if not check_ISO8601_compliance(data['date']):
-                self.response.set_status(400)
-                self.jsonify(error=True, code=400, message='Invalid date ' +
-                    '(for class {0})'.format(change['className']))
-                return # stop processing immediately
-            else:
-                stored_change = Change(for_class=change['className'],
-                    for_date=data['date'])
-                stored_change.lessons = json.dumps(
-                    trim_trailing_nulls(change['lessons']))
-                stored_change.put()
-                ret[change['className']] = stored_change.key.urlsafe()
-        self.jsonify(success=True, stored=ret)
+        try:
+            data = json.loads(self.request.body)
+            # { date: date, changes: [ className: .., lessons: [ ... ] ] }
+            ret = dict()
+            changes = data['changes']
+            for change in changes:
+                if not check_ISO8601_compliance(data['date']):
+                    self.response.set_status(400)
+                    self.jsonify(error=True, code=400, message='Invalid date ' +
+                        '(for class {0})'.format(change['className']))
+                    return # stop processing immediately
+                else:
+                    stored_change = Change(for_class=change['className'],
+                        for_date=data['date'])
+                    stored_change.lessons = json.dumps(
+                        trim_trailing_nulls(change['lessons']))
+                    stored_change.put()
+                    ret[change['className']] = stored_change.key.urlsafe()
+            self.jsonify(success=True, stored=ret)
+        except Exception:
+            self.set_status(500)
+            self.jsonify(error=True, code=500, message='Server-side error')
+            raise
 
 class AllChanges(Handler):
     def get(self):
-        if self.request.get('cursor'):
-            c = Cursor(urlsafe=self.request.get('cursor'))
-            changes, next_c, more = Change.get_all().fetch_page(15,
-                start_cursor=c, projection=[Change.for_class, Change.for_date])
-        else:
-            changes, next_c, more = Change.get_all().fetch_page(15,
-                projection=[Change.for_class, Change.for_date])
-        ret = dict()
-        ret['changes'] = [change.to_dict() for change in changes]
-        if more and next_c:
-            ret['cursor'] = next_c.urlsafe()
-        self.jsonify(**ret)
+        try:
+            if self.request.get('cursor'):
+                c = Cursor(urlsafe=self.request.get('cursor'))
+                changes, next_c, more = Change.get_all().fetch_page(15,
+                    start_cursor=c, projection=[Change.for_class, Change.for_date])
+            else:
+                changes, next_c, more = Change.get_all().fetch_page(15,
+                    projection=[Change.for_class, Change.for_date])
+            ret = dict()
+            ret['changes'] = [change.to_dict() for change in changes]
+            if more and next_c:
+                ret['cursor'] = next_c.urlsafe()
+            self.jsonify(**ret)
+        except Exception:
+            self.set_status(500)
+            self.jsonify(error=True, code=500, message='Server-side error')
+            raise
 
 class ChangesForWeek(Handler):
     def get(self):
@@ -63,6 +73,7 @@ class SpecificChange(Handler):
         except Exception:
             self.response.set_status(400)
             self.jsonify(error=True, code=400, message='Malformed request')
+            raise
 
     def delete(self, change_id):
         try:
@@ -76,6 +87,7 @@ class SpecificChange(Handler):
         except Exception:
             self.response.set_status(400)
             self.jsonify(error=True, code=400, message='Malformed request')
+            raise
 
     def put(self, change_id):
         try:
