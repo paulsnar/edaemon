@@ -45,6 +45,7 @@ var Navbar = React.createClass({
                                 Visas izmaiņas
                             </Link>
                         </li>
+                        <li><a href="/">Atpakaļ pie Edaemon</a></li>
                     </ul>
                     <ul className="nav navbar-nav navbar-right">
                         <li>
