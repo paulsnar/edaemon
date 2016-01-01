@@ -167,7 +167,17 @@ var timetables = {
     }
 };
 
+var meta = {
+    checkUpdates: function() {
+        return fetch('/api/check_updates',
+            { credentials: 'same-origin' })
+            .then(check200)
+            .then(r => r.json());
+    }
+};
+
 module.exports = {
     changes: changes,
-    timetables: timetables
+    timetables: timetables,
+    meta: meta
 };
