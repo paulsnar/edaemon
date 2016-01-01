@@ -5,8 +5,15 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+- url: /static
+  static_dir: static/
+  secure: always
+- url: /(?:admin|api)/.*
+  script: run.application.admin
+  login: admin
+  secure: always
 - url: /.*
-  script: app.app
+  script: run.application.main
   secure: always
 
 env_variables:
@@ -19,6 +26,8 @@ libraries:
   version: "2.6"
 - name: markupsafe
   version: "0.15"
+- name: webapp2
+  version: latest
 
 skip_files:
 # defaults
@@ -28,6 +37,8 @@ skip_files:
 - ^(.*/)?.*/RCS/.*$
 - ^(.*/)?\..*$
 # custom
+- ^(.*/)?\.git.*$
 - ^(.*/)?.*\.md$
 - ^(.*/)?tests.*$
+- ^(.*/)?management_frontend\/.*$
 - ^(.*/)?.*\.example$

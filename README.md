@@ -1,62 +1,40 @@
 # Edaemon β
 
-Šis LASIMANI ir pieejams arī [latviešu valodā](README.LV.md).
-
-Edaemon is a quite simple application for managing changes of school timetables.
+Nothing to see here, move along now. :smile:
 
 ## Setup
 
-Edaemon is created specifically to be compatible with Google App Engine. If you
-don't expect it to be hit too often, it might just fit in the free plan quotas.
+(assuming Unix/Linux/GNU or whatever, not Windows)
 
-To set it up:
+* make sure you have Pythom Google App Engine SDK for Python, Node (v5.0 and up recommended), npm and gulp.
+* clone this repository (preferably a tagged commit)
+* copy `app.yaml.example` to `app.yaml` and fill out the fields GAE requires
+* `bower install`
+* `cd management_frontend && npm install && gulp js.dist`
+* `appcfg.py update ./`
+* pretty much done
 
-1. Install [Google App Engine SDK for Python](https://cloud.google.com/appengine/downloads)
-  (and Python 2.7, if you don't already have it).
-2. Create a new app in [Google Developers Console](https://console.developers.google.com).
-  The name doesn't really matter. Also HTTPS is enabled by default with a cert from Google's CA.
-3. Clone this repository (or rather, the latest tag, which is production-ready).
-4. cd into this repository and run `pip install -r requirements.txt -t lib/` locally
-  to install all the necessary requirements (mainly Flask and Jinja2).
-5. Copy `app.yaml.example` to `app.yaml` and change the following fields:
-  - `env_variables.EDAEMON_APP_SECRET_KEY`: This should be replaced with a string
-  about 32 characters long. Flask uses this to encrypt/decrypt session cookies.
-  - `env_variables.EDAEMON_APP_SILENT`: In some places Edaemon might log failures,
-  like a bad XSRF token on admin authentication. If you don't want that, set this to 1.
-  - `env_variables.GA_TRACKING_ID`: If you want to use Google Analytics tracking
-  for your app, replace this with your Google Tracking ID (something like `UA-12345678-1`).
-  It will be injected on each served page (see
-  [vendor/edaemon/templates/layout.j2](vendor/edaemon/template/layout.j2))
-6. Execute `appcfg.py -A your-app-id-12345 update ./` from the repo directory.
-  `appcfg.py` is provided by the Google SDK. If this doesn't work, refer to the
-  [Google App Engine SDK for Python documentation](https://cloud.google.com/appengine/docs/python/).
-7. Go to your brand new installation of Edaemon and create the first user!
+Any questions → [@paulsnar](https://twitter.com/paulsnar) on twitter
 
-Note: for Windows many of these steps might differ in slight or big ways, as well
-as the testing steps lower down. I'm not quite sure about anything, but if you
-manage to get any of this working, pull requests are indeed accepted.
+# Contribution guidelines
 
-## Testing
+Frontend:
+* Please write tests, put them along your contributions in `__tests__` directory and name them like `Component.test.js`. Make sure do not forget this.
+* Do not forget `'use strict'`.
+* You can use arrow functions and template strings. Please don't use arrow functions in tests though, that breaks stuff with Webpack sometimes. Babel transforms only JSX, not ES6→5.
+* Adhere to JSHint. Please check whether `gulp js.hint` throws any errors at you. If so, please fix them. W097 should be disabled on each file, W119 on arrow functions and template strings BUT back on afterwards. Other warnings should not be disabled and must be fixed.
+* CI will run tests and JSHint for you. PRs which don't pass CI will not be merged. Please do what you must to not get caught in CI.
+* Four spaces, 80-char width. Except in JSX, where it can exceed 80 chars. But always four spaces. LF (Unix-style) line endings. (.editorconfig coming soon.)
+* Try to adhere to the overall code style of other files. When in doubt, try to stick to something similar to AirBNB's style guidelines, they are quite close. (But remember, four spaces.)
+* I reserve the right to point at your mistakes, and possibly help you fix them. This is not a comprehensive styleguide, so I may ask you to adjust accordingly. Thank you in advance for understanding.
 
-Edaemon has a test suite which can be found in `tests/`. If you are adding any new
-functionality, please make sure to add relevant tests in that folder and importing
-any created test files in `tests/__init__.py`, or else your code might not be
-pulled into this repo.
+Backend:
+* Tests are encouraged, but not required. (Currently there are none, so take that as you wish.)
+* Because GAE uses Python 2, I heavily recommend adding `# coding: utf-8` to escape some problems. This shouldn't be a problem for accepting code, but it should be there.
+* Unless it's a route file, avoid defining too many classes in one file. There should be a certain amount of modularity involved.
+* For Python: four spaces, 80-char width, LF (Unix-style) line endings. For HTML+Jinja2: four spaces, unlimited width. Preferrably LF line endings.
 
-To run the existing tests:
-
-1. Make sure to have Python,
-  [Google App Engine SDK for Python](https://cloud.google.com/appengine/downloads)
-  and all the necessary dependencies installed in `lib/`.
-2. Set your PYTHONPATH to include the SDK, root folder of this repo, as well as
-  `lib/` and `vendor/`.
-  (Google's SDK is also not of best consistency, so PYTHONPATH might also need to
-  include some of its subfolders. If you get any error running tests, Google it.
-  You almost definitely will find a solution.)
-3. Run `python -m unittest tests` (or alternatively, if `python` doesn't refer
-  to Python 2.7, use `python2` or `python2.7`, if available.)
-
-## License
+# License
 
 Edaemon is distributed under Apache License 2.0. To learn more, refer to
 [LICENSE.txt](LICENSE.txt).

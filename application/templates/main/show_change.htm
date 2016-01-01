@@ -1,0 +1,35 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Izmaiņas {{ change.for_class }} klasei {{ format_date(change.for_date, 'dativs') }}{% endblock %}
+
+{% block body %}
+<h1>Izmaiņas {{ change.for_class }} klasei <small>{{ format_date(change.for_date, 'dativs') }}</small></h1>
+
+{% if users.is_current_user_admin() %}
+<p>
+    <a href="/admin/#/changes/{{ change.key.urlsafe() }}" class="btn btn-default">
+        <span class="glyphicon glyphicon-cog"></span>
+        Pārvaldīt
+    </a>
+</p>
+{% endif %}
+
+<ol start="0">
+    {% for lesson in lessons %}
+        {% if lesson is none %}
+            <li>&mdash;</li>
+        {% else %}
+            <li>{{ lesson }}</li>
+        {% endif %}
+    {% else %}
+    (Neviena stunda nav ievadīta. Varbūt šodien ir brīvdiena?)
+    {% endfor %}
+</ol>
+{% endblock %}
+
+{% if users.is_current_user_admin() %}
+{% block scripts %}
+{{ super() }}
+<script>/* renavigate */</script>
+{% endblock %}
+{% endif %}
