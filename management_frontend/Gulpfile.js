@@ -96,6 +96,11 @@ gulp.task('js.watch', function() {
 
 /* begin ci */
 
-gulp.task('ci', ['js.test', 'js.hint']);
+gulp.task('js.test.ci', function(done) {
+    new karma.Server({
+        configFile: __dirname + '/karma-ci.conf.js'
+    }, done).start();
+});
+gulp.task('ci', ['js.test.ci', 'js.hint']);
 
 /* end ci */
