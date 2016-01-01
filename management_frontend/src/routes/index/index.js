@@ -17,6 +17,7 @@ var IndexHandler = React.createClass({
     componentDidMount: function() {
         this.data = { version: { } };
         Data.meta.checkUpdates()
+        /*jshint -W119 */
         .then(resp => {
             if (!_.isEqual(resp.current_version, resp.latest_version)) {
                 this.data.version = {
@@ -27,10 +28,12 @@ var IndexHandler = React.createClass({
             }
         })
         .catch(err => { /* just do nothing… */ });
+        /*jshint +W119 */
     },
     render: function() {
         var _update;
         if (this.state.update) {
+            /*jshint ignore:start */
             _update = <div className="alert alert-info">
                 Jūsu Edaemon instancei ir pieejams atjauninājums.
                 Jūs pašlaik izmantojat versiju {this.data.version.current},
@@ -38,6 +41,7 @@ var IndexHandler = React.createClass({
                 <a href="https://github.com/paulsnar/edaemon">Spiediet šeit</a>,
                 lai dotos uz Edaemon Github repozitoriju.
             </div>;
+            /*jshint ignore:end */
         }
         /*jshint ignore:start */
         return <div>

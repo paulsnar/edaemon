@@ -172,7 +172,9 @@ var meta = {
         return fetch('/api/check_updates',
             { credentials: 'same-origin' })
             .then(check200)
+            /*jshint -W119 */
             .then(r => r.json());
+            /*jshint +W119 */
     }
 };
 
