@@ -13,7 +13,7 @@ var TimetableRow = React.createClass({
         if (this.props.timetable) {
             return { inputError: null,
                 className: this.props.timetable.for_class,
-                initialLessons: _.cloneDeep(this.props.timetable.plan)}
+                initialLessons: _.cloneDeep(this.props.timetable.plan) };
         } else {
             return { inputError: null, className: null, initialLessons: null };
         }
@@ -69,6 +69,7 @@ var TimetableRow = React.createClass({
                 </div>;
             })}
         </div>;
+        /*jshint ignore:end */
     }
 });
 

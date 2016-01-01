@@ -12,6 +12,7 @@ var EditTimetableHandler = React.createClass({
     componentDidMount: function() {
         rp.rpc.call('spinner.start');
         this.data = { timetable: null };
+        /*jshint -W119 */
         Data.timetables.get(this.props.params.id)
         .then(resp => {
             rp.rpc.call('spinner.stop');
@@ -23,7 +24,8 @@ var EditTimetableHandler = React.createClass({
             rp.rpc.call('spinner.stop');
             if (!this.isMounted()) return;
             this.setState({ loadingError: err });
-        })
+        });
+        /*jshint +W119 */
     },
     getInitialState: function() {
         return { loaded: false, loadingError: null,
@@ -38,7 +40,7 @@ var EditTimetableHandler = React.createClass({
         }
 
         this.setState({ saving: true, inputError: null });
-
+        /*jshint -W119 */
         Data.timetables.edit(this.props.params.id, timetable)
         .then(result => {
             if (!this.isMounted()) return;
@@ -52,6 +54,7 @@ var EditTimetableHandler = React.createClass({
             if (!this.isMounted()) return;
             this.setState({ saving: false, savingError: '' + err });
         });
+        /*jshint +W119 */
     },
     render: function() {
         /*jshint ignore:start */
