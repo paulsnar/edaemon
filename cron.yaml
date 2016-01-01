@@ -1,0 +1,4 @@
+cron:
+- description: Refresh update status
+  url: /api/cron/check_updates
+  schedule: every 12 hours
