@@ -2,6 +2,8 @@
 
 import webapp2
 
+from ....version import EDAEMON_VERSION
+
 from .handler import Handler
 from ....utility.version import get as get_version
 import urllib2
@@ -9,8 +11,7 @@ import os
 
 class CheckUpdates(Handler):
     def get(self):
-        current_version = tuple(
-            os.environ['EDAEMON_VERSION'].split('-')[0].split('.'))
+        current_version = tuple(EDAEMON_VERSION.split('-')[0].split('.'))
         try:
             latest_version = get_version()
             self.jsonify(current_version=current_version,
