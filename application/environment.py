@@ -1,5 +1,6 @@
 # coding: utf-8
 
+import os
 from jinja2 import Environment, PackageLoader
 from google.appengine.api import users
 
@@ -16,5 +17,6 @@ edaemon = dict(
 env.globals = dict(
     edaemon=edaemon,
     users=users,
-    format_date=format_date
+    format_date=format_date,
+    GA_TRACKING_ID=os.environ.get('GA_TRACKING_ID', None)
 )
