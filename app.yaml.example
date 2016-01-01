@@ -17,8 +17,7 @@ handlers:
   secure: always
 
 env_variables:
-    EDAEMON_APP_SECRET_KEY: 'GenerateAndReplace'
-    EDAEMON_APP_SILENT: 0
+    EDAEMON_COOKIE_KEY: 'GenerateAndReplace'
     # GA_TRACKING_ID: 'UA-OPTIONAL-0'
 
 libraries:
