@@ -1,5 +1,7 @@
 # Edaemon β
 
+[![Build Status](https://travis-ci.org/paulsnar/edaemon.svg)](https://travis-ci.org/paulsnar/edaemon)
+
 Nothing to see here, move along now. :smile:
 
 ## Setup
