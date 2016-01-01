@@ -39,9 +39,5 @@
     "react-router": "^1.0.3",
     "spin": "0.0.1",
     "whatwg-fetch": "^0.10.1"
-  },
-  "scripts": {
-    "test": "karma start karma.conf.js",
-    "test.ci": "karma start karma-ci.conf.js"
   }
 }

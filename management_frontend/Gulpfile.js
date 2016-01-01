@@ -5,6 +5,7 @@ var gulp = require('gulp');
 var gutil = require('gulp-util');
 
 /* begin dist */
+
 var webpack = require('webpack');
 var minify = require('gulp-minify');
 
@@ -56,6 +57,7 @@ gulp.task('dist', ['js.dist']);
 /* end dist */
 
 /* begin dev */
+
 var babel = require('gulp-babel');
 var karma = require('karma');
 var jshint = require('gulp-jshint');
@@ -69,7 +71,8 @@ gulp.task('js.babel', function() {
 gulp.task('js.hint', function() {
     return gulp.src('src/**/*.js')
         .pipe(jshint())
-        .pipe(jshint.reporter('default', { verbose: true }));
+        .pipe(jshint.reporter('default', { verbose: true }))
+        .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('js.test', function(done) {
@@ -91,8 +94,8 @@ gulp.task('js.watch', function() {
 
 /* end dev */
 
-// gulp.task('js.watch', function() {
-//     return gulp.watch('src/**/*.js', ['js']);
-// });
+/* begin ci */
 
-// gulp.task('default', ['js']);
+gulp.task('ci', ['js.test', 'js.hint']);
+
+/* end ci */

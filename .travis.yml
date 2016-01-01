@@ -10,4 +10,8 @@ node_js:
 before_install:
 - cd management_frontend
 
-script: npm run test.ci
+before_script:
+- npm install -g gulp
+
+script:
+- gulp ci
