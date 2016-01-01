@@ -12,6 +12,18 @@ var webpackConfig = {
     watch: true
 }
 
+var customLaunchers = {
+    'SL_Chrome': {
+        base: 'SauceLabs',
+        browserName: 'chrome',
+        version: '47'
+    },
+    'SL_Firefox': {
+        base: 'SauceLabs',
+        browserName: 'firefox'
+    }
+}
+
 module.exports = function(config) {
   config.set({
     basePath: '',
@@ -31,7 +43,7 @@ module.exports = function(config) {
     },
 
 
-    reporters: ['mocha', 'html'],
+    reporters: ['dots', 'saucelabs'],
 
     port: 9876,
 
@@ -41,17 +53,20 @@ module.exports = function(config) {
 
     autoWatch: true,
 
-    browsers: ['Chrome'],
 
     singleRun: true,
-
-    concurrency: Infinity,
+    sauceLabs: {
+        testName: 'edaemon browser tests @ Sauce'
+    },
+    captureTimeout: 120000,
+    browserDisconnectTimeout: 120000,
+    browserNoActivityTimeout: 120000,
+    customLaunchers: customLaunchers,
+    browsers: Object.keys(customLaunchers),
 
     plugins: [
         'karma-jasmine',
-        'karma-jasmine-html-reporter',
-        'karma-mocha-reporter',
-        'karma-chrome-launcher',
+        'karma-sauce-launcher',
         'karma-sinon',
         require('karma-webpack')
     ],
