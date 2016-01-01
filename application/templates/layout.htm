@@ -15,7 +15,11 @@
         {% block body %}{% endblock %}
         <footer>
             <hr />
-            <p style="font-size: 0.85rem;">Edaemon v{{ edaemon.version | safe }}</p>
+            <p style="font-size: 0.85rem;">
+                <a href="https://github.com/paulsnar/edaemon">
+                    Edaemon v{{ edaemon.version }}
+                </a>
+            </p>
         </footer>
     </div>
 {% block scripts %}
