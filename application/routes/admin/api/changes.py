@@ -98,7 +98,7 @@ class SpecificChange(Handler):
             else:
                 data = json.loads(self.request.body)
                 # data: { date: …, className: …, lessons: […, …, …] }
-                change.date = data['date']
+                change.for_date = data['date']
                 change.for_class = data['className']
                 change.lessons = json.dumps(data['lessons'])
                 change.put()
