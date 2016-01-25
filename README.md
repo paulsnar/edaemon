@@ -32,7 +32,7 @@ Frontend:
 
 Backend:
 * Tests are encouraged, but not required. (Currently there are none, so take that as you wish.)
-* Because GAE uses Python 2, I heavily recommend adding `# coding: utf-8` to escape some problems. This shouldn't be a problem for accepting code, but it should be there.
+* Because GAE uses Python 2, I heavily recommend adding `# coding: utf-8` to escape some problems. If you don't do this, it most likely won't make me reject your contributions, but I recommend it strongly.
 * Unless it's a route file, avoid defining too many classes in one file. There should be a certain amount of modularity involved.
 * For Python: four spaces, 80-char width, LF (Unix-style) line endings. For HTML+Jinja2: four spaces, unlimited width. Preferrably LF line endings.
 
