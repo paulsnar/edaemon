@@ -8,7 +8,7 @@ Nothing to see here, move along now. :smile:
 
 (assuming Unix/Linux/GNU or whatever, not Windows)
 
-* make sure you have Pythom Google App Engine SDK for Python, Node (v5.0 and up recommended), npm and gulp.
+* make sure you have Python Google App Engine SDK for Python, Node (v5.0 and up recommended), npm and gulp.
 * clone this repository (preferably a tagged commit)
 * copy `app.yaml.example` to `app.yaml` and fill out the fields GAE requires
 * `bower install`
