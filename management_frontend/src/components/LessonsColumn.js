@@ -30,7 +30,7 @@ var LessonsColumn = React.createClass({
     },
     handleChange: function(index, e) {
         var lessons = this.state.lessons;
-        lessons[index] = e.target.value.trim();
+        lessons[index] = e.target.value;
         this.setState({ lessons: lessons });
     },
     serialize: function() {
@@ -38,7 +38,7 @@ var LessonsColumn = React.createClass({
         var lessons = this.state.lessons.map(lesson => {
             /*jshint +W119*/
             if (lesson === '' || lesson === '-') return null;
-            else return lesson;
+            else return lesson.trim();
         });
         // remove empty lessons from the end
         var lesson = lessons[lessons.length - 1];
