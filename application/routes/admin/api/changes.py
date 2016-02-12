@@ -113,5 +113,5 @@ changes_routes = [
     ('/api/changes', Changes),
     ('/api/changes/all', AllChanges),
     ('/api/changes/week', ChangesForWeek),
-    ('/api/changes/([0-9A-Za-z\-]+)', SpecificChange),
+    ('/api/changes/([0-9A-Za-z\-_]+)', SpecificChange),
 ]

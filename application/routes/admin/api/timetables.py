@@ -95,5 +95,5 @@ class SpecificTimetable(Handler):
 timetables_routes = [
     ('/api/timetables', Timetables),
     ('/api/timetables/all', AllTimetables),
-    ('/api/timetables/([0-9A-Za-z\-]+)', SpecificTimetable),
+    ('/api/timetables/([0-9A-Za-z\-_]+)', SpecificTimetable),
 ]
