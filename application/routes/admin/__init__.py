@@ -5,7 +5,7 @@ from .management_bootstrap import ManagementBootstrap
 from .api_routes import api_routes
 
 all_routes = [
-    ('/admin/', ManagementBootstrap),
+    (r'/admin/', ManagementBootstrap),
 ]
 
 all_routes += api_routes

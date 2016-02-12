@@ -12,5 +12,5 @@ class CheckUpdates(Handler):
         self.jsonify(message='Thanks')
 
 cron_routes = [
-    ('/api/cron/check_updates', CheckUpdates),
+    (r'/api/cron/check_updates', CheckUpdates),
 ]

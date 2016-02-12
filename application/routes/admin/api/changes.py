@@ -110,8 +110,8 @@ class SpecificChange(Handler):
 
 
 changes_routes = [
-    ('/api/changes', Changes),
-    ('/api/changes/all', AllChanges),
-    ('/api/changes/week', ChangesForWeek),
-    ('/api/changes/([0-9A-Za-z\-_]+)', SpecificChange),
+    (r'/api/changes', Changes),
+    (r'/api/changes/all', AllChanges),
+    (r'/api/changes/week', ChangesForWeek),
+    (r'/api/changes/([0-9A-Za-z\-_]+)', SpecificChange),
 ]

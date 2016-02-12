@@ -22,5 +22,5 @@ class CheckUpdates(Handler):
                 message='Service Unavailable')
 
 meta_routes = [
-    ('/api/check_updates', CheckUpdates),
+    (r'/api/check_updates', CheckUpdates),
 ]
