@@ -29,11 +29,11 @@ class Change(ndb.Model):
 
     @classmethod
     def get_for_date(cls, for_date):
-        return cls.query(cls.for_date == for_date)
+        return cls.query(cls.for_date == for_date).order(cls.for_class)
 
     @classmethod
     def get_for_class(cls, for_class):
-        return cls.query(cls.for_class == for_class)
+        return cls.query(cls.for_class == for_class).order(cls.for_date)
 
     @classmethod
     def lookup_url(cls, urlsafe):
