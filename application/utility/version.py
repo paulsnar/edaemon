@@ -15,7 +15,9 @@ def update():
     for ref in refs:
         refname = ref['ref'] # refs/tags/vX.X OR refs/tags/vX.X.X
         ver = tuple(refname.split('/')[2].split('-')[0][1:].split('.'))
-        if ver > latest_v:
+        if ver[0] > latest_v[0] and \
+           ver[1] > latest_v[1] and \
+           ver[2] > latest_v[2]:
             latest_v = ver
     memcache.add('_meta:version', latest_v, 12 * 60 * 60)
     return latest_v
