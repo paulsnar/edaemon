@@ -9,7 +9,8 @@ var LessonsColumn = React.createClass({
         if (this.props.lessons) {
             return { lessons: _.clone(this.props.lessons).concat([ '' ]) };
         } else {
-            return { lessons: [ '', '', '', '', '', '', '' ] };
+            var length = this.props.staticLength || 5;
+            return { lessons: _.times(length + 1, () => '') };
         }
     },
     componentWillReceiveProps: function(nextProps) {
@@ -24,7 +25,8 @@ var LessonsColumn = React.createClass({
         this.setState({ lessons: lessons });
     },
     handleFocus: function(index, e) {
-        if (index === (this.state.lessons.length - 1)) {
+        if (index === (this.state.lessons.length - 1) &&
+            !this.props.staticLength) {
             this.addRow();
         }
     },
@@ -56,7 +58,7 @@ var LessonsColumn = React.createClass({
         {this.state.lessons.map((text, i) =>
         <div className="input-group" key={i}>
             <span className="input-group-addon">
-                {i === (this.state.lessons.length - 1) ? '+.' : `${i}.`}
+                {i === (this.state.lessons.length - 1) && !this.props.staticLength ? '+.' : `${i}.`}
             </span>
             <input type="text" className="form-control" value={text}
                 onFocus={this.handleFocus.bind(this, i)}
