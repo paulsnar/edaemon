@@ -27,7 +27,7 @@ def _month_form_lookup(month, form='nominativs'):
         if form == 'instrumentalis': return u'ar martu'
         if form == 'lokativs': return u'martā'
         if form == 'vokativs': return u'mart'
-    elif month == 5:
+    elif month == 4:
         if form == 'nominativs': return u'aprīlis'
         if form == 'genitivs': return u'aprīļa'
         if form == 'dativs': return u'aprīlim'
@@ -35,6 +35,14 @@ def _month_form_lookup(month, form='nominativs'):
         if form == 'instrumentalis': return u'ar aprīli'
         if form == 'lokativs': return u'aprīlī'
         if form == 'vokativs': return u'aprīl'
+    elif month == 5:
+        if form == 'nominativs': return u'maijs'
+        if form == 'genitivs': return u'maija'
+        if form == 'dativs': return u'maijam'
+        if form == 'akuzativs': return u'maiju'
+        if form == 'instrumentalis': return u'ar maiju'
+        if form == 'lokativs': return u'maijā'
+        if form == 'vokativs': return u'maij'
     elif month == 6:
         if form == 'nominativs': return u'jūnijs'
         if form == 'genitivs': return u'jūnija'
