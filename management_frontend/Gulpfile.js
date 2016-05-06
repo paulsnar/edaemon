@@ -101,6 +101,10 @@ gulp.task('js.test.ci', function(done) {
         configFile: __dirname + '/karma-ci.conf.js'
     }, done).start();
 });
-gulp.task('ci', ['js.test.ci', 'js.hint']);
+gulp.task('ci', ['js.test.ci', 'js.hint'], function() {
+    // Once the previous tasks are done, we force exit because Gulp likes to
+    // just leave the task lingering for a while
+    process.exit(0);
+});
 
 /* end ci */
