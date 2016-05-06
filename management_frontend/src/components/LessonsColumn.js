@@ -10,7 +10,9 @@ var LessonsColumn = React.createClass({
             return { lessons: _.clone(this.props.lessons).concat([ '' ]) };
         } else {
             var length = this.props.staticLength || 5;
+            /*jshint -W119*/
             return { lessons: _.times(length + 1, () => '') };
+            /*jshint +W119*/
         }
     },
     componentWillReceiveProps: function(nextProps) {
