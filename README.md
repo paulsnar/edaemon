@@ -38,5 +38,5 @@ Backend:
 
 # License
 
-Edaemon is distributed under Apache License 2.0. To learn more, refer to
+Edaemon is distributed under the BSD 3-Clause License. To learn more, refer to
 [LICENSE.txt](LICENSE.txt).
