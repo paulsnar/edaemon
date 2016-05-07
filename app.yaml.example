@@ -8,7 +8,7 @@ handlers:
 - url: /static
   static_dir: static/
   secure: always
-- url: /(?:admin|api)/.*
+- url: /admin/.*
   script: run.application.admin
   login: admin
   secure: always
