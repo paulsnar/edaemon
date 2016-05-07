@@ -37,7 +37,7 @@ describe('Data.timetables', function() {
 
         data.timetables.getAll();
 
-        expect(last_url).not.toMatch('/\?cursor=(.*)$/');
+        expect(last_url).not.toMatch(/\?cursor=(.*)$/);
     });
 
     it('should make a request with a cursor when .getAll is given a cursor', function() {
@@ -48,7 +48,7 @@ describe('Data.timetables', function() {
 
         data.timetables.getAll(cursor);
 
-        expect(last_url).toMatch('/\?cursor=' + cursor + '$/');
+        expect(last_url).toMatch('\\?cursor=' + cursor + '$');
     });
 
     it('should fail when .getForClass receives a non-200 response', function(done) {
