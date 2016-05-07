@@ -22,7 +22,7 @@ var changes = {
                 rej(new Error('No id specified'));
             });
         } else {
-            return fetch(`/api/changes/${id}`,
+            return fetch(`/admin/api/changes/${id}`,
                 { credentials: 'same-origin' })
                 .then(check200)
                 .then(r => r.json());
@@ -30,7 +30,7 @@ var changes = {
     },
     /*jshint +W119 */
     getWeek: function() {
-        return fetch('/api/changes/week',
+        return fetch('/admin/api/changes/week',
             { credentials: 'same-origin' })
             .then(check200)
             /*jshint -W119 */
@@ -41,11 +41,11 @@ var changes = {
         var p;
         /*jshint -W119 */
         if (cursor) {
-            p = fetch(`/api/changes/all?cursor=${cursor}`,
+            p = fetch(`/admin/api/changes/all?cursor=${cursor}`,
                 { credentials: 'same-origin' });
             /*jshint +W119 */
         } else {
-            p = fetch('/api/changes/all',
+            p = fetch('/admin/api/changes/all',
                 { credentials: 'same-origin' });
         }
         return p
@@ -61,14 +61,14 @@ var changes = {
                 rej(new Error('No id specified'));
             });
         } else {
-            return fetch(`/api/changes/${id}`,
+            return fetch(`/admin/api/changes/${id}`,
                 { method: 'delete', credentials: 'same-origin' })
                 .then(r => r.json());
         }
     },
     /*jshint +W119 */
     input: function(data) {
-        return fetch('/api/changes',
+        return fetch('/admin/api/changes',
             { method: 'post', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data) })
@@ -77,7 +77,7 @@ var changes = {
             /*jshint +W119 */
     },
     edit: function(id, data) {
-        return fetch(`/api/changes/${id}`,
+        return fetch(`/admin/api/changes/${id}`,
             { method: 'put', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data) })
@@ -95,7 +95,7 @@ var timetables = {
                 rej(new Error('No id specified'));
             });
         } else {
-            return fetch(`/api/timetables/${id}`,
+            return fetch(`/admin/api/timetables/${id}`,
                 { credentials: 'same-origin' })
                 .then(check200)
                 .then(r => r.json());
@@ -109,7 +109,7 @@ var timetables = {
                 rej(new Error('No class specified'));
             });
         } else {
-            return fetch(`/api/timetables/for_class/${forClass}`,
+            return fetch(`/admin/api/timetables/for_class/${forClass}`,
                 { credentials: 'same-origin' })
                 .then(check200)
                 .then(r => r.json());
@@ -120,10 +120,10 @@ var timetables = {
         var p;
         /*jshint -W119 */
         if (cursor) {
-            p = fetch(`/api/timetables/all?cursor=${cursor}`,
+            p = fetch(`/admin/api/timetables/all?cursor=${cursor}`,
                 { credentials: 'same-origin' });
         } else {
-            p = fetch('/api/timetables/all', { credentials: 'same-origin' });
+            p = fetch('/admin/api/timetables/all', { credentials: 'same-origin' });
         }
         /*jshint +W119 */
         return p
@@ -141,14 +141,14 @@ var timetables = {
             /*jshint +W119 */
         } else {
             /*jshint -W119 */
-            return fetch(`/api/timetables/${id}`,
+            return fetch(`/admin/api/timetables/${id}`,
                 { method: 'delete', credentials: 'same-origin' })
                 .then(r => r.json());
             /*jshint +W119 */
         }
     },
     input: function(data) {
-        return fetch('/api/timetables',
+        return fetch('/admin/api/timetables',
             { method: 'post', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data) })
@@ -157,7 +157,7 @@ var timetables = {
             /*jshint +W119 */
     },
     edit: function(id, data) {
-        return fetch(`/api/timetables/${id}`,
+        return fetch(`/admin/api/timetables/${id}`,
             { method: 'put', credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data) })
@@ -169,7 +169,7 @@ var timetables = {
 
 var meta = {
     checkUpdates: function() {
-        return fetch('/api/check_updates',
+        return fetch('/admin/api/check_updates',
             { credentials: 'same-origin' })
             .then(check200)
             /*jshint -W119 */
