@@ -37,7 +37,7 @@ describe('Data.timetables', function() {
 
         data.timetables.getAll();
 
-        expect(last_url).toEqual('/api/timetables/all');
+        expect(last_url).toEqual('/admin/api/timetables/all');
     });
 
     it('should make a request with a cursor when .getAll is given a cursor', function() {
@@ -48,7 +48,7 @@ describe('Data.timetables', function() {
 
         data.timetables.getAll(cursor);
 
-        expect(last_url).toEqual('/api/timetables/all?cursor=' + cursor);
+        expect(last_url).toEqual('/admin/api/timetables/all?cursor=' + cursor);
     });
 
     it('should fail when .getForClass receives a non-200 response', function(done) {
