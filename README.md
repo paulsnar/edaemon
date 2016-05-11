@@ -20,13 +20,15 @@ Any questions → [@paulsnar](https://twitter.com/paulsnar) on twitter
 
 # Contribution guidelines
 
+* Follow the .editorconfig.
+
 Frontend:
 * Please write tests, put them along your contributions in `__tests__` directory and name them like `Component.test.js`. Make sure do not forget this.
 * Do not forget `'use strict'`.
 * You can use arrow functions and template strings. Please don't use arrow functions in tests though, that breaks stuff with Webpack sometimes. Babel transforms only JSX, not ES6→5.
 * Adhere to JSHint. Please check whether `gulp js.hint` throws any errors at you. If so, please fix them. W097 should be disabled on each file, W119 on arrow functions and template strings BUT back on afterwards. Other warnings should not be disabled and must be fixed.
 * CI will run tests and JSHint for you. PRs which don't pass CI will not be merged. Please do what you must to not get caught in CI.
-* Four spaces, 80-char width. Except in JSX, where it can exceed 80 chars. But always four spaces. LF (Unix-style) line endings. (.editorconfig coming soon.)
+* Four spaces, 80-char width. Except in JSX, where it can exceed 80 chars. But always four spaces. LF (Unix-style) line endings.
 * Try to adhere to the overall code style of other files. When in doubt, try to stick to something similar to AirBNB's style guidelines, they are quite close. (But remember, four spaces.)
 * I reserve the right to point at your mistakes, and possibly help you fix them. This is not a comprehensive styleguide, so I may ask you to adjust accordingly. Thank you in advance for understanding.
 
