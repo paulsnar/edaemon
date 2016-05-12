@@ -1,1 +1,1 @@
-EDAEMON_VERSION = '2.0.3'
+EDAEMON_VERSION = '2.0.4-develop'
