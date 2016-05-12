@@ -16,7 +16,7 @@ class ShowChange(BaseHandler):
             change = change_key.get()
             if change is None:
                 return webapp2.abort(404)
-            template = environment.get_template('main/show_change.htm')
+            template = environment.get_template('show_change.htm')
             self.response.write(template.render(change=change,
                 lessons=json.loads(change.lessons)))
         except Exception, e:

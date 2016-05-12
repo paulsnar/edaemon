@@ -10,7 +10,7 @@ from ..templates import environment
 
 class AllChanges(BaseHandler):
     def get(self):
-        template = environment.get_template('main/all_changes.htm')
+        template = environment.get_template('all_changes.htm')
         changes = Change.get_week()
         classNames = sorted(unique(changes, 'for_class', attr=True))
         dates = sorted(unique(changes, 'for_date', attr=True))

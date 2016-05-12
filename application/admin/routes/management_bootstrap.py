@@ -8,5 +8,5 @@ from ..templates import environment
 
 class ManagementBootstrap(BaseHandler):
     def get(self):
-        template = environment.get_template('admin/management_bootstrap.htm')
+        template = environment.get_template('management_bootstrap.htm')
         self.response.write(template.render())
