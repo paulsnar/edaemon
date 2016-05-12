@@ -6,7 +6,7 @@ import webapp2
 import logging
 
 from .environment import env
-from .routes import main, admin
+from .routes import main, admin, api
 
 def handle_401(request, response, exception):
     template = env.get_template('errors/401.htm')
@@ -28,3 +28,6 @@ main.error_handlers[404] = handle_404
 
 admin = webapp2.WSGIApplication(admin, config=config)
 admin.error_handlers[404] = handle_404
+
+api = webapp2.WSGIApplication(api, config=config)
+api.error_handlers[404] = handle_404

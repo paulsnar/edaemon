@@ -12,6 +12,9 @@ handlers:
   script: run.application.admin
   login: admin
   secure: always
+- url: /api/.*
+  script: run.application.api
+  secure: always
 - url: /.*
   script: run.application.main
   secure: always
