@@ -6,7 +6,7 @@ class ApiWelcome(BaseHandler):
         self.jsonify(
             success=True,
             message='Edaemon API welcomes you',
-            current_version=1
+            highest_version=1
         )
 
 all_routes = [
