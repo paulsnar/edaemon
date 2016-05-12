@@ -44,12 +44,23 @@ class Change(ndb.Model):
         ndb.Key(urlsafe=urlsafe).delete()
 
     def to_dict(self):
-        selfdict = dict()
-        selfdict['id'] = self.key.urlsafe()
-        selfdict['for_class'] = self.for_class
-        selfdict['for_date'] = self.for_date
+        selfdict = dict(
+            id=self.key.urlsafe()
+        )
+
+        try:
+            selfdict['for_class'] = self.for_class
+        except ndb.UnprojectedPropertyError:
+            pass
+
+        try:
+            selfdict['for_date'] = self.for_date
+        except ndb.UnprojectedPropertyError:
+            pass
+
         try:
             selfdict['lessons'] = json.loads(self.lessons)
         except ndb.UnprojectedPropertyError:
             pass # in case of a partial query
+
         return selfdict
