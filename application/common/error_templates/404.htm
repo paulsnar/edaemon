@@ -6,3 +6,7 @@
 <h1>Nav atrasts</h1>
 <p>Lapa, kuru jūs gribat redzēt, neatrodas šeit. <a href="/">Doties uz izmaiņām?</a></p>
 {% endblock %}
+
+{% if GA_TRACKING_ID is defined %}
+{% block exception_append %}'404 (generic)'{% endblock %}
+{% endif %}

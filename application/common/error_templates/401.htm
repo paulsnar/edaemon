@@ -6,3 +6,7 @@
 <h1>Nav piekļuves</h1>
 <p>Jūs neesat autorizēts šīs lapas skatīšanai. <a href="/">Doties uz izmaiņām?</a></p>
 {% endblock %}
+
+{% if GA_TRACKING_ID is defined %}
+{% block exception_append %}'401 (generic)'{% endblock %}
+{% endif %}
