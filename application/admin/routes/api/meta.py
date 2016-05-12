@@ -2,14 +2,14 @@
 
 import webapp2
 
-from ....version import EDAEMON_VERSION
+from application.version import EDAEMON_VERSION
 
-from .handler import Handler
-from ....utility.version import get as get_version
+from .handler import BaseHandler
+from application.utility.version import get as get_version
 import urllib2
 import os
 
-class CheckUpdates(Handler):
+class CheckUpdates(BaseHandler):
     def get(self):
         current_version = tuple(EDAEMON_VERSION.split('-')[0].split('.'))
         is_staging = EDAEMON_VERSION.split('-')[1] == 'staging'

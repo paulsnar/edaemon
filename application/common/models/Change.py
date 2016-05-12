@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 import json
 
-from ..utility import format_week
+from application.utility import format_week
 
 class Change(ndb.Model):
     for_class = ndb.StringProperty(indexed=True)

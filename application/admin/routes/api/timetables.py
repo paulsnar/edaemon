@@ -4,10 +4,10 @@ import webapp2
 import json
 from google.appengine.datastore.datastore_query import Cursor
 
-from .handler import Handler
-from ....models import Timetable
+from application.common import BaseHandler
+from application.common.models import Timetable
 
-class Timetables(Handler):
+class Timetables(BaseHandler):
     def post(self):
         try:
             data = json.loads(self.request.body)
@@ -25,7 +25,7 @@ class Timetables(Handler):
             self.jsonify(error=True, code=500, message='Server-side error')
             raise
 
-class AllTimetables(Handler):
+class AllTimetables(BaseHandler):
     def get(self):
         try:
             if self.request.get('cursor'):
@@ -45,7 +45,7 @@ class AllTimetables(Handler):
             self.jsonify(error=True, code=500, message='Server-side error')
             raise
 
-class SpecificTimetable(Handler):
+class SpecificTimetable(BaseHandler):
     def get(self, timetable_id):
         try:
             timetable = Timetable.lookup_url(timetable_id)

@@ -2,14 +2,15 @@
 
 import webapp2
 
-from ..handler import Handler
-from ...environment import env
-from ...models import Change
-from ...utility import unique
+from application.common import BaseHandler
+from application.common.models import Change
+from application.utility import unique
 
-class AllChanges(Handler):
+from ..templates import environment
+
+class AllChanges(BaseHandler):
     def get(self):
-        template = env.get_template('main/all_changes.htm')
+        template = environment.get_template('main/all_changes.htm')
         changes = Change.get_week()
         classNames = sorted(unique(changes, 'for_class', attr=True))
         dates = sorted(unique(changes, 'for_date', attr=True))

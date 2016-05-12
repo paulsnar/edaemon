@@ -9,14 +9,14 @@ handlers:
   static_dir: static/
   secure: always
 - url: /admin/.*
-  script: run.application.admin
+  script: application.admin_wsgi_endpoint
   login: admin
   secure: always
 - url: /api/.*
-  script: run.application.api
+  script: application.api_wsgi_endpoint
   secure: always
 - url: /.*
-  script: run.application.main
+  script: application.main_wsgi_endpoint
   secure: always
 
 env_variables:

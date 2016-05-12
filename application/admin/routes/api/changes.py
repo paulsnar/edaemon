@@ -4,12 +4,12 @@ import webapp2
 import json
 from google.appengine.datastore.datastore_query import Cursor
 
-from .handler import Handler
-from ....models import Change
-from ....utility.lesson import trim_trailing_nulls
-from ....utility.dates import check_ISO8601_compliance
+from .handler import BaseHandler
+from application.common.models import Change
+from application.utility.lesson import trim_trailing_nulls
+from application.utility.dates import check_ISO8601_compliance
 
-class Changes(Handler):
+class Changes(BaseHandler):
     def post(self):
         try:
             data = json.loads(self.request.body)
@@ -35,7 +35,7 @@ class Changes(Handler):
             self.jsonify(error=True, code=500, message='Server-side error')
             raise
 
-class AllChanges(Handler):
+class AllChanges(BaseHandler):
     def get(self):
         try:
             if self.request.get('cursor'):
@@ -55,13 +55,13 @@ class AllChanges(Handler):
             self.jsonify(error=True, code=500, message='Server-side error')
             raise
 
-class ChangesForWeek(Handler):
+class ChangesForWeek(BaseHandler):
     def get(self):
         changes = Change.get_week().fetch()
         # changes = [change.to_dict() for change in Change.get_week().fetch()]
         self.jsonify(changes=[change.to_dict() for change in changes])
 
-class SpecificChange(Handler):
+class SpecificChange(BaseHandler):
     def get(self, change_id):
         try:
             change = Change.lookup_url(change_id)

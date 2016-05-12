@@ -3,10 +3,10 @@
 import webapp2
 import json
 
-from .handler import Handler
+from .handler import BaseHandler
 from ....utility.version import update as refresh_version
 
-class CheckUpdates(Handler):
+class CheckUpdates(BaseHandler):
     def get(self):
         refresh_version()
         self.jsonify(message='Thanks')

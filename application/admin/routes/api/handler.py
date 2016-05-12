@@ -4,7 +4,7 @@ import logging
 import webapp2
 import json
 
-class Handler(webapp2.RequestHandler):
+class BaseHandler(webapp2.RequestHandler):
     def jsonify(self, **kwargs):
         self.response.headers['Content-Type'] = 'application/json; charset=utf-8'
         self.response.write(json.dumps(kwargs))
