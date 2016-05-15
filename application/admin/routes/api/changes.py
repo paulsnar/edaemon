@@ -7,7 +7,7 @@ from google.appengine.datastore.datastore_query import Cursor
 from .handler import BaseHandler
 from application.common.models import Change
 from application.utility.lesson import trim_trailing_nulls
-from application.utility.dates import check_ISO8601_compliance
+from application.utility.dates import check_ISO8601_compliance, ISO8601_parse
 
 class Changes(BaseHandler):
     def post(self):
@@ -24,14 +24,14 @@ class Changes(BaseHandler):
                     return # stop processing immediately
                 else:
                     stored_change = Change(for_class=change['className'],
-                        for_date=data['date'])
+                        for_date=ISO8601_parse(data['date']))
                     stored_change.lessons = json.dumps(
                         trim_trailing_nulls(change['lessons']))
                     stored_change.put()
                     ret[change['className']] = stored_change.key.urlsafe()
             self.jsonify(success=True, stored=ret)
         except Exception:
-            self.set_status(500)
+            self.response.set_status(500)
             self.jsonify(error=True, code=500, message='Server-side error')
             raise
 
@@ -51,7 +51,7 @@ class AllChanges(BaseHandler):
                 ret['cursor'] = next_c.urlsafe()
             self.jsonify(**ret)
         except Exception:
-            self.set_status(500)
+            self.response.set_status(500)
             self.jsonify(error=True, code=500, message='Server-side error')
             raise
 
@@ -98,7 +98,7 @@ class SpecificChange(BaseHandler):
             else:
                 data = json.loads(self.request.body)
                 # data: { date: …, className: …, lessons: […, …, …] }
-                change.for_date = data['date']
+                change.for_date = ISO8601_parse(data['date'])
                 change.for_class = data['className']
                 change.lessons = json.dumps(data['lessons'])
                 change.put()
