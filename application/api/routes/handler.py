@@ -21,7 +21,8 @@ class BaseHandler(webapp2.RequestHandler):
 
         def __call__(higher_self, f):
             def wrapped(self, *args, **kwargs):
-                collection, projection = f(*args, **kwargs)
+                print args, kwargs
+                collection, projection = f(self, *args, **kwargs)
                 kind = higher_self.kind
 
                 try:
@@ -89,7 +90,7 @@ class BaseHandler(webapp2.RequestHandler):
 
         def __call__(higher_self, f):
             def wrapped(self, *args, **kwargs):
-                item = f(*args, **kwargs)
+                item = f(self, *args, **kwargs)
                 kind = higher_self.kind
 
                 try:

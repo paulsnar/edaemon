@@ -13,7 +13,7 @@ from application.utility.dates import ISO8601_parse
 class AllChanges(BaseHandler):
     @BaseHandler.collection_method('Change')
     def get(self):
-        return Change.get_week, [Change.for_class, Change.for_date]
+        return Change.get_week(), [Change.for_class, Change.for_date]
 
 class SpecificChange(BaseHandler):
     @BaseHandler.item_method('Change')
