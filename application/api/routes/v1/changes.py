@@ -7,6 +7,7 @@ from functools import partial
 
 from ..handler import BaseHandler
 from application.common.models import Change
+from application.utility.dates import ISO8601_parse
 
 class AllChanges(BaseHandler):
     def get(self):
@@ -33,6 +34,7 @@ class ChangesForClass(BaseHandler):
 
 class ChangesForDate(BaseHandler):
     def get(self, date):
+        date = ISO8601_parse(date)
         return self.collection_method(
             collection=Change.get_for_date(date),
             kind='Change',
