@@ -1,3 +1,4 @@
+# coding: utf-8
 
 class lesson_utils(object):
     @staticmethod

@@ -1,3 +1,5 @@
+# coding: utf-8
+
 from google.appengine.ext import ndb
 import json
 from datetime import date, timedelta

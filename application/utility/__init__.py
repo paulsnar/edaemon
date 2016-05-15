@@ -14,5 +14,4 @@ def unique(collection, prop, attr=False):
 def generate_xsrf():
     return uuid.uuid4().hex
 
-from .dates import format_week, ISO8601_format
 from .lesson import lesson_utils

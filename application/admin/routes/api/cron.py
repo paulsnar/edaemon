@@ -4,7 +4,7 @@ import webapp2
 import json
 
 from .handler import BaseHandler
-from ....utility.version import update as refresh_version
+from application.utility.version import update as refresh_version
 
 class CheckUpdates(BaseHandler):
     def get(self):
