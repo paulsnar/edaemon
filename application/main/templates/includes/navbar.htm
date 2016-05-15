@@ -1,28 +1,23 @@
 <nav class="navbar navbar-default" role="navigation">
     <div class="container">
         <div class="navbar-header">
-            {% if users.get_current_user() %}
-            <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ed-navbar-collapse" aria-expanded="false" type="button">
-                <span class="sr-only">Pārslēgt navigāciju</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            {% endif %}
             <a href="/" class="navbar-brand">Edaemon</a>
-        </div>
-
-
-        <div class="collapse navbar-collapse" id="ed-navbar-collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/">Izmaiņas nedēļai</a></li>
-                {% if users.is_current_user_admin() %}
-                <li><a href="/admin/">Pārvaldīšana</a></li>
-                {% endif %}
-            </ul>
-            {% if users.get_current_user() and not users.is_current_user_admin() %}
-            <p class="navbar-text navbar-left">Pārvaldīšana nav pieejama</p>
+            {% if users.is_current_user_admin() %}
+            <a href="/admin/" class="navbar-toggle">
+                Pārvaldīšana
+            </a>
             {% endif %}
         </div>
+
+        {% if users.get_current_user() %}
+        <ul class="nav navbar-nav">
+            {% if users.is_current_user_admin() %}
+            <li><a href="/admin/">Pārvaldīšana</a></li>
+            {% endif %}
+        </ul>
+        {% if not users.is_current_user_admin() %}
+        <p class="navbar-text navbar-left">Pārvaldīšana nav pieejama</p>
+        {% endif %}
+        {% endif %}
     </div>
 </nav>
