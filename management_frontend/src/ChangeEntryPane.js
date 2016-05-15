@@ -7,6 +7,17 @@ import createElement from 'inferno-create-element';
 
 import API from './api';
 
+function isValidISO8601(str) {
+    if (str === '') return false;
+    const regex = /^(\d{4})-(\d{2})-(\d{2})$/;
+    if (!regex.test(str)) return false;
+    let [_, year, month, day] = regex.exec(str).map(
+        (v,i) => i !== 0 ? parseInt(v,10) : null);
+    if ((1 > month || 12 < month) || (1 > day || 31 < day)) return false;
+
+    return true;
+}
+
 class ChangeEntryPaneComponent extends Component {
     constructor(props) {
         super(props);
@@ -19,14 +30,30 @@ class ChangeEntryPaneComponent extends Component {
             ]
         }
         this.state = {
-            hasErrors: null
+            dateHasErrors: false,
+            classNamesWithErrors: [ ]
         }
     }
     _handleDateChange(e) {
         this.data.date = e.target.value;
+        this.setState({ dateHasErrors: !isValidISO8601(this.data.date) });
     }
     _handleClassnameChange(rowI, classI, e) {
         this.data.items[rowI][classI].className = e.target.value;
+
+        let classNamesWithErrors = this.state.classNamesWithErrors.slice();
+        if (e.target.value === '') {
+            if (classNamesWithErrors.indexOf(rowI * 4 + classI) < 0) {
+                classNamesWithErrors.push(rowI * 4 + classI);
+                this.setState({ classNamesWithErrors });
+            }
+        } else {
+            if (classNamesWithErrors.indexOf(rowI * 4 + classI) > -1) {
+                classNamesWithErrors.splice(
+                    classNamesWithErrors.indexOf(rowI * 4 + classI), 1);
+                this.setState({ classNamesWithErrors });
+            }
+        }
         // this.forceUpdate();
     }
     _handleLessonChange(rowI, classI, lessonI, e) {
@@ -40,11 +67,30 @@ class ChangeEntryPaneComponent extends Component {
         }
     }
     _handleSaveClicked() {
+        // check for validation
+        let dateIsValid = isValidISO8601(this.data.date);
+        if (!dateIsValid && !this.state.dateHasErrors) {
+            this.setState({ dateHasErrors: true });
+            return;
+        }
+        if (!dateIsValid ||
+            this.state.classNamesWithErrors.length > 0) return;
+
         // flatten this.data.items
         let items = [ ];
-        this.data.items.forEach(row => {
+        this.data.items.forEach((row, rowI) => {
+            // also perform validation
+            row.forEach((item, itemI) => {
+                if (item.className === '') {
+                    let classNamesWithErrors =
+                        this.state.classNamesWithErrors.slice();
+                    classNamesWithErrors.push(rowI * 4 + itemI);
+                    this.setState({ classNamesWithErrors });
+                }
+            });
             items = items.concat(row);
         });
+        if (this.state.classNamesWithErrors.length > 0) return; // check after above
         API.Change.post({
             date: this.data.date,
             items
@@ -64,10 +110,25 @@ class ChangeEntryPaneComponent extends Component {
         this.forceUpdate();
     }
     render() {
+        let _errors;
+        if (this.state.dateHasErrors ||
+            this.state.classNamesWithErrors.length > 0) {
+            let _text;
+            if (this.state.dateHasErrors) {
+                _text = 'Jūsu ievadītais datums nav pareizs. Lūdzu pārliecinieties par datuma pareizību.';
+            } else {
+                _text = 'Kāds no klašu nosaukumiem nav aizpildīts. Lūdzu pārliecinieties, ka visi klašu nosaukumi ir aizpildīti.';
+            }
+            _errors = <div className="alert alert-danger">
+                {_text}
+            </div>;
+        }
         return <div>
+            {_errors}
             <div className="row">
                 <div className="col-md-3 form-inline">
-                    <div className="input-group">
+                    <div className={'input-group' + (this.state.dateHasErrors ?
+                                            ' has-error' : '')}>
                         <span className="input-group-addon">Datums: </span>
                         <input type="date" className="form-control"
                             placeholder="YYYY-MM-DD"
@@ -87,7 +148,7 @@ class ChangeEntryPaneComponent extends Component {
                     {_class.lessons.map((item, i) =>
                     <div className="input-group">
                         <span className="input-group-addon">{i === _class.lessons.length - 1 ? '+' : i}.</span>
-                        <input type="text" className="form-control" 
+                        <input type="text" className="form-control"
                             onChange={this._handleLessonChange.bind(this, rowI, classI, i)}
                             onFocus={this._handleLessonFocus.bind(this, rowI, classI, i)} />
                     </div>
