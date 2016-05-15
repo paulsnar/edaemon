@@ -1,12 +1,13 @@
 from google.appengine.ext import ndb
 import json
+from datetime import date, timedelta
 
 from application.utility import format_week
 
 class Change(ndb.Model):
     for_class = ndb.StringProperty(indexed=True)
-    for_date = ndb.StringProperty(indexed=True)
-    lessons = ndb.StringProperty(indexed=False)
+    for_date = ndb.DateProperty(indexed=True)
+    lessons = ndb.JsonProperty(indexed=False)
 
     @classmethod
     def get_first_for_class(cls, for_class):
@@ -14,14 +15,19 @@ class Change(ndb.Model):
 
     @classmethod
     def get_week(cls):
-        return cls.query(cls.for_date.IN(format_week()))
+        today = date.today()
+        today_plus_week = today + timedelta(days=7)
+        return cls.query(cls.for_date >= today, cls.for_date < today_plus_week)
 
     @classmethod
     def get_week_for_class(cls, for_class):
-        return cls.query(ndb.AND(
+        today = date.today()
+        today_plus_week = today + timedelta(days=7)
+        return cls.query(
             cls.for_class == for_class,
-            cls.for_date.IN(format_week())
-        ))
+            cls.for_date >= today,
+            cls.for_date < today_plus_week
+        )
 
     @classmethod
     def get_all(cls):
@@ -54,12 +60,12 @@ class Change(ndb.Model):
             pass
 
         try:
-            selfdict['for_date'] = self.for_date
+            selfdict['for_date'] = self.for_date.isoformat()
         except ndb.UnprojectedPropertyError:
             pass
 
         try:
-            selfdict['lessons'] = json.loads(self.lessons)
+            selfdict['lessons'] = self.lessons
         except ndb.UnprojectedPropertyError:
             pass # in case of a partial query
 
