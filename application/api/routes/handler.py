@@ -14,6 +14,24 @@ class BaseHandler(webapp2.RequestHandler):
     def handle_exception(self, exception, debug):
         logging.exception(exception)
 
+    def fail(self, code, message):
+        self.response.set_status(code)
+        self.jsonify(
+            success=False,
+            error=True,
+            code=code,
+            message=message
+        )
+
+    @staticmethod
+    def wrap_exception(f):
+        def wrapper(self, *args, **kwargs):
+            try:
+                f(self, *args, **kwargs)
+            except Exception:
+                self.fail(500, 'Server-side error')
+        return wrapper
+
     class collection_method(object):
         def __init__(self, kind, **kwargs):
             self.kind = kind
@@ -73,13 +91,7 @@ class BaseHandler(webapp2.RequestHandler):
                         request_meta=request_meta
                     )
                 except Exception:
-                    self.response.set_status(500),
-                    self.jsonify(
-                        success=False,
-                        error=True,
-                        code=500,
-                        message='Server-side error'
-                    )
+                    self.fail(500, 'Server-side error')
                     raise
             return wrapped
 
@@ -112,12 +124,6 @@ class BaseHandler(webapp2.RequestHandler):
                             request_meta=dict()
                         )
                 except Exception:
-                    self.response.set_status(500)
-                    self.jsonify(
-                        success=False,
-                        error=True,
-                        code=500,
-                        message='Server-side error'
-                    )
+                    self.fail(500, 'Server-side error')
                     raise
             return wrapped

@@ -20,6 +20,25 @@ class SpecificChange(BaseHandler):
     def get(self, change_id):
         return partial(Change.lookup_url, change_id)
 
+    @BaseHandler.wrap_exception
+    def delete(self, change_id):
+        if not users.get_current_user():
+            self.fail(401, 'Authorization is required to access this resource.')
+            return
+        elif not users.is_current_user_admin():
+            self.fail(403,
+                'Administrative privileges are required to access this resource.')
+            return
+
+        try:
+            change = Change.lookup_url(change_id)
+        except Exception:
+            self.fail(400, 'Your request was malformed.')
+            return
+
+        change.delete()
+        self.jsonify(success=True)
+
 class ChangesForClass(BaseHandler):
     @BaseHandler.collection_method('Change')
     def get(self, class_name):
