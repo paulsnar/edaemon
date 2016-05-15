@@ -12,7 +12,7 @@ from application.utility.dates import ISO8601_parse
 class AllChanges(BaseHandler):
     def get(self):
         return self.collection_method(
-            collection=Change.get_all(), 
+            collection=Change.get_week(),
             kind='Change',
             projection=[Change.for_class, Change.for_date]
         )
@@ -27,7 +27,7 @@ class SpecificChange(BaseHandler):
 class ChangesForClass(BaseHandler):
     def get(self, class_name):
         return self.collection_method(
-            collection=Change.get_for_class(class_name),
+            collection=Change.get_week_for_class(class_name),
             kind='Change',
             projection=[Change.for_date]
         )
