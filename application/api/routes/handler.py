@@ -30,6 +30,7 @@ class BaseHandler(webapp2.RequestHandler):
                 f(self, *args, **kwargs)
             except Exception:
                 self.fail(500, 'Server-side error')
+                raise
         return wrapper
 
     class collection_method(object):
