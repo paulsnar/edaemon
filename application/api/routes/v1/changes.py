@@ -3,6 +3,7 @@
 import webapp2
 import json
 from google.appengine.datastore.datastore_query import Cursor
+from functools import partial
 
 from ..handler import BaseHandler
 from application.common.models import Change
@@ -17,33 +18,10 @@ class AllChanges(BaseHandler):
 
 class SpecificChange(BaseHandler):
     def get(self, change_id):
-        try:
-            change = Change.lookup_url(change_id)
-            if change is None:
-                self.response.response.set_status(404)
-                self.jsonify(
-                    success=False,
-                    error=True,
-                    code=404,
-                    kind='Change',
-                    item=None
-                )
-            else:
-                self.jsonify(
-                    success=True,
-                    kind='Change',
-                    item=change.to_dict(),
-                    request_meta=dict()
-                )
-        except Exception:
-            self.response.set_status(500)
-            self.jsonify(
-                success=False,
-                error=True,
-                code=500,
-                message='Server-side error'
-            )
-            raise
+        return self.item_method(
+            item=partial(Change.lookup_url, change_id),
+            kind='Change'
+        )
 
 class ChangesForClass(BaseHandler):
     def get(self, class_name):

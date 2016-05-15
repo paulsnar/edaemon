@@ -71,3 +71,32 @@ class BaseHandler(webapp2.RequestHandler):
                 message='Server-side error'
             )
             raise
+
+    def item_method(self, item, kind):
+        try:
+            result = item()
+            if result is None:
+                self.response.set_status(404)
+                self.jsonify(
+                    success=False,
+                    error=True,
+                    code=404,
+                    kind=kind,
+                    item=None
+                )
+            else:
+                self.jsonify(
+                    success=True,
+                    kind='Change',
+                    item=change.to_dict(),
+                    request_meta=dict()
+                )
+        except Exception:
+            self.response.set_status(500)
+            self.jsonify(
+                success=False,
+                error=True,
+                code=500,
+                message='Server-side error'
+            )
+            raise
