@@ -43,14 +43,6 @@ class Change(ndb.Model):
     def get_for_class(cls, for_class):
         return cls.query(cls.for_class == for_class).order(cls.for_date)
 
-    @classmethod
-    def lookup_url(cls, urlsafe):
-        return ndb.Key(urlsafe=urlsafe).get()
-
-    @classmethod
-    def delete_url(cls, urlsafe):
-        ndb.Key(urlsafe=urlsafe).delete()
-
     def to_dict(self):
         selfdict = dict(
             id=self.key.urlsafe()
