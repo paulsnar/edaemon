@@ -9,6 +9,7 @@ class Change(ndb.Model):
     for_class = ndb.StringProperty(indexed=True)
     for_date = ndb.DateProperty(indexed=True)
     lessons = ndb.JsonProperty(indexed=False)
+    purgeable_since = ndb.DateProperty(indexed=True)
 
     @classmethod
     def get_first_for_class(cls, for_class):
