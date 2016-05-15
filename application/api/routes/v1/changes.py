@@ -4,6 +4,7 @@ import webapp2
 import json
 from google.appengine.datastore.datastore_query import Cursor
 from google.appengine.api import users
+from google.appengine.ext import ndb
 from functools import partial
 
 from ..handler import BaseHandler
@@ -31,7 +32,7 @@ class SpecificChange(BaseHandler):
             return
 
         try:
-            change = Change.lookup_url(change_id)
+            change = ndb.Key(urlsafe=change_id)
         except Exception:
             self.fail(400, 'Your request was malformed.')
             return
