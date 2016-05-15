@@ -15,11 +15,18 @@
         {% block body %}{% endblock %}
         <footer>
             <hr />
-            <p style="font-size: 0.85rem;">
-                <a href="https://github.com/paulsnar/edaemon">
-                    Edaemon v{{ edaemon.version }}
-                </a>
-            </p>
+            <div class="row" style="font-size: 0.85rem;">
+                <div class="col-xs-6">
+                    <a href="https://github.com/paulsnar/edaemon">
+                        Edaemon v{{ edaemon.version }}
+                    </a>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <a href="{{ users.create_login_url('/') }}">
+                        Ielogoties
+                    </a>
+                </div>
+            </div>
         </footer>
     </div>
 {% block scripts %}
