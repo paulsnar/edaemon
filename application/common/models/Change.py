@@ -65,7 +65,7 @@ class Change(ndb.Model):
             pass
 
         try:
-            selfdict['lessons'] = self.lessons
+            selfdict['lessons'] = json.loads(self.lessons)
         except ndb.UnprojectedPropertyError:
             pass # in case of a partial query
 
