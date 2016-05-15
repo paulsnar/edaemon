@@ -14,4 +14,3 @@ def unique(collection, prop, attr=False):
 def generate_xsrf():
     return uuid.uuid4().hex
 
-from .lesson import lesson_utils
