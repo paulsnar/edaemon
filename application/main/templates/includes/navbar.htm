@@ -23,19 +23,6 @@
             {% if users.get_current_user() and not users.is_current_user_admin() %}
             <p class="navbar-text navbar-left">Pārvaldīšana nav pieejama</p>
             {% endif %}
-            {% if users.get_current_user() %}
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" data-toggle="dropdown" role="button" class="dropdown-toggle">
-                        {{ users.get_current_user().email() }}
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ users.create_logout_url('/') }}">Izlogoties</a></li>
-                    </ul>
-                </li>
-            </ul>
-            {% endif %}
         </div>
     </div>
 </nav>

@@ -15,16 +15,24 @@
         {% block body %}{% endblock %}
         <footer>
             <hr />
-            <div class="row" style="font-size: 0.85rem;">
+            <div class="row"{% if not users.get_current_user() %} style="font-size: 0.85rem;"{% endif %}>
                 <div class="col-xs-6">
                     <a href="https://github.com/paulsnar/edaemon">
                         Edaemon v{{ edaemon.version }}
                     </a>
                 </div>
                 <div class="col-xs-6 text-right">
+                    {% if users.get_current_user() %}
+                    Ielogojies kā {{ users.get_current_user().email() }}
+                    &middot;
+                    <a href="{{ users.create_logout_url('/') }}">
+                        Izlogoties
+                    </a>
+                    {% else %}
                     <a href="{{ users.create_login_url('/') }}">
                         Ielogoties
                     </a>
+                    {% endif %}
                 </div>
             </div>
         </footer>
