@@ -167,19 +167,8 @@ var timetables = {
     }
 };
 
-var meta = {
-    checkUpdates: function() {
-        return fetch('/admin/api/check_updates',
-            { credentials: 'same-origin' })
-            .then(check200)
-            /*jshint -W119 */
-            .then(r => r.json());
-            /*jshint +W119 */
-    }
-};
 
 module.exports = {
     changes: changes,
     timetables: timetables,
-    meta: meta
 };
