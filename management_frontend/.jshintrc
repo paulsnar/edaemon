@@ -1,9 +1,0 @@
-{
-    "strict": true,
-    "globals": {
-        "module": true,
-        "require": true,
-        "document": true,
-        "console": true
-    }
-}
