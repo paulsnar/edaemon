@@ -33,6 +33,14 @@ window.EdaemonAdmin = {
             }, 'ChangeEditPane');
         }
     },
+    UserSettingsPane: {
+        init: (target) => {
+            require.ensure([], () => {
+                const UserSettingsPane = require('./UserSettingsPane').default;
+                UserSettingsPane.init(target);
+            }, 'UserSettingsPane');
+        }
+    },
     ConfirmActionButton: {
         initDeleteChange: (target, { id }) => {
             require.ensure([], () => {

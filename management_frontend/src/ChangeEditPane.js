@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import API from './api';
+import Settings from './settings';
 
 import { isValidISO8601 } from './common';
 
@@ -16,7 +17,14 @@ class ChangeEditPaneComponent extends React.Component {
             for_class: props.item.for_class,
             lessons: props.item.lessons.slice()
         }
-        this.data.lessons.push('');
+        if (props.fixedHeight) {
+            if (this.data.lessons.length < 9) {
+                while (this.data.lessons.length < 9) this.data.lessons.push('');
+            }
+        } else {
+            // add place for +th entry
+            this.data.lessons.push('');
+        }
         this.state = {
             date: this.data.for_date,
             className: this.data.for_class,
@@ -45,6 +53,7 @@ class ChangeEditPaneComponent extends React.Component {
         this.setState({ lessons });
     }
     _handleLessonFocus(lessonI, e) {
+        if (this.props.fixedHeight) return;
         if (lessonI === this.data.lessons.length - 1) {
             this.data.lessons.push('');
             // this.forceUpdate();
@@ -123,7 +132,9 @@ class ChangeEditPaneComponent extends React.Component {
                     </div>
                     {this.state.lessons.map((item, i) =>
                     <div className="input-group">
-                        <span className="input-group-addon">{i === this.data.lessons.length - 1 ? '+' : i}.</span>
+                        <span className="input-group-addon">
+                            {(i === this.data.lessons.length - 1 && !this.props.fixedHeight) ? '+' : i}.
+                        </span>
                         <input type="text" className="form-control"
                             value={item}
                             onChange={this._handleLessonChange.bind(this, i)}
@@ -147,10 +158,14 @@ class ChangeEditPaneComponent extends React.Component {
 let ChangeEditPane = {
     init: (target, data) => {
         target.innerHTML = '';
-        ReactDOM.render(
-            <ChangeEditPaneComponent item={data} />,
-            target
-        );
+        Settings.get('fixedHeight')
+        .then((fixedHeight) => {
+            ReactDOM.render(
+                <ChangeEditPaneComponent item={data}
+                    fixedHeight={fixedHeight} />,
+                target
+            );
+        });
     }
 }
 

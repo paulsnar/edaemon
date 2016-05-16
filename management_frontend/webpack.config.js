@@ -10,7 +10,8 @@ let plugins = [
         minChunks: 4
     }),
     new webpack.ProvidePlugin({
-        'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+        'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch',
+        'Promise': 'imports?this=>global!exports?global.Promise!native-promise-only'
     })
 ]
 

@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import API from './api';
+import Settings from './settings';
 
 import { isValidISO8601 } from './common';
 
@@ -17,6 +18,9 @@ class ChangeEntryPaneComponent extends React.Component {
                     { className: '', lessons: ['', '', '', '', '', '', ''] }
                 ]
             ]
+        }
+        if (props.fixedHeight) {
+            this.data.items[0][0].lessons = ['', '', '', '', '', '', '', '', ''];
         }
         this.state = {
             dateHasErrors: false,
@@ -38,6 +42,7 @@ class ChangeEntryPaneComponent extends React.Component {
         // this.forceUpdate();
     }
     _handleLessonFocus(rowI, classI, lessonI, e) {
+        if (this.props.fixedHeight) return;
         if (lessonI === this.data.items[rowI][classI].lessons.length - 1) {
             this.data.items[rowI][classI].lessons.push('');
             this.forceUpdate();
@@ -97,15 +102,22 @@ class ChangeEntryPaneComponent extends React.Component {
         });
     }
     _addColumn() {
-        if (this.data.items[this.data.items.length - 1].length === 4) {
+        if ((!this.props.cozy && this.data.items[this.data.items.length - 1].length === 4) ||
+            (this.props.cozy && this.data.items[this.data.items.length - 1].length === 6)) {
             this.data.items.push(
                 [
-                    { className: '', lessons: ['', '', '', '', '', '', ''] }
+                    { className: '', lessons:
+                        this.props.fixedHeight ?
+                            ['', '', '', '', '', '', '', '', ''] :
+                            ['', '', '', '', '', '', ''] }
                 ]
             );
         } else {
             this.data.items[this.data.items.length - 1].push(
-                { className: '', lessons: ['', '', '', '', '', '', '' ] })
+                { className: '', lessons:
+                    this.props.fixedHeight ?
+                        ['', '', '', '', '', '', '', '', ''] :
+                        ['', '', '', '', '', '', '' ] })
         }
         this.forceUpdate();
     }
@@ -143,7 +155,7 @@ class ChangeEntryPaneComponent extends React.Component {
             {this.data.items.map((row, rowI) =>
             <div className="row">
                 {row.map((_class, classI) =>
-                <div className="col-md-3">
+                <div className={this.props.cozy ? 'col-md-2' : 'col-md-3'}>
                     <div className="input-group">
                         <span className="input-group-addon">Klase: </span>
                         <input type="text" className="form-control"
@@ -151,7 +163,9 @@ class ChangeEntryPaneComponent extends React.Component {
                     </div>
                     {_class.lessons.map((item, i) =>
                     <div className="input-group">
-                        <span className="input-group-addon">{i === _class.lessons.length - 1 ? '+' : i}.</span>
+                        <span className="input-group-addon">
+                            {(!this.props.fixedHeight && i === _class.lessons.length - 1) ? '+' : i}.
+                        </span>
                         <input type="text" className="form-control"
                             onChange={this._handleLessonChange.bind(this, rowI, classI, i)}
                             onFocus={this._handleLessonFocus.bind(this, rowI, classI, i)} />
@@ -159,8 +173,8 @@ class ChangeEntryPaneComponent extends React.Component {
                     )}
                 </div>
                 )}
-                {row.length < 4 ?
-                <div className="col-md-3">
+                {((!this.props.cozy && row.length < 4) || (this.props.cozy && row.length < 6)) ?
+                <div className={this.props.cozy ? 'col-md-2' : 'col-md-3'}>
                     <button className="btn btn-default btn-lg btn-block"
                         onClick={this._addColumn.bind(this)}>
                         <span className="glyphicon glyphicon-plus" />
@@ -169,8 +183,9 @@ class ChangeEntryPaneComponent extends React.Component {
             </div>
             )}
             <div className="row" data-hack="row-last">
-                {this.data.items[this.data.items.length - 1].length === 4 ?
-                <div className="col-md-3">
+                {((!this.props.cozy && this.data.items[this.data.items.length - 1].length === 4) ||
+                  (this.props.cozy && this.data.items[this.data.items.length - 1].length === 6))?
+                <div className={this.props.cozy ? 'col-md-2' : 'col-md-3'}>
                     <button className="btn btn-default btn-lg btn-block"
                         onClick={this._addColumn.bind(this)}>
                         <span className="glyphicon glyphicon-plus" />
@@ -192,10 +207,17 @@ class ChangeEntryPaneComponent extends React.Component {
 let ChangeEntryPane = {
     init: (target) => {
         target.innerHTML = '';
-        ReactDOM.render(
-            <ChangeEntryPaneComponent />,
-            target
-        );
+        Promise.all([
+            Settings.get('cozyMode'),
+            Settings.get('fixedHeight')
+        ])
+        .then(([ cozyMode, fixedHeight ]) => {
+            ReactDOM.render(
+                <ChangeEntryPaneComponent
+                    cozy={cozyMode} fixedHeight={fixedHeight} />,
+                target
+            );
+        });
     }
 }
 
