@@ -2,3 +2,6 @@ cron:
 - description: Run periodic trash cleanup
   url: /cron/cleanup_trash
   schedule: every 12 hours
+- description: Run periodic old change eviction
+  url: /cron/cleanup_old_changes
+  schedule: every 12 hours
