@@ -30,7 +30,8 @@ class Change(ndb.Model):
         return cls.query(
             cls.for_class == for_class,
             cls.for_date >= today,
-            cls.for_date < today_plus_week
+            cls.for_date < today_plus_week,
+            cls.purgeable_since == None
         )
 
     @classmethod
