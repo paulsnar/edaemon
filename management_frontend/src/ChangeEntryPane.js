@@ -38,20 +38,6 @@ class ChangeEntryPaneComponent extends React.Component {
     }
     _handleClassnameChange(rowI, classI, e) {
         this.data.items[rowI][classI].className = e.target.value;
-
-        let classNamesWithErrors = this.state.classNamesWithErrors.slice();
-        if (e.target.value === '') {
-            if (classNamesWithErrors.indexOf(rowI * 4 + classI) < 0) {
-                classNamesWithErrors.push(rowI * 4 + classI);
-                this.setState({ classNamesWithErrors });
-            }
-        } else {
-            if (classNamesWithErrors.indexOf(rowI * 4 + classI) > -1) {
-                classNamesWithErrors.splice(
-                    classNamesWithErrors.indexOf(rowI * 4 + classI), 1);
-                this.setState({ classNamesWithErrors });
-            }
-        }
         // this.forceUpdate();
     }
     _handleLessonChange(rowI, classI, lessonI, e) {
@@ -71,24 +57,30 @@ class ChangeEntryPaneComponent extends React.Component {
             this.setState({ dateHasErrors: true });
             return;
         }
-        if (!dateIsValid ||
-            this.state.classNamesWithErrors.length > 0) return;
+        if (!dateIsValid) return;
+
+        let foundError = false;
 
         // flatten this.data.items
         let items = [ ];
         this.data.items.forEach((row, rowI) => {
             // also perform validation
             row.forEach((item, itemI) => {
-                if (item.className === '') {
+                let empty = true;
+                item.lessons.forEach(l => { if (l !== '') empty = false });
+                if (item.className === '' && !empty) {
                     let classNamesWithErrors =
                         this.state.classNamesWithErrors.slice();
                     classNamesWithErrors.push(rowI * 4 + itemI);
                     this.setState({ classNamesWithErrors });
+                    foundError = true;
+                } else if (!empty) {
+                    items.push(item);
                 }
             });
-            items = items.concat(row);
+            // items = items.concat(row);
         });
-        if (this.state.classNamesWithErrors.length > 0) return; // check after above
+        if (foundError) return; // check after above
         API.Change.post({
             date: this.data.date,
             items
