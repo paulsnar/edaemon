@@ -29,7 +29,9 @@ class ChangeEntryPaneComponent extends React.Component {
         }
         this.state = {
             dateHasErrors: false,
-            classNamesWithErrors: [ ]
+            classNamesWithErrors: [ ],
+            saving: false,
+            saveError: false
         }
     }
     _handleDateChange(e) {
@@ -51,6 +53,7 @@ class ChangeEntryPaneComponent extends React.Component {
         }
     }
     _handleSaveClicked() {
+        if (this.state.saving) return;
         // check for validation
         let dateIsValid = isValidISO8601(this.data.date);
         if (!dateIsValid && !this.state.dateHasErrors) {
@@ -81,9 +84,22 @@ class ChangeEntryPaneComponent extends React.Component {
             // items = items.concat(row);
         });
         if (foundError) return; // check after above
+
+        this.setState({ saving: true });
         API.Change.post({
             date: this.data.date,
             items
+        })
+        .then(body => {
+            if (body.success) {
+                window.setTimeout(() => {
+                    // give time for memcache to catch up
+                    this.setState({ saving: false });
+                    window.location.assign('/admin/changes/all');
+                }, 500)
+            } else {
+                this.setState({ saving: false, saveError: true });
+            }
         });
     }
     _addColumn() {
@@ -111,6 +127,10 @@ class ChangeEntryPaneComponent extends React.Component {
             }
             _errors = <div className="alert alert-danger">
                 {_text}
+            </div>;
+        } else if (this.state.saveError) {
+            _errors = <div className="alert alert-warning">
+                Saglabāšanas laikā radās kļūda. Lūdzu pārlādējiet lapu un mēģiniet vēlreiz.
             </div>;
         }
         return <div>
@@ -164,7 +184,7 @@ class ChangeEntryPaneComponent extends React.Component {
                 </div> : ''}
             </div>
             <p>
-                <button className="btn btn-primary"
+                <button className={'btn btn-primary' + (this.state.saving ? ' disabled' : '')}
                     onClick={this._handleSaveClicked.bind(this)}>
                     <span className="glyphicon glyphicon-floppy-disk" />
                     {' '}
