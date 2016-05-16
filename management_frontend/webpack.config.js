@@ -7,7 +7,7 @@ let plugins = [
     new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         children: true,
-        minChunks: 2
+        minChunks: 4
     }),
     new webpack.ProvidePlugin({
         'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
