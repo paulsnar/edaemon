@@ -14,7 +14,7 @@ Izmaiņas
     <h1>Izmaiņas {{ change.for_class }} klasei <small>{{ format_date(change.for_date, 'dativs') }}</small></h1>
     {% if users.is_current_user_admin() %}
     <p>
-        <a href="/admin/#/changes/{{ change.key.urlsafe() }}" class="btn btn-default">
+        <a href="/admin/changes/{{ change.key.urlsafe() }}" class="btn btn-default">
             <span class="glyphicon glyphicon-cog"></span>
             Pārvaldīt
         </a>
