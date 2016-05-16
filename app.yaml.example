@@ -13,14 +13,18 @@ handlers:
   static_dir: static/
   secure: always
 - url: /admin/.*
-  script: application.admin_wsgi_endpoint
+  script: application.admin.wsgi_app
+  login: admin
+  secure: always
+- url: /cron/.*
+  script: application.cron.wsgi_app
   login: admin
   secure: always
 - url: /api/.*
-  script: application.api_wsgi_endpoint
+  script: application.api.wsgi_app
   secure: always
 - url: /.*
-  script: application.main_wsgi_endpoint
+  script: application.main.wsgi_app
   secure: always
 
 env_variables:
