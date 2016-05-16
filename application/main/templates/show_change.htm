@@ -26,10 +26,3 @@
     {% endfor %}
 </ol>
 {% endblock %}
-
-{% if users.is_current_user_admin() %}
-{% block scripts %}
-{{ super() }}
-<script>/* renavigate */</script>
-{% endblock %}
-{% endif %}
