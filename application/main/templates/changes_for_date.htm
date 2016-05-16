@@ -7,6 +7,8 @@
 <ul class="nav nav-pills">
     {% for change in changes %}
     <li><a href="/changes/show/{{ change.key.urlsafe() }}">{{ change.for_class }}</a></li>
+    {% else %}
+    (Te nav nevienu izmaiņu.)
     {% endfor %}
 </ul>
 {% endblock %}

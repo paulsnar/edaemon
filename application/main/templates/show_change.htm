@@ -1,19 +1,31 @@
 {% extends 'layout.htm' %}
 
-{% block title %}Izmaiņas {{ change.for_class }} klasei {{ format_date(change.for_date, 'dativs') }}{% endblock %}
+{% block title -%}
+{%- if change is defined -%}
+Izmaiņas {{ change.for_class }} klasei {{ format_date(change.for_date, 'dativs') }}
+{%- else -%}
+Izmaiņas
+{%- endif -%}
+{%- endblock %}
 
 {% block body %}
-<h1>Izmaiņas {{ change.for_class }} klasei <small>{{ format_date(change.for_date, 'dativs') }}</small></h1>
 
-{% if users.is_current_user_admin() %}
-<p>
-    <a href="/admin/#/changes/{{ change.key.urlsafe() }}" class="btn btn-default">
-        <span class="glyphicon glyphicon-cog"></span>
-        Pārvaldīt
-    </a>
-</p>
+{% if change is defined %}
+    <h1>Izmaiņas {{ change.for_class }} klasei <small>{{ format_date(change.for_date, 'dativs') }}</small></h1>
+    {% if users.is_current_user_admin() %}
+    <p>
+        <a href="/admin/#/changes/{{ change.key.urlsafe() }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-cog"></span>
+            Pārvaldīt
+        </a>
+    </p>
+    {% endif %}
+{% else %}
+    <h1>Izmaiņas</h1>
 {% endif %}
 
+
+{% if lessons is defined %}
 <ol start="0">
     {% for lesson in lessons %}
         {% if lesson is none %}
@@ -22,7 +34,13 @@
             <li>{{ lesson }}</li>
         {% endif %}
     {% else %}
-    (Neviena stunda nav ievadīta. Varbūt šodien ir brīvdiena?)
+    (Neviena stunda nav ievadīta.)
     {% endfor %}
 </ol>
+{% endif %}
+
+{% if invalid %}
+<p>Šādas izmaiņas neizdevās atrast. Lūdzu mēģiniet vēlreiz.</p>
+{% endif %}
+
 {% endblock %}

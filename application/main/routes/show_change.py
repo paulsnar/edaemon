@@ -20,4 +20,7 @@ class ShowChange(BaseHandler):
             self.response.write(template.render(change=change,
                 lessons=json.loads(change.lessons)))
         except Exception, e:
-            raise e
+            template = environment.get_template('show_change.htm')
+            self.response.write(template.render(invalid=True))
+            # raise e
+            logging.exception(e)
