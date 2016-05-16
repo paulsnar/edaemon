@@ -50,7 +50,7 @@ class AllChanges(BaseHandler):
 class SpecificChange(BaseHandler):
     @BaseHandler.item_method('Change')
     def get(self, change_id):
-        return partial(Change.lookup_url, change_id)
+        return lambda: ndb.Key(urlsafe=change_id).get()
 
     @BaseHandler.wrap_exception
     def delete(self, change_id):
