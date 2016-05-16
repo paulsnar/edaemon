@@ -38,6 +38,10 @@ class Change(ndb.Model):
         return cls.query(cls.purgeable_since == None)
 
     @classmethod
+    def get_deleted(cls):
+        return cls.query(cls.purgeable_since != None)
+
+    @classmethod
     def get_for_date(cls, for_date):
         return cls.query(cls.for_date == for_date,
             cls.purgeable_since == None).order(cls.for_class)

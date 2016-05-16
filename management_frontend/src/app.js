@@ -9,6 +9,14 @@ window.EdaemonAdmin = {
             }, 'ChangeList');
         }
     },
+    DeletedChangeList: {
+        init: (target, { data }) => {
+            require.ensure([], () => {
+                const DeletedChangeList = require('./DeletedChangeList').default;
+                DeletedChangeList.init(target, data);
+            }, 'DeletedChangeList');
+        }
+    },
     ChangeEntryPane: {
         init: (target) => {
             require.ensure([], () => {
