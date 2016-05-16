@@ -5,7 +5,7 @@ import json
 from google.appengine.datastore.datastore_query import Cursor
 from google.appengine.api import users
 from google.appengine.ext import ndb
-from functools import partial
+from datetime import date
 
 from ..handler import BaseHandler
 from application.common.models import Change
@@ -63,12 +63,17 @@ class SpecificChange(BaseHandler):
             return
 
         try:
-            change = ndb.Key(urlsafe=change_id)
+            change_key = ndb.Key(urlsafe=change_id)
         except Exception:
             self.fail(400, 'Your request was malformed.')
             return
 
-        change.delete()
+        change = change_key.get()
+        if change is None:
+            self.fail(404, 'This change doesn\'t exist.')
+            return
+        change.purgeable_since = date.today()
+        change.put()
         self.jsonify(success=True)
 
     @BaseHandler.wrap_exception

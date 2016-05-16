@@ -13,13 +13,15 @@ class Change(ndb.Model):
 
     @classmethod
     def get_first_for_class(cls, for_class):
-        return cls.query(cls.for_class == for_class).get()
+        return cls.query(cls.for_class == for_class,
+            cls.purgeable_since == None).get()
 
     @classmethod
     def get_week(cls):
         today = date.today()
         today_plus_week = today + timedelta(days=7)
-        return cls.query(cls.for_date >= today, cls.for_date < today_plus_week)
+        return cls.query(cls.for_date >= today, cls.for_date < today_plus_week,
+            cls.purgeable_since == None)
 
     @classmethod
     def get_week_for_class(cls, for_class):
@@ -33,15 +35,17 @@ class Change(ndb.Model):
 
     @classmethod
     def get_all(cls):
-        return cls.query()
+        return cls.query(cls.purgeable_since == None)
 
     @classmethod
     def get_for_date(cls, for_date):
-        return cls.query(cls.for_date == for_date).order(cls.for_class)
+        return cls.query(cls.for_date == for_date,
+            cls.purgeable_since == None).order(cls.for_class)
 
     @classmethod
     def get_for_class(cls, for_class):
-        return cls.query(cls.for_class == for_class).order(cls.for_date)
+        return cls.query(cls.for_class == for_class,
+            cls.purgeable_since == None).order(cls.for_date)
 
     def to_dict(self):
         selfdict = dict(
@@ -62,5 +66,11 @@ class Change(ndb.Model):
             selfdict['lessons'] = json.loads(self.lessons)
         except ndb.UnprojectedPropertyError:
             pass # in case of a partial query
+
+        try:
+            if self.purgeable_since is not None:
+                selfdict['deleted'] = True
+        except ndb.UnprojectedPropertyError:
+            pass
 
         return selfdict
