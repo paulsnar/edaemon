@@ -18,8 +18,8 @@ class ChangeEditPaneComponent extends React.Component {
         }
         this.data.lessons.push('');
         this.state = {
-            date: this.data.date,
-            className: this.data.className,
+            date: this.data.for_date,
+            className: this.data.for_class,
             lessons: this.data.lessons.slice(),
             dateHasErrors: false,
             classNameHasErrors: false,
