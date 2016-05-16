@@ -8,45 +8,31 @@ import Settings from './settings';
 
 import { isValidISO8601 } from './common';
 
+import EntryColumn from './components/EntryColumn';
+
+const times = num => {
+    let r = [ ], i = -1;
+    while (++i < num) r.push(i);
+    return r;
+}
+
 class ChangeEntryPaneComponent extends React.Component {
     constructor(props) {
         super(props);
         this.data = {
-            date: '',
-            items: [
-                [ /* each row */
-                    { className: '', lessons: ['', '', '', '', '', '', ''] }
-                ]
-            ]
-        }
-        if (props.fixedHeight) {
-            this.data.items[0][0].lessons = ['', '', '', '', '', '', '', '', ''];
+            date: ''
         }
         this.state = {
             dateHasErrors: false,
-            classNamesWithErrors: [ ],
+            classNamesHaveErrors: false,
             saving: false,
-            saveError: false
+            saveError: false,
+            columns: 1
         }
     }
     _handleDateChange(e) {
         this.data.date = e.target.value;
         this.setState({ dateHasErrors: !isValidISO8601(this.data.date) });
-    }
-    _handleClassnameChange(rowI, classI, e) {
-        this.data.items[rowI][classI].className = e.target.value;
-        // this.forceUpdate();
-    }
-    _handleLessonChange(rowI, classI, lessonI, e) {
-        this.data.items[rowI][classI].lessons[lessonI] = e.target.value;
-        // this.forceUpdate();
-    }
-    _handleLessonFocus(rowI, classI, lessonI, e) {
-        if (this.props.fixedHeight) return;
-        if (lessonI === this.data.items[rowI][classI].lessons.length - 1) {
-            this.data.items[rowI][classI].lessons.push('');
-            this.forceUpdate();
-        }
     }
     _handleSaveClicked() {
         if (this.state.saving) return;
@@ -58,31 +44,28 @@ class ChangeEntryPaneComponent extends React.Component {
         }
         if (!dateIsValid) return;
 
-        let foundError = false;
-
-        // flatten this.data.items
         let items = [ ];
-        this.data.items.forEach((row, rowI) => {
-            // also perform validation
-            row.forEach((item, itemI) => {
-                let empty = true;
-                item.lessons.forEach(l => { if (l !== '') empty = false });
-                if (item.className === '' && !empty) {
-                    let classNamesWithErrors =
-                        this.state.classNamesWithErrors.slice();
-                    classNamesWithErrors.push(rowI * 4 + itemI);
-                    this.setState({ classNamesWithErrors });
-                    foundError = true;
-                } else if (!empty) {
-                    items.push({
-                        for_class: item.className,
-                        lessons: item.lessons
-                    });
-                }
-            });
-            // items = items.concat(row);
-        });
-        if (foundError) return; // check after above
+        for (var i = this.state.columns - 1; i >= 0; i--) {
+            let isValid = this.refs[`column${i}`].validate();
+            if (isValid === null) {
+                continue; // empty column
+            } else if (isValid === false) {
+                this.setState({ classNamesHaveErrors: true });
+                return;
+            } else {
+                let data = this.refs[`column${i}`].serialize();
+                items.push({
+                    for_class: data.className,
+                    lessons: data.lessons
+                });
+            }
+        }
+        if (items.length === 0) {
+            this.setState({ classNamesHaveErrors: true });
+            return;
+        } else {
+            this.setState({ classNamesHaveErrors: false });
+        }
 
         this.setState({ saving: true });
         API.Change.post({
@@ -102,29 +85,13 @@ class ChangeEntryPaneComponent extends React.Component {
         });
     }
     _addColumn() {
-        if ((!this.props.cozy && this.data.items[this.data.items.length - 1].length === 4) ||
-            (this.props.cozy && this.data.items[this.data.items.length - 1].length === 6)) {
-            this.data.items.push(
-                [
-                    { className: '', lessons:
-                        this.props.fixedHeight ?
-                            ['', '', '', '', '', '', '', '', ''] :
-                            ['', '', '', '', '', '', ''] }
-                ]
-            );
-        } else {
-            this.data.items[this.data.items.length - 1].push(
-                { className: '', lessons:
-                    this.props.fixedHeight ?
-                        ['', '', '', '', '', '', '', '', ''] :
-                        ['', '', '', '', '', '', '' ] })
-        }
-        this.forceUpdate();
+        let { columns } = this.state;
+        columns++;
+        this.setState({ columns });
     }
     render() {
         let _errors;
-        if (this.state.dateHasErrors ||
-            this.state.classNamesWithErrors.length > 0) {
+        if (this.state.dateHasErrors || this.state.classNamesHaveErrors) {
             let _text;
             if (this.state.dateHasErrors) {
                 _text = 'Jūsu ievadītais datums nav pareizs. Lūdzu pārliecinieties par datuma pareizību.';
@@ -139,6 +106,27 @@ class ChangeEntryPaneComponent extends React.Component {
                 Saglabāšanas laikā radās kļūda. Lūdzu pārlādējiet lapu un mēģiniet vēlreiz.
             </div>;
         }
+
+        const row_size = this.props.cozy ? 6 : 4;
+        // columns is 1-indexed
+        let full_rows = Math.floor(this.state.columns / row_size);
+
+        let rows = [ ];
+        for (let i = 0; i < full_rows; i++) {
+            let row = [ ];
+            for (let col = 1; col <= row_size; col++) {
+                row.push(i * row_size + (col - 1));
+            }
+            rows.push(row);
+        }
+        let last_row = [ ];
+        for (let col = full_rows * row_size; col <= this.state.columns - 1; col++) {
+            last_row.push(col);
+        }
+        if (last_row.length > 0) {
+            rows.push(last_row);
+        }
+
         return <div>
             {_errors}
             <div className="row">
@@ -152,39 +140,24 @@ class ChangeEntryPaneComponent extends React.Component {
                     </div>
                 </div>
             </div>
-            {this.data.items.map((row, rowI) =>
-            <div className="row">
-                {row.map((_class, classI) =>
-                <div className={this.props.cozy ? 'col-md-2' : 'col-md-3'}>
-                    <div className="input-group">
-                        <span className="input-group-addon">Klase: </span>
-                        <input type="text" className="form-control"
-                            onChange={this._handleClassnameChange.bind(this, rowI, classI)} />
-                    </div>
-                    {_class.lessons.map((item, i) =>
-                    <div className="input-group">
-                        <span className="input-group-addon">
-                            {(!this.props.fixedHeight && i === _class.lessons.length - 1) ? '+' : i}.
-                        </span>
-                        <input type="text" className="form-control"
-                            onChange={this._handleLessonChange.bind(this, rowI, classI, i)}
-                            onFocus={this._handleLessonFocus.bind(this, rowI, classI, i)} />
-                    </div>
+            {rows.map((row, row_i) =>
+                <div className="row" key={row_i}>
+                    {row.map(col =>
+                    <EntryColumn className={this.props.cozy ? 'col-md-2' : 'col-md-3'}
+                        fixedHeight={this.props.fixedHeight}
+                        ref={`column${col}`} key={col} />
                     )}
-                </div>
-                )}
-                {((!this.props.cozy && row.length < 4) || (this.props.cozy && row.length < 6)) ?
-                <div className={this.props.cozy ? 'col-md-2' : 'col-md-3'}>
-                    <button className="btn btn-default btn-lg btn-block"
+                    {row.length < row_size ?
+                    <div className={this.props.cozy ? 'col-md-2' : 'col-md-3'}>
+                        <button className="btn btn-default btn-lg btn-block"
                         onClick={this._addColumn.bind(this)}>
-                        <span className="glyphicon glyphicon-plus" />
-                    </button>
-                </div> : ''}
-            </div>
+                            <span className="glyphicon glyphicon-plus" />
+                        </button>
+                    </div> : ''}
+                </div>
             )}
             <div className="row" data-hack="row-last">
-                {((!this.props.cozy && this.data.items[this.data.items.length - 1].length === 4) ||
-                  (this.props.cozy && this.data.items[this.data.items.length - 1].length === 6))?
+                {this.state.columns % row_size === 0 ?
                 <div className={this.props.cozy ? 'col-md-2' : 'col-md-3'}>
                     <button className="btn btn-default btn-lg btn-block"
                         onClick={this._addColumn.bind(this)}>
@@ -217,7 +190,12 @@ let ChangeEntryPane = {
                     cozy={cozyMode} fixedHeight={fixedHeight} />,
                 target
             );
-        });
+        })
+        .catch(err => {
+            console.error(
+                '[promise] Error while resolving Settings/rendering ChangeEntryPane',
+                err);
+        })
     }
 }
 

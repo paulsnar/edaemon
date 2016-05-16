@@ -8,6 +8,8 @@ import Settings from './settings';
 
 import { isValidISO8601 } from './common';
 
+import EntryColumn from './components/EntryColumn';
+
 class ChangeEditPaneComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -27,8 +29,6 @@ class ChangeEditPaneComponent extends React.Component {
         }
         this.state = {
             date: this.data.for_date,
-            className: this.data.for_class,
-            lessons: this.data.lessons.slice(),
             dateHasErrors: false,
             classNameHasErrors: false,
             saving: false,
@@ -39,28 +39,6 @@ class ChangeEditPaneComponent extends React.Component {
         this.data.for_date = e.target.value.trim();
         this.setState({ dateHasErrors: !isValidISO8601(this.data.for_date),
             date: e.target.value });
-    }
-    _handleClassnameChange(e) {
-        this.data.for_class = e.target.value.trim();
-        this.setState({ classNameHasErrors: this.data.for_class === '',
-            className: e.target.value });
-    }
-    _handleLessonChange(lessonI, e) {
-        this.data.lessons[lessonI] = e.target.value.trim();
-
-        let lessons = this.state.lessons.slice();
-        lessons[lessonI] = e.target.value;
-        this.setState({ lessons });
-    }
-    _handleLessonFocus(lessonI, e) {
-        if (this.props.fixedHeight) return;
-        if (lessonI === this.data.lessons.length - 1) {
-            this.data.lessons.push('');
-            // this.forceUpdate();
-            let lessons = this.state.lessons.slice();
-            lessons.push('');
-            this.setState({ lessons });
-        }
     }
     _handleSaveClicked() {
         if (this.state.saving) return;
@@ -73,12 +51,18 @@ class ChangeEditPaneComponent extends React.Component {
             return;
         }
 
-        if (this.data.for_class.trim() === '') {
+        if (!this.refs.entryColumn.validate()) {
             if (!this.state.classNameHasErrors) {
                 this.setState({ classNameHasErrors: true });
             }
             return;
+        } else {
+            this.setState({ classNameHasErrors: false });
         }
+
+        let data = this.refs.entryColumn.serialize();
+        this.data.for_class = data.className;
+        this.data.lessons = data.lessons;
 
         this.setState({ saving: true });
         API.Change.put(this.data.id, this.data)
@@ -123,25 +107,13 @@ class ChangeEditPaneComponent extends React.Component {
                 </div>
             </div>
             <div className="row">
-                <div className="col-md-3">
-                    <div className="input-group">
-                        <span className="input-group-addon">Klase: </span>
-                        <input type="text" className="form-control"
-                            value={this.state.className}
-                            onChange={this._handleClassnameChange.bind(this)} />
-                    </div>
-                    {this.state.lessons.map((item, i) =>
-                    <div className="input-group">
-                        <span className="input-group-addon">
-                            {(i === this.data.lessons.length - 1 && !this.props.fixedHeight) ? '+' : i}.
-                        </span>
-                        <input type="text" className="form-control"
-                            value={item}
-                            onChange={this._handleLessonChange.bind(this, i)}
-                            onFocus={this._handleLessonFocus.bind(this, i)} />
-                    </div>
-                    )}
-                </div>
+                <EntryColumn className="col-md-3"
+                    fixedHeight={this.props.fixedHeight}
+                    data={{
+                        className: this.data.for_class,
+                        lessons: this.data.lessons
+                    }}
+                    ref="entryColumn" />
             </div>
             <p>
                 <button className={'btn btn-primary' + (this.state.saving ? ' disabled' : '')}
