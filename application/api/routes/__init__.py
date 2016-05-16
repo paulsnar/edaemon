@@ -10,7 +10,7 @@ class ApiWelcome(BaseHandler):
         )
 
 all_routes = [
-    (r'/api/', ApiWelcome)    
+    (r'/api/', ApiWelcome)
 ]
 
 from .v1 import v1_routes
