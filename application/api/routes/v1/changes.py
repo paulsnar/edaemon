@@ -28,16 +28,16 @@ class AllChanges(BaseHandler):
             return
 
         data = json.loads(self.request.body)
-        # data = { date: …, items: [ { className: …, lessons: [ … ] } ] }
-        if not ISO8601.is_valid(data['date']):
+        # { for_date: …, items: [ { for_class: …, lessons: [ … ] } ] }
+        if not ISO8601.is_valid(data['for_date']):
             self.fail(400, 'Invalid date')
             return
         else:
-            common_date = ISO8601.parse(data['date'])
+            common_date = ISO8601.parse(data['for_date'])
         resp = dict()
         for change_item in data['items']:
             lessons = lesson_pipeline(change_item['lessons'])
-            c = Change(for_class=change_item['className'], for_date=common_date,
+            c = Change(for_class=change_item['for_class'], for_date=common_date,
                 lessons=json.dumps(lessons))
             c.put()
             resp[c.for_class] = c.key.urlsafe()
@@ -92,15 +92,15 @@ class SpecificChange(BaseHandler):
             self.fail(404, 'This change doesn\'t exist.')
             return
         data = json.loads(self.request.body)
-        # { date: …, className: …, lessons: [ … ] }
-        if 'className' in data:
-            change.for_class = data['className']
-        if 'date' in data:
-            if not ISO8601.is_valid(data['date']):
+        # { for_date: …, for_class: …, lessons: [ … ] }
+        if 'for_class' in data:
+            change.for_class = data['for_class']
+        if 'for_date' in data:
+            if not ISO8601.is_valid(data['for_date']):
                 self.fail(400, 'Invalid date')
                 return
             else:
-                change.for_date = ISO8601.parse(data['date'])
+                change.for_date = ISO8601.parse(data['for_date'])
         if 'lessons' in data:
             change.lessons = json.dumps(lesson_pipeline(data['lessons']))
         change.put()

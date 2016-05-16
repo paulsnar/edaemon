@@ -69,6 +69,10 @@ class ChangeEntryPaneComponent extends React.Component {
                     this.setState({ classNamesWithErrors });
                     foundError = true;
                 } else if (!empty) {
+                    items.push({
+                        for_class: item.className,
+                        lessons: item.lessons
+                    });
                     items.push(item);
                 }
             });
@@ -78,7 +82,7 @@ class ChangeEntryPaneComponent extends React.Component {
 
         this.setState({ saving: true });
         API.Change.post({
-            date: this.data.date,
+            for_date: this.data.date,
             items
         })
         .then(body => {

@@ -12,8 +12,8 @@ class ChangeEditPaneComponent extends React.Component {
         super(props);
         this.data = {
             id: props.item.id,
-            date: props.item.for_date,
-            className: props.item.for_class,
+            for_date: props.item.for_date,
+            for_class: props.item.for_class,
             lessons: props.item.lessons.slice()
         }
         this.data.lessons.push('');
@@ -28,13 +28,13 @@ class ChangeEditPaneComponent extends React.Component {
         }
     }
     _handleDateChange(e) {
-        this.data.date = e.target.value.trim();
-        this.setState({ dateHasErrors: !isValidISO8601(this.data.date),
+        this.data.for_date = e.target.value.trim();
+        this.setState({ dateHasErrors: !isValidISO8601(this.data.for_date),
             date: e.target.value });
     }
     _handleClassnameChange(e) {
-        this.data.className = e.target.value.trim();
-        this.setState({ classNameHasErrors: this.data.className === '',
+        this.data.for_class = e.target.value.trim();
+        this.setState({ classNameHasErrors: this.data.for_class === '',
             className: e.target.value });
     }
     _handleLessonChange(lessonI, e) {
@@ -56,7 +56,7 @@ class ChangeEditPaneComponent extends React.Component {
     _handleSaveClicked() {
         if (this.state.saving) return;
 
-        let dateIsValid = isValidISO8601(this.data.date);
+        let dateIsValid = isValidISO8601(this.data.for_date);
         if (!dateIsValid) {
             if (!this.state.dateHasErrors) {
                 this.setState({ dateHasErrors: true });
@@ -64,7 +64,7 @@ class ChangeEditPaneComponent extends React.Component {
             return;
         }
 
-        if (this.data.className.trim() === '') {
+        if (this.data.for_class.trim() === '') {
             if (!this.state.classNameHasErrors) {
                 this.setState({ classNameHasErrors: true });
             }
