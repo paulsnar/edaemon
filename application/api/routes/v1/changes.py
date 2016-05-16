@@ -71,6 +71,41 @@ class SpecificChange(BaseHandler):
         change.delete()
         self.jsonify(success=True)
 
+    @BaseHandler.wrap_exception
+    def put(self, change_id):
+        if not users.get_current_user():
+            self.fail(401, 'Authorization is required to access this resource.')
+            return
+        elif not users.is_current_user_admin():
+            self.fail(403,
+                'Administrative privileges are required to access this resource.')
+            return
+
+        try:
+            change_key = ndb.Key(urlsafe=change_id)
+        except Exception:
+            self.fail(400, 'Your request was malformed.')
+            return
+
+        change = change_key.get()
+        if change is None:
+            self.fail(404, 'This change doesn\'t exist.')
+            return
+        data = json.loads(self.request.body)
+        # { date: …, className: …, lessons: [ … ] }
+        if 'className' in data:
+            change.for_class = data['className']
+        if 'date' in data:
+            if not ISO8601.is_valid(data['date']):
+                self.fail(400, 'Invalid date')
+                return
+            else:
+                change.for_date = ISO8601.parse(data['date'])
+        if 'lessons' in data:
+            change.lessons = json.dumps(lesson_pipeline(data['lessons']))
+        change.put()
+        self.jsonify(success=True)
+
 class ChangesForClass(BaseHandler):
     @BaseHandler.collection_method('Change')
     def get(self, class_name):

@@ -1,0 +1,35 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Rediģēt izmaiņas{% endblock %}
+
+{% block stylesheets %}
+{{ super() }}
+<style>
+    .row {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+{% if not_found %}
+    <h1>Rediģēt izmaiņas</h1>
+    <div class="alert alert-danger">
+        Šīs izmaiņas netika atrastas.
+    </div>
+{% else %}
+    <h1>Rediģēt izmaiņas</h1>
+    <div data-placeholder="ChangeEditPane">Notiek ielāde, lūdzu uzgaidiet…</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    EdaemonAdmin.ChangeEditPane.init(
+        document.querySelector('[data-placeholder="ChangeEditPane"]'),
+        { data: {{ change_json | safe }} }
+    );
+</script>
+{% endblock %}

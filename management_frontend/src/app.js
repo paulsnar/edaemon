@@ -17,6 +17,14 @@ window.EdaemonAdmin = {
             }, 'ChangeEntryPane');
         }
     },
+    ChangeEditPane: {
+        init: (target, { data }) => {
+            require.ensure([], () => {
+                const ChangeEditPane = require('./ChangeEditPane').default;
+                ChangeEditPane.init(target, data);
+            }, 'ChangeEditPane');
+        }
+    },
     ConfirmActionButton: {
         initDeleteChange: (target, { id }) => {
             require.ensure([], () => {

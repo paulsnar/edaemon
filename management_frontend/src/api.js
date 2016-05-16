@@ -27,6 +27,29 @@ const API = {
 
             return ret;
         },
+        put(id, data) {
+            let ret = fetch(`/api/v1/changes/${id}`, {
+                credentials: 'same-origin',
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => res.json())
+            .catch(err => {
+                console.error('[api] error', err,
+                    `on request: PUT /api/v1/changes/${id}`);
+            });
+
+            ret.then(body => {
+                if (!body.success) {
+                    console.warn('[api] unsuccessful operation',
+                        `on request: PUT /api/v1/changes/${id}`);
+                    console.debug('[api] included body:', body);
+                }
+            });
+
+            return ret.then(body => body.success);
+        },
         delete(id) {
             let ret = fetch(`/api/v1/changes/${id}`, {
                 credentials: 'same-origin',
