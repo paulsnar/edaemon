@@ -12,7 +12,7 @@ export default class ConfirmActionButton extends React.Component {
     }
     handleClicked() {
         if (this.state.clicked) {
-            window.cancelTimeout(this.state.timeout);
+            window.clearTimeout(this.state.timeout);
             this.props.callback();
         } else {
             let timeout = window.setTimeout(() => {
