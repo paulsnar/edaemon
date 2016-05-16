@@ -73,7 +73,6 @@ class ChangeEntryPaneComponent extends React.Component {
                         for_class: item.className,
                         lessons: item.lessons
                     });
-                    items.push(item);
                 }
             });
             // items = items.concat(row);
