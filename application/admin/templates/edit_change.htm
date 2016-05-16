@@ -26,10 +26,12 @@
 
 {% block scripts %}
 {{ super() }}
+{% if not not_found %}
 <script>
     EdaemonAdmin.ChangeEditPane.init(
         document.querySelector('[data-placeholder="ChangeEditPane"]'),
         { data: {{ change_json | safe }} }
     );
 </script>
+{% endif %}
 {% endblock %}

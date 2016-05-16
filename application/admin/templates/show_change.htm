@@ -32,10 +32,12 @@
 
 {% block scripts %}
 {{ super() }}
+{% if not not_found %}
 <script>
     EdaemonAdmin.ConfirmActionButton.initDeleteChange(
         document.querySelector('[data-placeholder="ConfirmActionButton"]'),
         { id: '{{ change.key.urlsafe() }}' }
     );
 </script>
+{% endif %}
 {% endblock %}
