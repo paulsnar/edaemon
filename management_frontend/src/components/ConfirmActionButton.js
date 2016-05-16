@@ -6,21 +6,19 @@ export default class ConfirmActionButton extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            clicked: false
+            clicked: false,
+            timeout: null
         }
     }
     handleClicked() {
         if (this.state.clicked) {
+            window.cancelTimeout(this.state.timeout);
             this.props.callback();
-            if (!this._unmounted) {
-                // Inferno sometimes does weird optimizations, which means that
-                // components might be left lingering after removal. That
-                // requires to check each component and reset their state
-                // manually.
-                this.setState({ clicked: false });
-            }
         } else {
-            this.setState({ clicked: true });
+            let timeout = window.setTimeout(() => {
+                this.setState({ clicked: false, timeout: null });
+            }, 6000);
+            this.setState({ clicked: true, timeout });
         }
     }
     render() {
