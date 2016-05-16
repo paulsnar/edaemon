@@ -1,14 +1,12 @@
 'use strict';
 
-import Inferno from 'inferno';
-import InfernoDOM from 'inferno-dom';
-import Component from 'inferno-component';
-import createElement from 'inferno-create-element';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import ConfirmActionButton from './components/ConfirmActionButton';
 import API from './api';
 
-class ChangeListComponent extends Component {
+class ChangeListComponent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -49,7 +47,7 @@ let ChangeList = {
     init: (target, data) => {
         target.innerHTML = '';
 
-        InfernoDOM.render(
+        ReactDOM.render(
             <ChangeListComponent data={data} />,
             target
         );

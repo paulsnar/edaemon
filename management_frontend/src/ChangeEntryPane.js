@@ -1,9 +1,7 @@
 'use strict';
 
-import Inferno from 'inferno';
-import InfernoDOM from 'inferno-dom';
-import Component from 'inferno-component';
-import createElement from 'inferno-create-element';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import API from './api';
 
@@ -18,7 +16,7 @@ function isValidISO8601(str) {
     return true;
 }
 
-class ChangeEntryPaneComponent extends Component {
+class ChangeEntryPaneComponent extends React.Component {
     constructor(props) {
         super(props);
         this.data = {
@@ -188,7 +186,7 @@ class ChangeEntryPaneComponent extends Component {
 let ChangeEntryPane = {
     init: (target) => {
         target.innerHTML = '';
-        InfernoDOM.render(
+        ReactDOM.render(
             <ChangeEntryPaneComponent />,
             target
         );

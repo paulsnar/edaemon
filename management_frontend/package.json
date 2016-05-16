@@ -9,9 +9,8 @@
   "author": "paulsnar <paulsnar@paulsnar.lv>",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "inferno": "^0.7.7",
-    "inferno-component": "^0.7.7",
-    "inferno-dom": "^0.7.7",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
     "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {

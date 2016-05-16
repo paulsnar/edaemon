@@ -1,10 +1,8 @@
 'use strict';
 
-import Inferno from 'inferno';
-import Component from 'inferno-component';
-import createElement from 'inferno-create-element';
+import React from 'react';
 
-export default class ConfirmActionButton extends Component {
+export default class ConfirmActionButton extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
