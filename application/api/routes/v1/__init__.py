@@ -2,7 +2,6 @@
 
 from .changes import AllChanges, SpecificChange, ChangesForClass, ChangesForDate
 from .trash import TrashHandler
-from .notify import NotifyHandler
 
 from ..handler import BaseHandler
 class ApiVersionWelcome(BaseHandler):
@@ -29,6 +28,4 @@ v1_routes = [
     (r'/api/v1/changes/for_class/([0-9A-Za-z\.]+)', ChangesForClass),
 
     (r'/api/v1/trash', TrashHandler),
-
-    (r'/api/v1/notify', NotifyHandler)
 ]
