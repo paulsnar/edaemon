@@ -1,3 +1,3 @@
 # coding: utf-8
 
-EDAEMON_VERSION = '2.0.4-develop'
+EDAEMON_VERSION = '3.0.0'
