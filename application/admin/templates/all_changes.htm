@@ -1,0 +1,18 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Visas izmaiņas{% endblock %}
+
+{% block body %}
+    <h1>Visas izmaiņas</h1>
+    <div data-placeholder="ChangeList">Notiek ielāde, lūdzu uzgaidiet...</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    EdaemonAdmin.ChangeList.init(
+        document.querySelector('[data-placeholder="ChangeList"]'),
+        { data: {{ changes_json | safe }} }
+    );
+</script>
+{% endblock %}

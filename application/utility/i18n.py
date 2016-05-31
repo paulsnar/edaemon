@@ -112,6 +112,5 @@ def format_date(_date, form='nominativs'):
             if form == 'instrumentalis': return u'ar nezināmu datumu'
             if form == 'lokativs': return u'nezināmā datumā'
             if form == 'vokativs': return u'nezināmais datum'
-        return u'{0}.gada {1}.{2}'.format(_date.year, _date.day,
-            _month_form_lookup(_date.month, form=form))
-
+    return u'{0}.gada {1}.{2}'.format(_date.year, _date.day,
+        _month_form_lookup(_date.month, form=form))

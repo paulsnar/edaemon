@@ -1,0 +1,43 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Skatīt izmaiņas{% endblock %}
+
+{% block body %}
+{% if not_found %}
+    <h1>Izmaiņas</h1>
+    <div class="alert alert-danger">
+        Šīs izmaiņas netika atrastas.
+    </div>
+{% else %}
+    <h1>Izmaiņas {{ change.for_class }} klasei {{ format_date(change.for_date, 'dativs') }}</h1>
+    <p>
+        <span data-placeholder="ConfirmActionButton">Notiek ielāde, lūdzu uzgaidiet…</span>
+        <a href="/admin/changes/{{ change.key.urlsafe() }}/edit" class="btn btn-default">
+            <span class="glyphicon glyphicon-pencil"></span>
+            Rediģēt
+        </a>
+    <ol start="0">
+        {% for lesson in lessons %}
+            {% if lesson is none %}
+            <li>&mdash;</li>
+            {% else %}
+            <li>{{ lesson }}</li>
+            {% endif %}
+        {% else %}
+        (Nav ievadīta neviena stunda)
+        {% endfor %}
+    </ol>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{% if not not_found %}
+<script>
+    EdaemonAdmin.ConfirmActionButton.initDeleteChange(
+        document.querySelector('[data-placeholder="ConfirmActionButton"]'),
+        { id: '{{ change.key.urlsafe() }}' }
+    );
+</script>
+{% endif %}
+{% endblock %}

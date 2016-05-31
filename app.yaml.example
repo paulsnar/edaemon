@@ -5,15 +5,26 @@ api_version: 1
 threadsafe: yes
 
 handlers:
+- url: /static_admin
+  static_dir: static_admin/
+  secure: always
+  login: admin
 - url: /static
   static_dir: static/
   secure: always
 - url: /admin/.*
-  script: run.application.admin
+  script: application.admin.wsgi_app
   login: admin
   secure: always
+- url: /cron/.*
+  script: application.cron.wsgi_app
+  login: admin
+  secure: always
+- url: /api/.*
+  script: application.api.wsgi_app
+  secure: always
 - url: /.*
-  script: run.application.main
+  script: application.main.wsgi_app
   secure: always
 
 env_variables:
