@@ -1,0 +1,14 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Izmaiņas {{ format_date(date, 'dativs') }}{% endblock %}
+
+{% block body %}
+<h1>Izmaiņas {{ format_date(date, 'dativs') }}</h1>
+<ul class="nav nav-pills">
+    {% for change in changes %}
+    <li><a href="/changes/show/{{ change.key.urlsafe() }}">{{ change.for_class }}</a></li>
+    {% else %}
+    (Te nav nevienu izmaiņu.)
+    {% endfor %}
+</ul>
+{% endblock %}

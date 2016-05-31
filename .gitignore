@@ -8,3 +8,4 @@ _private_*.*
 _private_*/**/*
 index.yaml
 app.yaml
+static_admin/**/*

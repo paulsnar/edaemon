@@ -1,0 +1,27 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Ievadīt izmaiņas{% endblock %}
+
+{% block stylesheets %}
+{{ super() }}
+<style>
+    .row {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <h1>Ievadīt izmaiņas</h1>
+    <div data-placeholder="ChangeEntryPane">Notiek ielāde, lūdzu uzgaidiet...</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    EdaemonAdmin.ChangeEntryPane.init(
+        document.querySelector('[data-placeholder="ChangeEntryPane"]')
+    );
+</script>
+{% endblock %}
