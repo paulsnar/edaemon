@@ -14,6 +14,6 @@ class AdminIndex(BaseHandler):
         self.response.write(
             template.render(
                 changes=changes,
-                changes_json=json.dumps([change.to_dict() for change in changes])
+                changes_json=json_dumps([change.to_dict() for change in changes])
             )
         )

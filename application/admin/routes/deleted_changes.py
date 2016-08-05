@@ -16,6 +16,6 @@ class DeletedChanges(BaseHandler):
             template.render(
                 has_changes=changes.count() > 0,
                 changes=changes,
-                changes_json=json.dumps([change.to_dict() for change in changes])
+                changes_json=json_dumps([change.to_dict() for change in changes])
             )
         )
