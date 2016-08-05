@@ -1,9 +1,8 @@
 # coding: utf-8
 
 import webapp2
-import json
 
-from application.common import BaseHandler
+from application.common import BaseHandler, json_dumps
 from application.common.models import Change
 
 from ..templates import environment
@@ -14,6 +13,6 @@ class AllChanges(BaseHandler):
         changes = Change.get_all().order(Change.for_date, Change.for_class)
         self.response.write(
             template.render(
-                changes_json=json.dumps([change.to_dict() for change in changes])
+                changes_json=json_dumps([change.to_dict() for change in changes])
             )
         )
