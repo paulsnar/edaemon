@@ -20,8 +20,11 @@ class ShowChange(BaseHandler):
                 )
             else:
                 self.response.write(
-                    template.render(change=change,
-                        lessons=json.loads(change.lessons))
+                    template.render(
+                        change=change,
+                        change_json=json.dumps(change.to_dict()),
+                        lessons=json.loads(change.lessons)
+                    )
                 )
 
         except Exception:

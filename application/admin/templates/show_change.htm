@@ -1,4 +1,4 @@
-{% extends 'layout.htm' %}
+{% extends 'layout_new.htm' %}
 
 {% block title %}Skatīt izmaiņas{% endblock %}
 
@@ -11,7 +11,10 @@
 {% else %}
     <h1>Izmaiņas {{ change.for_class }} klasei {{ format_date(change.for_date, 'dativs') }}</h1>
     <p>
-        <span data-placeholder="ConfirmActionButton">Notiek ielāde, lūdzu uzgaidiet…</span>
+        <button class="btn btn-danger disabled" data-do="delete">
+            <span class="glyphicon glyphicon-trash"></span>
+            Dzēst
+        </button>
         <a href="/admin/changes/{{ change.key.urlsafe() }}/edit" class="btn btn-default">
             <span class="glyphicon glyphicon-pencil"></span>
             Rediģēt
@@ -34,10 +37,25 @@
 {{ super() }}
 {% if not not_found %}
 <script>
-    EdaemonAdmin.ConfirmActionButton.initDeleteChange(
-        document.querySelector('[data-placeholder="ConfirmActionButton"]'),
-        { id: '{{ change.key.urlsafe() }}' }
-    );
+require(['/admin/static/_require_config.js'], function() {
+    require(['change', 'confirm_action_button'], function(Change, CAB) {
+        var change = new Change({{ change_json | safe }});
+
+        var cab = new CAB({ el: $('button[data-do="delete"]') });
+        cab.render();
+        $('button[data-do="delete"]').removeClass('disabled');
+
+        cab.on('action', function() {
+            change.destroy({
+                success: function() {
+                    setTimeout(function() {
+                        window.location.assign('/admin/');
+                    }, 500);
+                }
+            });
+        });
+    });
+});
 </script>
 {% endif %}
 {% endblock %}
