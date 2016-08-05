@@ -1,6 +1,6 @@
 define(function(require) {
 
-  var Change = require('change');
+  var Change = require('models/change');
 
   var ChangePane = Backbone.View.extend({
     template: _.template([

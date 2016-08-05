@@ -37,7 +37,7 @@
 {{ super() }}
 <script>
 require(['/admin/static/_require_config.js'], function() {
-    require(['change_list'], function(ChangeList) {
+    require(['components/change_list'], function(ChangeList) {
         ChangeList.attach(
             $('#js__changes'),
             {{ changes_json | safe }}

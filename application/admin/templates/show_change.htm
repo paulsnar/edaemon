@@ -38,7 +38,7 @@
 {% if not not_found %}
 <script>
 require(['/admin/static/_require_config.js'], function() {
-    require(['change', 'confirm_action_button'], function(Change, CAB) {
+    require(['models/change', 'components/confirm_action_button'], function(Change, CAB) {
         var change = new Change({{ change_json | safe }});
 
         var cab = new CAB({ el: $('button[data-do="delete"]') });

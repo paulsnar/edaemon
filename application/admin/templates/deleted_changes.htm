@@ -28,7 +28,7 @@
 {% if has_changes %}
 <script>
     require(['/admin/static/_require_config.js'], function() {
-        require(['deleted_change_list'], function(DeletedChangeList) {
+        require(['components/deleted_change_list'], function(DeletedChangeList) {
             DeletedChangeList.attach(
                 $('#js__deleted-changes'),
                 {{ changes_json | safe }}

@@ -1,6 +1,6 @@
 define(function(require) {
-  var Change = require('change');
-  var ChangePane = require('change_pane');
+  var Change = require('models/change');
+  var ChangePane = require('components/change_pane');
 
   var ChangeEditPaneView = Backbone.View.extend({
     template: [

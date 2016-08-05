@@ -1,8 +1,8 @@
 define(function(require) {
 
-  var Change = require('change');
+  var Change = require('models/change');
 
-  var ConfirmActionButton = require('confirm_action_button');
+  var ConfirmActionButton = require('components/confirm_action_button');
 
   var ChangeListItemView = Backbone.View.extend({
     initialize: function() {
