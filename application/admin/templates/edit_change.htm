@@ -1,4 +1,4 @@
-{% extends 'layout.htm' %}
+{% extends 'layout_new.htm' %}
 
 {% block title %}Rediģēt izmaiņas{% endblock %}
 
@@ -28,10 +28,14 @@
 {{ super() }}
 {% if not not_found %}
 <script>
-    EdaemonAdmin.ChangeEditPane.init(
-        document.querySelector('[data-placeholder="ChangeEditPane"]'),
-        { data: {{ change_json | safe }} }
-    );
+require(['/admin/static/_require_config.js'], function() {
+    require(['change_edit'], function(CEP) {
+        CEP.attach(
+            $('[data-placeholder="ChangeEditPane"]'),
+            {{ change_json | safe }}
+        );
+    });
+});
 </script>
 {% endif %}
 {% endblock %}

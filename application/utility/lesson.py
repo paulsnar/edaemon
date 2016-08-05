@@ -13,7 +13,8 @@ def transform_to_nulls(lesson_list):
     new_list = list()
     for subject in lesson_list:
         if (type(subject) == unicode and (subject == u'-' or subject == u'')) or \
-            (type(subject) == str and (subject == '-' or subject == '')):
+            (type(subject) == str and (subject == '-' or subject == '')) or \
+            subject == None:
             new_list.append(None)
         else:
             new_list.append(unicode(subject))
