@@ -1,9 +1,8 @@
 # coding: utf-8
 
 import webapp2
-import json
 
-from application.common import BaseHandler
+from application.common import BaseHandler, json_dumps
 from google.appengine.ext import ndb
 
 from ..templates import environment
@@ -19,5 +18,5 @@ class EditChange(BaseHandler):
             )
         else:
             self.response.write(
-                template.render(change_json=json.dumps(change.to_dict()))
+                template.render(change_json=json_dumps(change.to_dict()))
             )

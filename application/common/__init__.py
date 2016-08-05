@@ -67,3 +67,7 @@ def default_404_handler(request, response, exception):
     template = _env.get_template('404.htm')
     response.write(template.render())
     response.set_status(404)
+
+import simplejson
+def json_dumps(obj):
+    return simplejson.encoder.JSONEncoderForHTML().encode(obj)
