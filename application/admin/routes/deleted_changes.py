@@ -1,9 +1,8 @@
 # coding: utf-8
 
 import webapp2
-import json
 
-from application.common import BaseHandler
+from application.common import BaseHandler, json_dumps
 from application.common.models import Change
 
 from ..templates import environment
