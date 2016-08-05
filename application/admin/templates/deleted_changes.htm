@@ -1,18 +1,40 @@
-{% extends 'layout.htm' %}
+{% extends 'layout_new.htm' %}
 
 {% block title %}Dzēstās izmaiņas{% endblock %}
 
 {% block body %}
     <h1>Dzēstās izmaiņas</h1>
-    <div data-placeholder="DeletedChangeList">Notiek ielāde, lūdzu uzgaidiet…</div>
+    {% if has_changes %}
+    <ul id="js__deleted-changes">
+        {% for change in changes %}
+            <li data-id="{{ change.key.urlsafe() }}">
+                <button class="btn btn-default btn-xs disabled" data-do="undelete">
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                </button>
+                Datums: {{ change.for_date }}, klase: {{ change.for_class }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-muted text-center">
+        Te parādās dzēstās izmaiņas, un no šejienes tās var atjaunot atpakaļ.
+        Ja tās netiek atgrieztas 3 dienu laikā, tās tiek izdzēstas neatgriezeniski.
+    </p>
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
+{% if has_changes %}
 <script>
-    EdaemonAdmin.DeletedChangeList.init(
-        document.querySelector('[data-placeholder="DeletedChangeList"]'),
-        { data: {{ changes_json | safe }} }
-    );
+    require(['/admin/static/_require_config.js'], function() {
+        require(['deleted_change_list'], function(DeletedChangeList) {
+            DeletedChangeList.attach(
+                $('#js__deleted-changes'),
+                {{ changes_json | safe }}
+            );
+        });
+    });
 </script>
+{% endif %}
 {% endblock %}
