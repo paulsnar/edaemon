@@ -14,6 +14,7 @@ class AdminIndex(BaseHandler):
         changes = Change.get_week().order(Change.for_date, Change.for_class)
         self.response.write(
             template.render(
+                changes=changes,
                 changes_json=json.dumps([change.to_dict() for change in changes])
             )
         )
