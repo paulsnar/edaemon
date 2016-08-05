@@ -45,11 +45,10 @@ define(function(require) {
       $btn.find('.glyphicon')
         .toggleClass('glyphicon-floppy-disk glyphicon-cog');
 
-      this.model.save({
-        success: function() {
-          window.location.assign('/admin/changes/' + this.model.get('id'));
-        }
-      });
+      this.model.once('sync', function() {
+        window.location.assign('/admin/changes/' + this.model.get('id'));
+      }.bind(this));
+      this.model.save();
     }
   });
 
