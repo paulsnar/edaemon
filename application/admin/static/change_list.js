@@ -1,8 +1,6 @@
 define(function(require) {
 
   var Change = require('change');
-  // var Changes = require('changes');
-  var Changes = Backbone.Collection.extend({ model: Change });
 
   var ConfirmActionButton = require('confirm_action_button');
 
