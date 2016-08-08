@@ -1,4 +1,4 @@
-{% extends 'layout.htm' %}
+{% extends 'layout_new.htm' %}
 
 {% block title %}Ievadīt izmaiņas{% endblock %}
 
@@ -20,8 +20,12 @@
 {% block scripts %}
 {{ super() }}
 <script>
-    EdaemonAdmin.ChangeEntryPane.init(
-        document.querySelector('[data-placeholder="ChangeEntryPane"]')
-    );
+require(['/admin/static/_require_config.js'], function() {
+    require(['components/change_add'], function(ChangeAddView) {
+        new ChangeAddView({
+            el: document.querySelector('[data-placeholder="ChangeEntryPane"]')
+        }).render();
+    });
+});
 </script>
 {% endblock %}
