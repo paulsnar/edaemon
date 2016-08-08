@@ -43,20 +43,18 @@ define(function(require) {
     // There's a reason the whole Settings façade is abstracted behind promises,
     // it's for future compatibility with other settings backends.
     getAll: function() {
-      return new Promise(function(resolve) {
-        var settings = { };
-        var promises = [ ];
-        _.forEach(DEFAULTS, function(value, key) {
-          promises.push(
-            Settings.get(key)
-            .then(function(value) {
-              settings[key] = value;
-            })
-          );
-        });
-        return Promise.all(promises)
-        .then(function() { return settings; });
+      var settings = { };
+      var promises = [ ];
+      _.forEach(DEFAULTS, function(value, key) {
+        promises.push(
+          Settings.get(key)
+          .then(function(value) {
+            settings[key] = value;
+          })
+        );
       });
+      return Promise.all(promises)
+      .then(function() { return settings; });
     },
 
     Defaults: DEFAULTS,

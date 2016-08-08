@@ -1,4 +1,4 @@
-{% extends 'layout.htm' %}
+{% extends 'layout_new.htm' %}
 
 {% block title %}Lietotāja iestatījumi{% endblock %}
 
@@ -25,8 +25,17 @@
 {% block scripts %}
 {{ super() }}
 <script>
-    EdaemonAdmin.UserSettingsPane.init(
-        document.querySelector('[data-placeholder="UserSettingsPane"]')
-    );
+require(['/admin/static/_require_config.js'], function() {
+    require(['utils/settings', 'components/settings_view'],
+    function(Settings, SettingsView) {
+        Settings.getAll()
+        .then(function(settings) {
+            SettingsView.attach(
+                $('[data-placeholder="UserSettingsPane"]'),
+                settings
+            );
+        })
+    });
+})
 </script>
 {% endblock %}
