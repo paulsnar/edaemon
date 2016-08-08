@@ -4,15 +4,42 @@
 
 {% block body %}
     <h1>Visas izmaiņas</h1>
-    <div data-placeholder="ChangeList">Notiek ielāde, lūdzu uzgaidiet...</div>
+    {% if has_changes %}
+    <ul id="js__all-changes">
+        {% for change in changes %}
+            <li data-id="{{ change.key.urlsafe() }}">
+                <button class="btn btn-danger btn-xs disabled" data-do="delete">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <a class="btn btn-default btn-xs"
+                    href="/admin/changes/{{ change.key.urlsafe() }}/edit">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a href="/admin/changes/{{ change.key.urlsafe() }}">
+                    Datums: {{ change.for_date }}, klase: {{ change.for_class }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-muted">
+        Nav izmaiņu.
+    </p>
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
+{% if has_changes %}
 <script>
-    EdaemonAdmin.ChangeList.init(
-        document.querySelector('[data-placeholder="ChangeList"]'),
-        { data: {{ changes_json | safe }} }
-    );
+require(['/admin/static/_require_config.js'], function() {
+    require(['components/change_list'], function(ChangeList) {
+        ChangeList.attach(
+            $('#js__all-changes'),
+            {{ changes_json | safe }}
+        );
+    });
+});
 </script>
+{% endif %}
 {% endblock %}
