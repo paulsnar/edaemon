@@ -5,7 +5,28 @@
 {% block body %}
     <h1>Pārvaldīšana</h1>
     <h2>Pašreizējās stundu izmaiņas <small>(nedēļa)</small></h2>
-    <div data-placeholder="ChangeList">Notiek ielāde, lūdzu uzgaidiet...</div>
+    {% if has_changes %}
+    <ul id="js__changes">
+        {% for change in changes %}
+            <li data-id="{{ change.key.urlsafe() }}">
+                <button class="btn btn-danger btn-xs disabled" data-do="delete">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+                <a class="btn btn-default btn-xs"
+                    href="/admin/changes/{{ change.key.urlsafe() }}/edit">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a href="/admin/changes/{{ change.key.urlsafe() }}">
+                    Datums: {{ change.for_date }}, klase: {{ change.for_class }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-muted">
+        Te nav izmaiņu.
+    </p>
+    {% endif %}
     <p>
         <a href="/admin/changes/all" class="btn btn-default">
             <span class="glyphicon glyphicon-asterisk"></span>
@@ -20,10 +41,16 @@
 
 {% block scripts %}
 {{ super() }}
+{% if has_changes %}
 <script>
-    EdaemonAdmin.ChangeList.init(
-        document.querySelector('[data-placeholder="ChangeList"]'),
-        { data: {{ changes_json | safe }} }
-    );
+require(['/admin/static/_require_config.js'], function() {
+    require(['components/change_list'], function(ChangeList) {
+        ChangeList.attach(
+            $('#js__changes'),
+            {{ changes_json | safe }}
+        );
+    });
+});
 </script>
+{% endif %}
 {% endblock %}

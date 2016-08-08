@@ -20,8 +20,22 @@
 {% block scripts %}
 {{ super() }}
 <script>
-    EdaemonAdmin.ChangeEntryPane.init(
-        document.querySelector('[data-placeholder="ChangeEntryPane"]')
-    );
+require(['/admin/static/_require_config.js'], function() {
+    require(['components/change_add', 'utils/settings'],
+    function(ChangeAddView, Settings) {
+        Promise.all([
+            Settings.get('cozyMode'),
+            Settings.get('fixedHeight')
+        ])
+        .then(function(res_tuple) {
+            new ChangeAddView({
+                el: document.querySelector('[data-placeholder="ChangeEntryPane"]'),
+
+                cozyMode: res_tuple[0],
+                fixedHeight: res_tuple[1]
+            }).render();
+        });
+    });
+});
 </script>
 {% endblock %}

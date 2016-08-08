@@ -28,24 +28,42 @@ class AllChanges(BaseHandler):
             return
 
         data = json.loads(self.request.body)
-        # { for_date: …, items: [ { for_class: …, lessons: [ … ] } ] }
-        if not ISO8601.is_valid(data['for_date']):
-            self.fail(400, 'Invalid date')
-            return
+        if 'items' in data:
+            # old-style non-REST multiple submission endpoint
+            # { for_date: …, items: [ { for_class: …, lessons: [ … ] } ] }
+            if not ISO8601.is_valid(data['for_date']):
+                self.fail(400, 'Invalid date')
+                return
+            else:
+                common_date = ISO8601.parse(data['for_date'])
+            resp = dict()
+            for change_item in data['items']:
+                lessons = lesson_pipeline(change_item['lessons'])
+                c = Change(for_class=change_item['for_class'],
+                    for_date=common_date,
+                    lessons=json.dumps(lessons))
+                c.put()
+                resp[c.for_class] = c.key.urlsafe()
+            self.jsonify(
+                success=True,
+                kind='Change',
+                items=resp
+            )
         else:
-            common_date = ISO8601.parse(data['for_date'])
-        resp = dict()
-        for change_item in data['items']:
-            lessons = lesson_pipeline(change_item['lessons'])
-            c = Change(for_class=change_item['for_class'], for_date=common_date,
+            # single submission (new frontend)
+            # { for_date: …, for_class: …, lessons: [ … ] }
+            if not ISO8601.is_valid(data['for_date']):
+                self.fail(400, 'Invalid date')
+                return
+            else:
+                for_date = ISO8601.parse(data['for_date'])
+
+            lessons = lesson_pipeline(data['lessons'])
+            c = Change(for_class=data['for_class'],
+                for_date=for_date,
                 lessons=json.dumps(lessons))
             c.put()
-            resp[c.for_class] = c.key.urlsafe()
-        self.jsonify(
-            success=True,
-            kind='Change',
-            items=resp
-        )
+            self.jsonify(id=c.key.urlsafe())
 
 class SpecificChange(BaseHandler):
     @BaseHandler.item_method('Change')
