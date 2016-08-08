@@ -1,3 +1,10 @@
+v3.1.1
+======
+
+ - Fix a bit of problems with user settings of management frontend
+
+------
+
 v3.1.0
 ======
 
