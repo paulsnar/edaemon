@@ -54,8 +54,10 @@ define(function(require) {
         this._timeoutf = function() {
           this._timeout = null;
           this._timeoutf = null;
-          $label.fadeOut(200)
-            .done(function() { $label.remove(); });
+          $label.fadeOut({
+            duration: 200,
+            done: function() { $label.remove(); }
+          });
         }.bind(this)
         this._timeout = window.setTimeout(this._timeoutf, this._fadeOutTimeout);
       }.bind(this));
