@@ -1,7 +1,6 @@
 # coding: utf-8
 
 import webapp2
-import json
 
 from application.common import BaseHandler
 
