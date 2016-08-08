@@ -4,7 +4,7 @@ define(function(require) {
 
   var ChangePane = Backbone.View.extend({
     template: _.template([
-      '<div class="alert alert-danger hidden">Notika kļūda.</div>',
+      '<div class="alert alert-danger hidden" role=alert>Notika kļūda.</div>',
       '<div class="input-group">',
         '<span class="input-group-addon">Klase: </span>',
         '<input type="text" class="form-control"',
@@ -57,6 +57,8 @@ define(function(require) {
       if (!this.options.surpressErrors) {
         this.listenTo(this.model, 'invalid', this._showModelValidationError);
       }
+
+      this.listenTo(this.model, 'error', this._showModelSyncError);
     },
 
     render: function() {
@@ -78,9 +80,18 @@ define(function(require) {
 
     _showModelValidationError: function(model, error) {
       if (this.options.surpressErrors) return;
-      this.$('div.alert.alert-danger')
-        .removeClass('hidden')
+      this.$('div.alert[role="alert"]')
+        .removeClass('hidden alert-warning')
+        .addClass('alert-danger')
         .text(error);
+    },
+
+    _showModelSyncError: function(model, response) {
+      // This kind of error is not surpressable.
+      this.$('div.alert[role="alert"]')
+        .removeClass('hidden alert-danger')
+        .addClass('alert-warning')
+        .text('Saglabāšanas laikā notika kļūda.');
     },
 
     _handleInput: function(e) {
