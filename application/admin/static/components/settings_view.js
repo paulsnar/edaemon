@@ -52,11 +52,13 @@ define(function(require) {
         this.$el.append($label);
         $label.fadeIn(200);
         this._timeoutf = function() {
-          this._timeout = null;
-          this._timeoutf = null;
           $label.fadeOut({
             duration: 200,
-            done: function() { $label.remove(); }
+            done: function() {
+              $label.remove();
+              this._timeout = null;
+              this._timeoutf = null;
+            }.bind(this)
           });
         }.bind(this)
         this._timeout = window.setTimeout(this._timeoutf, this._fadeOutTimeout);
@@ -65,7 +67,7 @@ define(function(require) {
 
     _reschedule: function() {
       window.clearTimeout(this._timeout);
-      window.setTimeout(this._timeoutf, this._fadeOutTimeout);
+      this._timeout = window.setTimeout(this._timeoutf, this._fadeOutTimeout);
     }
   });
 
