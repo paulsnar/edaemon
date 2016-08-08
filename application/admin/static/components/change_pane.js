@@ -63,7 +63,7 @@ define(function(require) {
 
     render: function() {
       var html = this.template({
-        rows: this.model.get('lessons'),
+        rows: this.options.fixedHeight ? 9 : this.model.get('lessons'),
         rowValues: this.model.toJSON().lessons,
 
         forClass: this.model.get('for_class'),

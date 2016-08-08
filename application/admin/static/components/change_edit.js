@@ -19,10 +19,14 @@ define(function(require) {
       'click button[data-do="save"]': '_save',
     },
 
-    initialize: function() {
+    initialize: function(options) {
       if (!this.model) {
         this.model = new Change();
       }
+
+      this.options = _.defaults(options, {
+        fixedHeight: false
+      });
     },
 
     render: function() {
@@ -32,6 +36,7 @@ define(function(require) {
         model: this.model,
         el: this.$('#change-pane')[0],
 
+        fixedHeight: this.options.fixedHeight,
         hideDate: false,
       }).render();
 
@@ -53,13 +58,13 @@ define(function(require) {
   });
 
   return {
-    attach: function($target, initialData) {
+    attach: function($target, initialData, options) {
       var change = new Change(initialData);
 
-      var view = new ChangeEditPaneView({
+      var view = new ChangeEditPaneView(_.defaults({
         model: change,
         el: $target[0]
-      }).render();
+      }, options)).render();
     }
   }
 });

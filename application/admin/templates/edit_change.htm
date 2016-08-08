@@ -29,11 +29,17 @@
 {% if not not_found %}
 <script>
 require(['/admin/static/_require_config.js'], function() {
-    require(['components/change_edit'], function(CEP) {
-        CEP.attach(
-            $('[data-placeholder="ChangeEditPane"]'),
-            {{ change_json | safe }}
-        );
+    require(['components/change_edit', 'utils/settings'],
+    function(ChangeEditPane, Settings) {
+        var initial_data = {{ change_json | safe }};
+        Settings.get('fixedHeight')
+        .then(function(fixedHeight) {
+            ChangeEditPane.attach(
+                $('[data-placeholder="ChangeEditPane"]'),
+                initial_data,
+                { fixedHeight: fixedHeight }
+            );
+        });
     });
 });
 </script>
