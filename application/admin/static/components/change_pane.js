@@ -49,14 +49,17 @@ define(function(require) {
       this.options = _.defaults(options, {
         fixedHeight: false,
         hideClass: false,
-        hideDate: false
+        hideDate: false,
+        surpressErrors: false
       });
 
       if (!this.model) {
         this.model = new Change();
       }
 
-      this.listenTo(this.model, 'invalid', this._showModelValidationError);
+      if (!this.options.surpressErrors) {
+        this.listenTo(this.model, 'invalid', this._showModelValidationError);
+      }
     },
 
     render: function() {
@@ -78,6 +81,7 @@ define(function(require) {
     },
 
     _showModelValidationError: function(model, error) {
+      if (this.options.surpressErrors) return;
       this.$('div.alert.alert-danger')
         .removeClass('hidden')
         .text(error);
