@@ -6,7 +6,7 @@ config['webapp2_extras.sessions'] = dict(
     secret_key=os.environ.get('EDAEMON_COOKIE_KEY'))
 
 
-from application.version import EDAEMON_VERSION
+from application import __version__ as EDAEMON_VERSION
 from google.appengine.api import users
 from application.utility.i18n import format_date
 common_globals = dict(
