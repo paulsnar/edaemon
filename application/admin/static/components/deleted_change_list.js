@@ -44,14 +44,16 @@ define(function(require) {
 
   var DeletedChangeListView = Backbone.View.extend({
     emptyTemplate: [
-      '<p class="text-muted text-center">',
+      '<p class="text-muted">',
         'Vairs nav dzēstu izmaiņu. Urā!',
       '</p>',
     ].join(''),
 
     initialize: function() {
       this.listenTo(this.collection, 'update', this._checkEmptiness);
+    },
 
+    render: function() {
       this.collection.forEach(function(change) {
         var $el = this.$el.find('[data-id="' + change.get('id') + '"]');
         var itemView = new DeletedChangeListItemView({
@@ -63,6 +65,11 @@ define(function(require) {
 
     _checkEmptiness: function() {
       if (this.collection.length === 0) {
+        var $newEl = $('<div>');
+        this.el = $newEl[0];
+        this.$el.replaceWith(this.el);
+        this.$el = $(this.el);
+
         this.$el.html(this.emptyTemplate);
       }
     }

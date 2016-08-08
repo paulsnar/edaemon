@@ -5,6 +5,7 @@
 {% block body %}
     <h1>Pārvaldīšana</h1>
     <h2>Pašreizējās stundu izmaiņas <small>(nedēļa)</small></h2>
+    {% if has_changes %}
     <ul id="js__changes">
         {% for change in changes %}
             <li data-id="{{ change.key.urlsafe() }}">
@@ -21,6 +22,11 @@
             </li>
         {% endfor %}
     </ul>
+    {% else %}
+    <p class="text-muted">
+        Te nav izmaiņu.
+    </p>
+    {% endif %}
     <p>
         <a href="/admin/changes/all" class="btn btn-default">
             <span class="glyphicon glyphicon-asterisk"></span>
@@ -35,6 +41,7 @@
 
 {% block scripts %}
 {{ super() }}
+{% if has_changes %}
 <script>
 require(['/admin/static/_require_config.js'], function() {
     require(['components/change_list'], function(ChangeList) {
@@ -45,4 +52,5 @@ require(['/admin/static/_require_config.js'], function() {
     });
 });
 </script>
+{% endif %}
 {% endblock %}

@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>Visas izmaiņas</h1>
+    {% if has_changes %}
     <ul id="js__all-changes">
         {% for change in changes %}
             <li data-id="{{ change.key.urlsafe() }}">
@@ -20,10 +21,16 @@
             </li>
         {% endfor %}
     </ul>
+    {% else %}
+    <p class="text-muted">
+        Nav izmaiņu.
+    </p>
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}
 {{ super() }}
+{% if has_changes %}
 <script>
 require(['/admin/static/_require_config.js'], function() {
     require(['components/change_list'], function(ChangeList) {
@@ -34,4 +41,5 @@ require(['/admin/static/_require_config.js'], function() {
     });
 });
 </script>
+{% endif %}
 {% endblock %}
