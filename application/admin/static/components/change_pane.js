@@ -5,14 +5,12 @@ define(function(require) {
   var ChangePane = Backbone.View.extend({
     template: _.template([
       '<div class="alert alert-danger hidden">Notika kļūda.</div>',
-      '<% if (!hideClass) { %>',
-        '<div class="input-group">',
-          '<span class="input-group-addon">Klase: </span>',
-          '<input type="text" class="form-control"',
-            '<% if (forClass) { %> value="<%- forClass %>" <% } %>',
-            'data-input="for_class" />',
-        '</div>',
-      '<% } %>',
+      '<div class="input-group">',
+        '<span class="input-group-addon">Klase: </span>',
+        '<input type="text" class="form-control"',
+          '<% if (forClass) { %> value="<%- forClass %>" <% } %>',
+          'data-input="for_class" />',
+      '</div>',
       '<% if (!hideDate) { %>',
         '<div class="input-group">',
           '<span class="input-group-addon">Datums: </span>',
@@ -48,7 +46,6 @@ define(function(require) {
       // this.optRows = options.rows;
       this.options = _.defaults(options, {
         fixedHeight: false,
-        hideClass: false,
         hideDate: false,
         surpressErrors: false
       });
@@ -71,7 +68,6 @@ define(function(require) {
         forDate: this.model.get('for_date'),
 
         fixedHeight: this.options.fixedHeight,
-        hideClass: this.options.hideClass,
         hideDate: this.options.hideDate,
       });
 
