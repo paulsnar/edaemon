@@ -41,6 +41,16 @@ define(function(require) {
       }
     },
 
+    getLessons: function() {
+      var lessonsObj = _.pickBy(this.attributes,
+        function(val, key) { return _.startsWith(key, 'lesson_') });
+      var lessons = [ ];
+      _.forEach(lessonsObj, function(lesson, key) {
+        lessons[parseInt(key.substr(7), 10)] = lesson;
+      });
+      return lessons;
+    },
+
     toJSON: function(options) {
       var useKeys = _(this.attributes)
         .keys()
@@ -64,6 +74,16 @@ define(function(require) {
         return 'Datums bija ievadīts nepareizi. ' +
           'Datumam būtu jāseko formātam GGGG-MM-DD.';
       }
+    },
+
+    isEmpty: function() {
+      // A change is considered empty if it has no lessons filled in.
+      // This is intended for allowing to have nicely lined up rows
+      // for /changes/new, yet allowing them to be empty.
+
+      var lessons = this.getLessons();
+
+      return _.every(lessons, function(i) { return i === null || i === ''; });
     }
   });
 

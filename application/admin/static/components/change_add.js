@@ -63,8 +63,13 @@ define(function(require) {
 
       this.collection.forEach(function(model) {
         model.set('for_date', date);
-        model.save();
+        if (!model.isEmpty()) {
+          model.save();
+        }
       }.bind(this));
+
+      // in case if everything's empty (yet the date's filled out?)
+      this._handleSync();
     },
 
     _addChange: function() {
@@ -99,8 +104,7 @@ define(function(require) {
       }
 
       this.listenTo(this.collection, 'add', this._appendColumn);
-
-      // this.listenTo(this.collection, 'invalid', this._invalid);
+      this.listenTo(this.collection, 'sync', this._handleSync);
     },
 
     render: function() {
@@ -166,6 +170,17 @@ define(function(require) {
         }
       }
 
+    },
+
+    _handleSync: function(model) {
+      var allSynced = _.every(
+        this.collection.filter(function(model) { return !model.isEmpty(); }),
+        function(model) { return !model.isNew(); }
+      );
+
+      if (allSynced) {
+        window.location.assign('/admin/changes/all');
+      }
     }
 
   });
