@@ -17,6 +17,7 @@ define(function(require) {
     defaults: (function() {
       var defaults = {
         for_date: (new Date()).toISOString().substr(0,10),
+        for_class: '',
         lessons: 5
       };
 
