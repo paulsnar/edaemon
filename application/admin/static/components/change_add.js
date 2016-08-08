@@ -49,11 +49,22 @@ define(function(require) {
     },
 
     _save: function() {
+      var $dateField = this.$('input[type="date"]');
+      var date = $dateField.val().trim();
+      if (!/\d{4}-\d{2}-\d{2}/.test(date)) {
+        this.$el.children('div.alert.alert-danger')
+          .text('Nepareizs datums.')
+          .removeClass('hidden');
+        return;
+      } else {
+        this.$el.children('div.alert.alert-danger')
+          .addClass('hidden');
+      }
+
       this.collection.forEach(function(model) {
-        model.set('for_date', this.$('input[type="date"]').val().trim());
+        model.set('for_date', date);
         model.save();
       }.bind(this));
-      // this.collection.sync();
     },
 
     _addChange: function() {
