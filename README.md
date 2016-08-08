@@ -13,7 +13,6 @@ though.
   and [Node](https://nodejs.org) installed.
   * Clone the master branch of this repository.
   * Copy `app.yaml.example` to `app.yaml` and fill it out.
-  * Perform a `npm install`, then `npm run pack` in `management_frontend`.
   * `gcloud preview app deploy ./app.yaml`
 
 If you encounter any problems, contact me via the methods listed
