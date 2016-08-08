@@ -59,7 +59,7 @@ define(function(require) {
         return 'Lūdzu ievadiet klasi.';
       }
 
-      if (isNaN(Date.parse(attrs.for_date))) {
+      if (!/\d{4}-\d{2}-\d{2}/.test(attrs.for_date)) {
         return 'Datums bija ievadīts nepareizi. ' +
           'Datumam būtu jāseko formātam GGGG-MM-DD.';
       }
