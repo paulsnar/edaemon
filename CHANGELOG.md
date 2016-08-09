@@ -1,3 +1,12 @@
+v3.1.2
+======
+
+ - Adapt for better experience for new deployments
+
+ - Minor interface improvements
+
+------
+
 v3.1.1
 ======
 
