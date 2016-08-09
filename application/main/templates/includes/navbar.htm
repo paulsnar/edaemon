@@ -9,15 +9,17 @@
             {% endif %}
         </div>
 
-        {% if users.get_current_user() %}
-        <ul class="nav navbar-nav">
-            {% if users.is_current_user_admin() %}
-            <li><a href="/admin/">Pārvaldīšana</a></li>
+        {% if not _empty_navbar %}
+            {% if users.get_current_user() %}
+            <ul class="nav navbar-nav">
+                {% if users.is_current_user_admin() %}
+                <li><a href="/admin/">Pārvaldīšana</a></li>
+                {% endif %}
+            </ul>
+            {% if not users.is_current_user_admin() %}
+            <p class="navbar-text navbar-left">Pārvaldīšana nav pieejama</p>
             {% endif %}
-        </ul>
-        {% if not users.is_current_user_admin() %}
-        <p class="navbar-text navbar-left">Pārvaldīšana nav pieejama</p>
-        {% endif %}
+            {% endif %}
         {% endif %}
     </div>
 </nav>
