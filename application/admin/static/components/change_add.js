@@ -132,6 +132,7 @@ define(function(require) {
       this.$('div.row').last().append(
         $('<div>')
           .addClass('col-md-' + (this.options.cozyMode ? '2' : '3'))
+          .addClass('col-sm-' + (this.options.cozyMode ? '4' : '6'))
           .html(this._appendColumnButtonTemplate)
       );
 
@@ -139,37 +140,21 @@ define(function(require) {
     },
 
     _appendColumn: function(change) {
-      var itemsPerRow = this.options.cozyMode ? 6 : 4;
       var $lastRow = this.$('div.row[data-columns]').last();
 
-      if ($lastRow.find('div:not(:has(button))').length === itemsPerRow) {
-        var $newRow = $('<div>')
-            .addClass('row')
-            .attr('data-columns', '');
-        $lastRow.after($newRow);
-        $lastRow = $newRow;
-      } else {
-        var $appendBtnCol = $lastRow.children('div:has(button)');
-        if ($lastRow.children('div:not(:has(button))').length === itemsPerRow - 1) {
-          var $newRow = $('<div>')
-            .addClass('row')
-            .attr('data-columns', '');
-          $newRow.append($appendBtnCol);
-          $lastRow.after($newRow);
-        }
-        var pane = new ChangePane({
-          model: change,
+      var $appendBtnCol = $lastRow.children('div:has(button)');
 
-          fixedHeight: this.options.fixedHeight,
-          hideDate: true
-        }).render();
-        $(pane.el).addClass('col-md-' + (this.options.cozyMode ? '2' : '3'));
-        $lastRow.append(pane.el);
-        if ($lastRow.children('div:not(:has(button))').length !== itemsPerRow) {
-          $lastRow.append($appendBtnCol);
-        }
-      }
+      var pane = new ChangePane({
+        model: change,
 
+        fixedHeight: this.options.fixedHeight,
+        hideDate: true
+      }).render();
+      $(pane.el).addClass('col-md-' + (this.options.cozyMode ? '2' : '3'))
+                .addClass('col-sm-' + (this.options.cozyMode ? '4' : '6'))
+                .attr('data-column', 'yes');
+      $lastRow.append(pane.el);
+      $lastRow.append($appendBtnCol);
     },
 
     _handleSync: function(model) {
