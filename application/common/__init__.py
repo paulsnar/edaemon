@@ -68,6 +68,6 @@ def default_404_handler(request, response, exception):
     response.write(template.render())
     response.set_status(404)
 
-import simplejson
+from webapp2_extras import json as wa2json
 def json_dumps(obj):
-    return simplejson.encoder.JSONEncoderForHTML().encode(obj)
+    return wa2json.encode(obj)

@@ -28,9 +28,9 @@ class Change(ndb.Model):
         today = date.today()
         today_plus_week = today + timedelta(days=7)
         return cls.query(
-            cls.for_class == for_class,
             cls.for_date >= today,
             cls.for_date < today_plus_week,
+            cls.for_class == for_class,
             cls.purgeable_since == None
         )
 

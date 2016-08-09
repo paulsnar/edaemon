@@ -2,21 +2,6 @@
 
 {% block title %}Lietotāja iestatījumi{% endblock %}
 
-{% block stylesheets %}
-{{ super() }}
-<style>
-    .fadeOutNow {
-        animation-name: fadeOutNow;
-        animation-duration: 0.7s;
-        animation-timing-function: ease-in-out;
-    }
-    @keyframes fadeOutNow {
-        0% { opacity: 1; }
-        100% { opacity: 0; }
-    }
-</style>
-{% endblock %}
-
 {% block body %}
     <h1>Lietotāja iestatījumi</h1>
     <div data-placeholder="UserSettingsPane">Notiek ielāde, lūdzu uzgaidiet…</div>

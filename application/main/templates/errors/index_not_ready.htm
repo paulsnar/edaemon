@@ -1,0 +1,25 @@
+{% extends 'layout.htm' %}
+
+{% block title %}Lūdzu uzgaidiet!{% endblock %}
+
+{% block body %}
+    <h1>Lūdzu uzgaidiet!</h1>
+    <p>Edaemon vēl joprojām veic uzstādīšanu un nav gatavs izmantošanai.</p>
+    <p>Lūdzu uzgaidiet pāris minūtes un mēģiniet vēlreiz.</p>
+    <hr />
+    <p>Tehniska informācija:</p>
+<pre>Pašreizējais solis: Notiek indeksu būvēšana
+Progress: 5%</pre>
+    {% if users.is_current_user_admin() %}
+    <p><a href="https://console.cloud.google.com/datastore/indexes">Doties uz indeksu pārskatu</a></p>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    window.setTimeout(function() {
+        window.location.reload();
+    }, 60 * 1000);
+</script>
+{% endblock %}
