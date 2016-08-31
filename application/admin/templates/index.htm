@@ -17,7 +17,7 @@
                     <span class="glyphicon glyphicon-pencil"></span>
                 </a>
                 <a href="/admin/changes/{{ change.key.urlsafe() }}">
-                    Datums: {{ change.for_date }}, klase: {{ change.for_class }}
+                    Datums: {{ change.for_date | e }}, klase: {{ change.for_class | e }}
                 </a>
             </li>
         {% endfor %}

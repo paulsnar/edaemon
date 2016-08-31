@@ -11,8 +11,8 @@
         <ul class="nav nav-pills">
             {% for date in dates %}
             <li>
-                <a href="/changes/by_date/{{ date }}">
-                    {{ format_date(date, 'nominativs') }}
+                <a href="/changes/by_date/{{ date | e }}">
+                    {{ format_date(date, 'nominativs') | e }}
                 </a>
             </li>
             {% endfor %}
@@ -26,8 +26,8 @@
         <ul class="nav nav-pills">
             {% for className in classNames %}
             <li>
-                <a href="/changes/for_class/{{ className }}">
-                    {{ className }}
+                <a href="/changes/for_class/{{ className | e }}">
+                    {{ className | e }}
                 </a>
             </li>
             {% endfor %}

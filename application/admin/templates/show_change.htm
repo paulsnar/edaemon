@@ -9,7 +9,7 @@
         Šīs izmaiņas netika atrastas.
     </div>
 {% else %}
-    <h1>Izmaiņas {{ change.for_class }} klasei {{ format_date(change.for_date, 'dativs') }}</h1>
+    <h1>Izmaiņas {{ change.for_class | e }} klasei {{ format_date(change.for_date, 'dativs') | e }}</h1>
     <p>
         <button class="btn btn-danger disabled" data-do="delete">
             <span class="glyphicon glyphicon-trash"></span>
@@ -24,7 +24,7 @@
             {% if lesson is none %}
             <li>&mdash;</li>
             {% else %}
-            <li>{{ lesson }}</li>
+            <li>{{ lesson | e }}</li>
             {% endif %}
         {% else %}
         (Nav ievadīta neviena stunda)

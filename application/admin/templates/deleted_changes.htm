@@ -11,7 +11,7 @@
                 <button class="btn btn-default btn-xs disabled" data-do="undelete">
                     <span class="glyphicon glyphicon-arrow-left"></span>
                 </button>
-                Datums: {{ change.for_date }}, klase: {{ change.for_class }}
+                Datums: {{ change.for_date | e }}, klase: {{ change.for_class | e }}
             </li>
         {% endfor %}
     </ul>
