@@ -3,7 +3,7 @@
 import webapp2
 import json
 
-from application.common import BaseHandler
+from application.common import BaseHandler, json_dumps
 from google.appengine.ext import ndb
 
 from ..templates import environment
@@ -22,7 +22,7 @@ class ShowChange(BaseHandler):
                 self.response.write(
                     template.render(
                         change=change,
-                        change_json=json.dumps(change.to_dict()),
+                        change_json=json_dumps(change.to_dict()),
                         lessons=json.loads(change.lessons)
                     )
                 )

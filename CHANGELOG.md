@@ -1,3 +1,14 @@
+v3.1.3
+======
+
+ - Fix some XSS vulnerabilities due to Jinja2 not escaping everything properly  
+    See-Also: e760293
+
+ - Fix indexes  
+    See-Also: 44e98c2, #34
+
+------
+
 v3.1.2
 ======
 

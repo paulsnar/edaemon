@@ -2,7 +2,7 @@
 
 {% block title -%}
 {%- if change is defined -%}
-Izmaiņas {{ change.for_class }} klasei {{ format_date(change.for_date, 'dativs') }}
+Izmaiņas {{ change.for_class | e }} klasei {{ format_date(change.for_date, 'dativs') | e }}
 {%- else -%}
 Izmaiņas
 {%- endif -%}
@@ -11,7 +11,7 @@ Izmaiņas
 {% block body %}
 
 {% if change is defined %}
-    <h1>Izmaiņas {{ change.for_class }} klasei <small>{{ format_date(change.for_date, 'dativs') }}</small></h1>
+    <h1>Izmaiņas {{ change.for_class | e }} klasei <small>{{ format_date(change.for_date, 'dativs') | e }}</small></h1>
     {% if users.is_current_user_admin() %}
     <p>
         <a href="/admin/changes/{{ change.key.urlsafe() }}" class="btn btn-default">
@@ -31,7 +31,7 @@ Izmaiņas
         {% if lesson is none %}
             <li>&mdash;</li>
         {% else %}
-            <li>{{ lesson }}</li>
+            <li>{{ lesson | e }}</li>
         {% endif %}
     {% else %}
     (Neviena stunda nav ievadīta.)
