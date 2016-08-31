@@ -6,6 +6,7 @@ import webapp2
 import json
 
 def handle_404(request, response, exception):
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
     response.write(json.dumps(dict(
         success=False,
         error=True,
