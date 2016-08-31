@@ -12,7 +12,19 @@ indexes:
 
 - kind: Change
   properties:
+  - name: for_class
+  - name: purgeable_since
   - name: for_date
+
+- kind: Change
+  properties:
+  - name: for_date
+  - name: for_class
+
+- kind: Change
+  properties:
+  - name: for_date
+  - name: purgeable_since
   - name: for_class
 
 - kind: Change
