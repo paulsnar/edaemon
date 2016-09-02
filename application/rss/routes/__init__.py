@@ -39,10 +39,12 @@ class BaseHandler(webapp2.RequestHandler):
         return super(BaseHandler, self).dispatch()
 
 
+from .index import Index
 from .all_changes_feed import AllChangesFeed
 from .class_changes_feed import ClassChangesFeed
 
 all_routes = [
+    (r'/feeds/', Index),
     (r'/feeds/changes/all.xml', AllChangesFeed),
     (r'/feeds/changes/for_class/([0-9A-Za-z\.]+).xml', ClassChangesFeed),
 ]

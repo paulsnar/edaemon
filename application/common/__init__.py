@@ -28,6 +28,7 @@ from webapp2_extras import sessions
 import logging
 import json
 from .models import User
+from datetime import date, timedelta
 class BaseHandler(webapp2.RequestHandler):
     def dispatch(self):
         self.session_store = sessions.get_store(request=self.request)

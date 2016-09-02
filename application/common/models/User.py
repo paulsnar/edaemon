@@ -8,6 +8,7 @@ class User(ndb.Model):
     email = ndb.StringProperty(indexed=True)
     rss_token = ndb.StringProperty(indexed=True)
     rss_token_disabled = ndb.BooleanProperty(indexed=False)
+    rss_token_ban_expires_at = ndb.DateProperty(indexed=False)
 
     @staticmethod
     def generate_rss_token():

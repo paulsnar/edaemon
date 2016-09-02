@@ -1,0 +1,47 @@
+{% extends 'layout.htm' %}
+
+{% block title %}RSS barotnes{% endblock %}
+
+{% block body %}
+    <h1>RSS barotnes</h1>
+    {% if not users.get_current_user() %}
+        <p>
+            Lai izmantotu RSS barotnes,
+            <a href="{{ users.create_login_url('/feeds/') }}">
+                ir nepieciešams ielogoties.
+            </a>
+        </p>
+    {% else %}
+        {% if not rss_token %}
+        <p>
+            Jums sistēmas administrators ir liedzis piekļuvi RSS barotnēm.
+        </p>
+        <p>
+            Lūdzu izmantojiet RSS klientu, kurš ievēro RSS barotnē norādīto atsvaidzināšanas periodu.
+        </p>
+        <p>
+            {% if ban_timeout %}
+                Šis aizliegums beigsies {{ ban_timeout }}.
+            {% else %}
+                Šis aizliegums ir mūžīgs.
+            {% endif %}
+        </p>
+        {% else %}
+        <p>Edaemon nodrošina RSS barotnes jūsu apziņošanai.</p>
+        <p>Jūsu RSS atslēga: <code>{{ rss_token }}</code>. (Ievietojiet to <code>(atslēga)</code> vietā zemāk.)</p>
+        <p>
+            Visas izmaiņas:
+            <a href="/feeds/changes/all.xml?token={{ rss_token }}">
+                <code>{{ host }}/feeds/changes/all.xml?token=(atslēga)</code>
+            </a>
+        </p>
+        <p>
+            Izmaiņas klasei:
+            <a href="/feeds/changes/for_class/(class).xml?token={{ rss_token }}">
+                <code>{{ host }}/feeds/changes/for_class/<strong>(klase)</strong>.xml?token=(atslēga)</code>
+            </a>
+            (aizvietojot <code><strong>(klase)</strong></code> ar Jūs interesējošo klasi, piem., <code>8.a</code>)
+        </p>
+        {% endif %}
+    {% endif %}
+{% endblock %}
