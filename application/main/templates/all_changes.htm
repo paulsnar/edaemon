@@ -3,7 +3,24 @@
 {% block title %}Izmaiņas{% endblock %}
 
 {% block body %}
-    <h1>Izmaiņas tuvākajai nedēļai</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Izmaiņas tuvākajai nedēļai</h1>
+        </div>
+        <div class="col-md-4 text-right" style="font-size: 0.9rem">
+            {% if users.get_current_user() %}
+                {% if not rss_token %}
+                    <span class="text-muted">Piekļuve RSS ir liegta</span>
+                {% else %}
+                    <a href="/feeds/changes/all.xml?token={{ rss_token }}">
+                        RSS barotne visām izmaiņām
+                    </a>
+                {% endif %}
+            {% else %}
+                <span class="text-muted">RSS barotne ir pieejama tikai ar ielogošanos</span>
+            {% endif %}
+        </div>
+    </div>
     {% if dates is defined and dates | length > 0 %}
     <br />
     <div>

@@ -12,6 +12,8 @@ from ..templates import environment
 
 class AllChanges(BaseHandler):
     def get(self):
+        rss_token = self.rss_dance()
+
         try:
             template = environment.get_template('all_changes.htm')
             changes = Change.get_week()
@@ -20,7 +22,8 @@ class AllChanges(BaseHandler):
             self.response.write(template.render(
                 changes=None,
                 classNames=classNames,
-                dates=dates))
+                dates=dates,
+                rss_token=rss_token))
         except NeedIndexError:
             template = environment.get_template('errors/index_not_ready.htm')
             self.response.write(template.render(_empty_navbar=True))

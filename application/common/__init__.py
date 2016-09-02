@@ -27,6 +27,7 @@ import webapp2
 from webapp2_extras import sessions
 import logging
 import json
+from .models import User
 class BaseHandler(webapp2.RequestHandler):
     def dispatch(self):
         self.session_store = sessions.get_store(request=self.request)
@@ -62,6 +63,25 @@ class BaseHandler(webapp2.RequestHandler):
             'charset=utf-8'
         self.response.write(json.dumps(kwargs))
 
+    def rss_dance(self):
+        current_user = users.get_current_user()
+        if current_user:
+            user_model = User.find_by_email(current_user.email())
+            if user_model:
+                if user_model.rss_token_disabled:
+                    return None
+                else:
+                    return user_model.rss_token
+            else:
+                user_model = User(
+                    email=current_user.email(),
+                    rss_token=User.generate_rss_token(),
+                    rss_token_disabled=False
+                )
+                user_model.put()
+                return user_model.rss_token
+
+        return None
 
 def default_404_handler(request, response, exception):
     template = _env.get_template('404.htm')

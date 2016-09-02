@@ -3,7 +3,24 @@
 {% block title %}Izmaiņas {{ for_class }} klasei{% endblock %}
 
 {% block body %}
-<h1>Izmaiņas {{ for_class }} klasei</h1>
+<div class="row">
+    <div class="col-md-8">
+        <h1>Izmaiņas {{ for_class }} klasei</h1>
+    </div>
+    <div class="col-md-4 text-right" style="font-size: 0.9rem">
+        {% if users.get_current_user() %}
+            {% if not rss_token %}
+                <span class="text-muted">Piekļuve RSS ir liegta</span>
+            {% else %}
+                <a href="/feeds/changes/for_class/{{ for_class }}.xml?token={{ rss_token }}">
+                    RSS barotne šai klasei
+                </a>
+            {% endif %}
+        {% else %}
+            <span class="text-muted">RSS barotne ir pieejama tikai ar ielogošanos</span>
+        {% endif %}
+    </div>
+</div>
 <ul class="nav nav-pills">
     {% for change in changes %}
     <li><a href="/changes/show/{{ change.key.urlsafe() }}">{{ format_date(change.for_date, 'dativs') | e }}</a></li>
