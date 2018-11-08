@@ -12,8 +12,8 @@ though.
   * Ensure that you have the [Google Cloud SDK](https://cloud.google.com/sdk/)
   and [Node](https://nodejs.org) installed.
   * Clone the master branch of this repository.
-  * Copy `app.yaml.example` to `app.yaml` and fill it out.
-  * `gcloud preview app deploy ./app.yaml`
+  * `gcloud app deploy ./app.yaml`
+  * `gcloud datastore indexes create ./index.yaml`
 
 If you encounter any problems, contact me via the methods listed
 [here](https://paulsnar.lv).

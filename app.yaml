@@ -1,5 +1,3 @@
-application: your-app-name
-version: 1
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -9,7 +7,7 @@ handlers:
   static_dir: static/
   secure: always
 - url: /admin/static
-  static_dir: admin/static/
+  static_dir: application/admin/static/
   secure: always
   login: admin
 - url: /admin/.*
