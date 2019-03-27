@@ -19,6 +19,7 @@ common_globals = dict(
 )
 
 
+import urllib
 from jinja2 import Environment, PackageLoader
 _env = Environment(loader=PackageLoader(__name__, 'error_templates'))
 _env.globals = common_globals

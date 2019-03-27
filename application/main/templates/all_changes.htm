@@ -26,7 +26,7 @@
         <ul class="nav nav-pills">
             {% for className in classNames %}
             <li>
-                <a href="/changes/for_class/{{ className | e }}">
+                <a href="/changes/for_class/{{ className | urlencode | e }}">
                     {{ className | e }}
                 </a>
             </li>
