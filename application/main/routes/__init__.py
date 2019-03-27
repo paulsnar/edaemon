@@ -9,5 +9,5 @@ all_routes = [
     (r'/', AllChanges),
     (r'/changes/show/([0-9A-Za-z\-_]+)', ShowChange),
     (r'/changes/by_date/([0-9]{4}-[0-9]{2}-[0-9]{2})', ChangesForDate),
-    (r'/changes/for_class/([0-9A-Za-z\.]+)', ChangesForClass),
+    (r'/changes/for_class/(.+)', ChangesForClass),
 ]
